@@ -4,7 +4,7 @@ import React from 'react';
 const App = () => {
   return (
     <View style={styles.sample}>
-      <Text>Jira Ticket</Text>
+      <Text>commit test</Text>
     </View>
   );
 };
