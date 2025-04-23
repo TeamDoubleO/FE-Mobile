@@ -12,7 +12,7 @@ const NormalButton = ({
     <TouchableOpacity
       disabled={isDisabled}
       onPress={onPressHandler}
-      style={[length === 'long' ? styles.long : styles.short, isDisabled ? styles.disabled : '']}
+      style={[length === 'long' ? styles.long : styles.short, isDisabled && styles.disabled]}
     >
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
