@@ -3,10 +3,11 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
 homeButton: {
   position: 'absolute',
-  top: 80, // 상단 여백
+  top: 60, // 상단 여백
   right: -50, // 오른쪽 여백
   width: 100, // 버튼 너비
   height: 48, // 버튼 높이
+  zIndex: 100, // 버튼이 다른 요소 위에 오도록 설정
   backgroundColor: '#fff',
   borderTopLeftRadius: 24, // 버튼 상단 왼쪽 모서리 둥글게
   borderBottomLeftRadius: 24, // 버튼 하단 왼쪽 모서리 둥글게
