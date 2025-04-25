@@ -12,8 +12,8 @@ const SignUpPage = () => {
 
   const navigateToLogin = () => {
     //로그인 페이지로 이동하는 함수
-    // navigation.navigate('LoginPage');
-    navigation.navigate('MyPage');
+    navigation.navigate('LoginPage');
+    //navigation.navigate('MyPage');
   };
 
   return (
