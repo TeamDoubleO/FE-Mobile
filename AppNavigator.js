@@ -4,10 +4,11 @@ import { useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StatusBar } from 'react-native';
 import HomeButtonController from './components/common/buttons/HomeButtonController';
-
 import WelcomePage from './pages/WelcomePage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
+import MyPage from './pages/MyPage';
+import ChangePasswordPage from './pages/ChangePasswordPage';
 
 const Stack = createStackNavigator();
 
@@ -32,7 +33,12 @@ export default function AppNavigator() {
         <Stack.Screen name="WelcomePage" component={WelcomePage} options={{ headerShown: false }} />
         <Stack.Screen name="LoginPage" component={LoginPage} options={{ headerShown: false }} />
         <Stack.Screen name="SignUpPage" component={SignUpPage} options={{ headerShown: false }} />
-
+        <Stack.Screen name="MyPage" component={MyPage} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="ChangePasswordPage"
+          component={ChangePasswordPage}
+          options={{ headerShown: false }}
+        />
         {/* 기본 헤더 필요한 페이지는 아래 형식으로 추가 
         <Stack.Screen name="LoginPage" component={LoginPage} options={{ title: '한글 타이틀' }} /> */}
       </Stack.Navigator>

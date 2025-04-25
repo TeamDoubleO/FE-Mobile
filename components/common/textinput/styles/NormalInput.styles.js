@@ -2,10 +2,10 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   input: {
-    width: 316,
+    minWidth: '80%',
     height: 50,
-    marginBottom: 20,
-    paddingHorizontal: 15,
+    marginVertical: '1.5%',
+    paddingHorizontal: '5%',
     borderWidth: 2,
     borderRadius: 10,
     borderColor: '#BCCBBE',
@@ -13,8 +13,11 @@ export const styles = StyleSheet.create({
   },
   focused: { borderColor: '#385E3C' },
   error: { borderColor: '#FF4943' },
-  errorText: { margin: 10, marginTop: 0, fontSize: 15, color: '#FF4943' },
-  editable: {
-    backgroundColor: '#F1F1F1',
+  errorText: {
+    marginLeft: '2%',
+    marginTop: '1%',
+    fontSize: 15,
+    color: '#FF4943',
   },
+  editable: { backgroundColor: '#E7E7E7' },
 });

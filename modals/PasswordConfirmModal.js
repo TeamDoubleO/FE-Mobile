@@ -43,7 +43,7 @@ const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
           />
         )}
 
-        <NormalButton title="확인" onPressHandler={handleConfirm} />
+        <NormalButton title="확인" onPressHandler={handleConfirm} style={styles.button} />
       </View>
     </Modal>
   );

@@ -35,8 +35,8 @@ const ChangePasswordPage = () => {
 
     Alert.alert('변경 완료', '비밀번호가 성공적으로 변경되었습니다.');
 
-    // TODO: 메인인 페이지로 이동되도록 설정
-    navigation.navigate('MyPage');
+    // TODO: 메인 페이지로 이동되도록 설정
+    navigation.navigate('');
   };
 
   return (

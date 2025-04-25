@@ -3,17 +3,19 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   // 긴 버튼 활성화 스타일 (기본 스타일)
   long: {
-    width: 330,
+    minWidth: '80%',
     height: 50,
     borderRadius: 10,
+    marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#24562B',
   },
   // 짧은 버튼 활성화 스타일
   short: {
-    width: 160,
+    minWidth: '40%',
     height: 50,
+    marginTop: 10,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
