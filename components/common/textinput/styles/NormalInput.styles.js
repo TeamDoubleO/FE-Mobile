@@ -14,4 +14,7 @@ export const styles = StyleSheet.create({
   focused: { borderColor: '#385E3C' },
   error: { borderColor: '#FF4943' },
   errorText: { margin: 10, marginTop: 0, fontSize: 15, color: '#FF4943' },
+  editable: {
+    backgroundColor: '#F1F1F1',
+  },
 });

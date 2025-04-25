@@ -6,6 +6,7 @@ import { TextInput } from 'react-native';
 const NormalInput = ({
   placeholder = 'placeholder',
   errorText = '',
+  isEditable = true,
   value,
   onChangeTextHandler,
 }) => {
@@ -18,10 +19,16 @@ const NormalInput = ({
         placeholder={placeholder}
         placeholderTextColor="#7E7E7E"
         value={value}
+        editable={isEditable}
         onChangeText={onChangeTextHandler}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        style={[styles.input, isFocused && styles.focused, errorText && styles.error]}
+        style={[
+          styles.input,
+          isFocused && styles.focused,
+          errorText && styles.error,
+          !isEditable && styles.editable,
+        ]}
       ></TextInput>
     </View>
   );
