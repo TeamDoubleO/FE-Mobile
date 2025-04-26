@@ -17,13 +17,27 @@ const SignUpPage = () => {
     pw: '',   // 비밀번호
     pwCheck: '',  // 비밀번호 확인
   });
+  // 비밀번호 규칙 검사 (8자 이상, 영문/숫자/특수문자 포함)
+  const isValidPassword = pw =>
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/.test(pw);
+  // 전화번호, 주민들록 번호 검사 추가 필요
 
   const [error,setError] = useState({}); // 에러 메시지
+  const [isPwValid, setIsPwValid] = useState(false); //비밀번호 유효성
+  const [isPwMatch, setIsPwMatch] = useState(false); //비밀번호 일치성
 
   //공통 핸들러 - 입력값 변경을 처리
   const handleInputChange = (field, value) => { // field : 바꿀 필드의 이름 (ex. name), value : 입력된 새로운 값
     setForm(prev => ({ ...prev, [field]: value }));  //입력값을 form state에 저장 (기존 form 객체 복사 후, 해당 필드만 새 값으로 덮어씀)
-    if (error[field]) { //만약 error 메세지가 있다면
+    
+    if (field === 'pw') { //비밀번호 필드가 변경되면
+      setIsPwValid(isValidPassword(value)); //비밀번호 유효성 확인
+      setIsPwMatch(form.pwCheck === value); //일치성 확인
+      setError(prev => ({ ...prev, pw: undefined, pwCheck: undefined }));
+    } else if (field === 'pwCheck') { //비밀번호 확인 필드가 변경되면
+      setIsPwMatch(form.pw === value); //일치성 확인
+      setError(prev => ({ ...prev, pwCheck: undefined }));
+    } else if (error[field]) { //만약 error 메세지가 있다면
       setError(prev => ({ ...prev, [field]: undefined })); //경고 이후 입력하면 error 사라지도록 함
     }
   };
@@ -36,6 +50,8 @@ const SignUpPage = () => {
     if (!form.phone) newError.phone = '전화번호를 입력하세요';
     if (!form.id) newError.id = '아이디를 입력하세요';
     if (!form.pw) newError.pw = '비밀번호를 입력하세요';
+    else if (!isValidPassword(form.pw)) newError.pw = '비밀번호는 8자 이상, 영문/숫자/특수문자 포함!';
+    if (!form.pwCheck) newError.pwCheck = '비밀번호 확인을 입력하세요';
     if (form.pw !== form.pwCheck) newError.pwCheck = '비밀번호가 다릅니다';
   
     setError(newError);
@@ -68,9 +84,6 @@ const SignUpPage = () => {
       }
       */
     } 
-
-    // 성공 시 로그인 페이지로 이동
-    
   };
   
   const navigation = useNavigation();
@@ -119,7 +132,10 @@ const SignUpPage = () => {
         />
         <NormalInput
           placeholder="비밀번호"
-          errorText={error.pw}
+          errorText={
+            error.pw ||
+            (form.pw && !isPwValid ? '비밀번호는 8자 이상, 영문/숫자/특수문자 포함!' : '')
+          }
           isEditable={true}
           value={form.pw}
           onChangeTextHandler={text => handleInputChange('pw', text)}
@@ -127,7 +143,10 @@ const SignUpPage = () => {
         />
         <NormalInput
           placeholder="비밀번호 확인"
-          errorText={error.pwCheck}
+          errorText={
+            error.pwCheck ||
+            (form.pwCheck && !isPwMatch ? '비밀번호가 다릅니다' : '')
+          }
           isEditable={true}
           value={form.pwCheck}
           onChangeTextHandler={text => handleInputChange('pwCheck', text)}
