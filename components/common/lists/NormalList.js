@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { styles } from './styles/NormalList.styles';
 import { useNavigation } from '@react-navigation/native';
 
-const NormalList = ({ items, nextPage }) => {
+const NormalList = ({ items, nextPage, style }) => {
   // 선택 항목의 index 저장
   const [selectedIndex, setSelectedIndex] = useState(null);
   const navigation = useNavigation();
@@ -24,7 +24,7 @@ const NormalList = ({ items, nextPage }) => {
         <TouchableOpacity
           key={index}
           onPress={() => handleSelect(index)}
-          style={[styles.itemBox, selectedIndex === index && styles.selectedItemBox]}
+          style={[styles.itemBox, selectedIndex === index && styles.selectedItemBox, style]}
         >
           <Text style={[styles.itemText, selectedIndex === index && styles.selectedItemText]}>
             {item}

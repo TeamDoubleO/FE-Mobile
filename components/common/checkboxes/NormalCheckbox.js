@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { styles } from './styles/NormalCheckbox.styles';
 import { Ionicons } from '@expo/vector-icons';
 
-const NormalCheckbox = ({ labels, onChangeHandler }) => {
+const NormalCheckbox = ({ labels, onChangeHandler, style }) => {
   const [checkedList, setCheckedList] = useState(Array(labels.length).fill(false));
 
   // 체크박스 토글 관리 함수
@@ -20,7 +20,7 @@ const NormalCheckbox = ({ labels, onChangeHandler }) => {
     <ScrollView contentContainerStyle={styles.contentContainer}>
       {labels.map((label, index) => (
         <TouchableOpacity key={index} style={styles.container} onPress={() => handleToggle(index)}>
-          <View style={[styles.checkbox, checkedList[index] && styles.checked]}>
+          <View style={[styles.checkbox, checkedList[index] && styles.checked, style]}>
             {checkedList[index] && <Ionicons name="checkmark" color="white" />}
           </View>
           <Text style={styles.label}>{label}</Text>

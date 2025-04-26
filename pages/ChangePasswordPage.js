@@ -5,6 +5,7 @@ import WaveHeader from '../components/common/headers/WaveHeader';
 import NormalInput from '../components/common/textinput/NormalInput';
 import NormalButton from '../components/common/buttons/NormalButton';
 import { useNavigation } from '@react-navigation/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const ChangePasswordPage = () => {
   const [newPassword, setNewPassword] = useState(''); // 새 비밀번호
@@ -35,12 +36,17 @@ const ChangePasswordPage = () => {
 
     Alert.alert('변경 완료', '비밀번호가 성공적으로 변경되었습니다.');
 
-    // TODO: 메인인 페이지로 이동되도록 설정
-    navigation.navigate('MyPage');
+    // TODO: 메인 페이지로 이동되도록 설정
+    navigation.navigate('');
   };
 
   return (
-    <View>
+    <KeyboardAwareScrollView
+      contentContainerStyle={styles.scrollView}
+      keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감
+      extraScrollHeight={40} // 키보드와 입력창 사이 간격
+      enableOnAndroid={true} // 안드로이드 자동 스크롤 설정
+    >
       <WaveHeader />
       <View style={styles.container}>
         <Text style={styles.title}>비밀번호 변경</Text>
@@ -58,7 +64,7 @@ const ChangePasswordPage = () => {
         />
         <NormalButton title="변경" style={styles.button} onPressHandler={handlePressButton} />
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 
