@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TextInput } from 'react-native';
 import React, { useState } from 'react';
 import WaveHeader from '../components/common/headers/WaveHeader';
 import NormalInput from '../components/common/textinput/NormalInput';
@@ -39,15 +39,40 @@ const SignUpPage = () => {
     if (form.pw !== form.pwCheck) newError.pwCheck = '비밀번호가 다릅니다';
   
     setError(newError);
-    if (Object.keys(newError).length > 0) return;
+    if (Object.keys(newError).length > 0) return; //에러가 하나라도 있으면 함수 종료 => 회원가입 진행 안함
   
-    // 실제 회원가입 처리 로직 추가 필요(ex: 서버 요청)
+    try {
+      // 회원가입 성공 시 처리 로직 추가
+      //회원가입 API 요청 (axios 사용 예시)
+      /*
+      const response = await axios.post('https://your-api-url.com/signup', {
+        name: form.name,
+        rrn: form.rrn,
+        phone: form.phone,
+        id: form.id,
+        pw: form.pw,
+        // 필요하다면 추가 필드도 전송
+      });
+      */
+      alert('회원가입에 성공했습니다. 로그인 해주세요.');
+     navigation.navigate('LoginPage'); 
+    } catch (error) {
+      //서버에서 내려주는 에러 메시지 처리
+      console.error('회원가입 실패:', error); 
+      //에러 처리 로직 추가 (ex. 에러 메시지 표시)
+      /*
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);
+      } else {
+        alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+      }
+      */
+    } 
 
     // 성공 시 로그인 페이지로 이동
-    navigation.navigate('LoginPage');
+    
   };
   
-
   const navigation = useNavigation();
 
   const navigateToLogin = () => { //로그인 페이지로 이동하는 함수
@@ -61,7 +86,9 @@ const SignUpPage = () => {
         keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감
       >
         <WaveHeader/>
-        <Text style={styles.title}>회원가입</Text>
+        <View style={styles.padding}>
+          <Text style={styles.title}>회원가입</Text>
+        </View>
         <NormalInput
           placeholder="이름"
           errorText={error.name}
