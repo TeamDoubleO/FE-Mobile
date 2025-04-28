@@ -24,7 +24,7 @@ const NormalList = ({ items, nextPage, style }) => {
         <TouchableOpacity
           key={index}
           onPress={() => handleSelect(index)}
-          style={[styles.itemBox, selectedIndex === index && styles.selectedItemBox]}
+          style={[styles.itemBox, selectedIndex === index && styles.selectedItemBox, style]}
         >
           <Text style={[styles.itemText, selectedIndex === index && styles.selectedItemText]}>
             {item}
