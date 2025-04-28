@@ -13,6 +13,8 @@ import MainPage from './pages/MainPage';
 import AccessListPage from './pages/AccessListPage';
 import MyAccessListPage from './pages/MyAccessListPage';
 import AccessRequestPage from './pages/AccessRequestPage';
+import AccessRequestRolePage from './pages/AccessRequestRolePage';
+
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
@@ -27,7 +29,7 @@ export default function AppNavigator() {
         screenOptions={{
           headerStyle: { backgroundColor: '#19461A', height: 120 },
           headerTintColor: '#ffffff',
-          headerTitleStyle: { fontWeight: '600', fontSize: 24 },
+          headerTitleStyle: { fontWeight: '600', fontSize: 26 },
           headerTitleAlign: 'center',
           animationEnabled: false,
           gestureEnabled: true,
@@ -39,11 +41,32 @@ export default function AppNavigator() {
         <Stack.Screen name="WelcomePage" component={WelcomePage} options={{ headerShown: false }} />
         <Stack.Screen name="LoginPage" component={LoginPage} options={{ headerShown: false }} />
         <Stack.Screen name="SignUpPage" component={SignUpPage} options={{ headerShown: false }} />
-        <Stack.Screen name="MainPage" component={MainPage} options={{ headerShown: false, title:'홈' }} />
+        <Stack.Screen
+          name="MainPage"
+          component={MainPage}
+          options={{ headerShown: false, title: '홈' }}
+        />
         <Stack.Screen name="MyPage" component={MyPage} options={{ headerShown: false }} />
-        <Stack.Screen name="AccessListPage" component={AccessListPage} options={{title:'출입 권한'}}/>
-        <Stack.Screen name="MyAccessListPage" component={MyAccessListPage} options={{title:'권한 목록 조회'}}/>
-        <Stack.Screen name="AccessRequestPage" component={AccessRequestPage} options={{ title: '출입 권한 신청' }} />
+        <Stack.Screen
+          name="AccessListPage"
+          component={AccessListPage}
+          options={{ title: '출입 권한' }}
+        />
+        <Stack.Screen
+          name="MyAccessListPage"
+          component={MyAccessListPage}
+          options={{ title: '권한 목록 조회' }}
+        />
+        <Stack.Screen
+          name="AccessRequestPage"
+          component={AccessRequestPage}
+          options={{ title: '출입 권한 신청' }}
+        />
+        <Stack.Screen
+          name="AccessRequestRolePage"
+          component={AccessRequestRolePage}
+          options={{ title: '출입 권한 신청' }}
+        />
         <Stack.Screen
           name="ChangePasswordPage"
           component={ChangePasswordPage}

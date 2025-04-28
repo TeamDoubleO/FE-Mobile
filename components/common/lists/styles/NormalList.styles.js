@@ -2,15 +2,20 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   // ScrollView 스타일
-  scrollView: { width: 340, marginVertical: 20, alignSelf: 'center' },
+  scrollView: {
+    minWidth: '80%',
+    paddingBottom: 20,
+  },
   // ScrollView 내부 전체 컨텐츠 박스 스타일
   contentContainer: {
     borderTopWidth: 1, // 리스트 최상단 구분선
     borderColor: '#B7B7B7',
+    paddingBottom: 60,
   },
   // 각 아이템 박스 스타일
   itemBox: {
-    padding: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#B7B7B7',
   },
