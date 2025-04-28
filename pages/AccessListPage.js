@@ -1,14 +1,16 @@
-import { View, Text } from 'react-native';
-import NormalList from '../components/common/lists/NormalList';
+import { View } from 'react-native';
+import MenuList from '../components/common/lists/MenuList';
 
-const list = ['내 출입 권한 목록 조회']
-const list2 = ['출입 권한 신청']
+// 출입 권한 메뉴에 들어가는 항목과 연결된 페이지
+const accessMenuList = [
+    { label: '내 출입 권한 목록 조회', nextPage: 'MyAccessListPage' },
+    { label: '출입 권한 신청', nextPage: 'MainPage' }
+  ]
 
 const AccessListPage = () => {
   return (
     <View>
-      <NormalList items={list} nextPage='MyAccessListPage'/>
-      <NormalList items={list2} nextPage='MainPage'/>
+      <MenuList items={accessMenuList}/>
     </View>
   );
 }
