@@ -12,7 +12,7 @@ import ChangePasswordPage from './pages/ChangePasswordPage';
 import MainPage from './pages/MainPage';
 import AccessListPage from './pages/AccessListPage';
 import MyAccessListPage from './pages/MyAccessListPage';
-
+import AccessRequestPage from './pages/AccessRequestPage';
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
@@ -32,6 +32,8 @@ export default function AppNavigator() {
           animationEnabled: false,
           gestureEnabled: true,
           headerBackImage: () => <Ionicons name="chevron-back" size={24} color="#ffffff" />,
+          //headerBackTitleVisible: false,
+          headerBackTitle: '',
         }}
       >
         <Stack.Screen name="WelcomePage" component={WelcomePage} options={{ headerShown: false }} />
@@ -41,6 +43,7 @@ export default function AppNavigator() {
         <Stack.Screen name="MyPage" component={MyPage} options={{ headerShown: false }} />
         <Stack.Screen name="AccessListPage" component={AccessListPage} options={{title:'출입 권한'}}/>
         <Stack.Screen name="MyAccessListPage" component={MyAccessListPage} options={{title:'권한 목록 조회'}}/>
+        <Stack.Screen name="AccessRequestPage" component={AccessRequestPage} options={{ title: '출입 권한 신청' }} />
         <Stack.Screen
           name="ChangePasswordPage"
           component={ChangePasswordPage}
