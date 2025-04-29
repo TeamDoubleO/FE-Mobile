@@ -1,4 +1,4 @@
-import { View, Text, Modal, StatusBar } from 'react-native';
+import { View, Text, Modal } from 'react-native';
 import React, { useState } from 'react';
 import { styles } from './styles/PasswordConfirmModal.styles';
 import NormalInput from '../components/common/textinput/NormalInput';

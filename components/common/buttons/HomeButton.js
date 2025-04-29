@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons'; // 아이콘 라이브러리
 import { styles } from './styles/HomeButton.styles';
 import { useNavigation } from '@react-navigation/native';
