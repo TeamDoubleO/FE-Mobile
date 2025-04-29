@@ -10,7 +10,7 @@ const NormalListDeep = ({
 }) => {
     //style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 8 }}
   return (
-    <ScrollView style={styles.scrollView}>
+    <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentContainer}>
       {sections.map((section, idx) => (
         console.log('Section', section),
         <View key={section.contentTitle || idx}  style={styles.itemBox}>
