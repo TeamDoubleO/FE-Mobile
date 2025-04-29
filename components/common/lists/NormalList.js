@@ -3,7 +3,13 @@ import React, { useState } from 'react';
 import { styles } from './styles/NormalList.styles';
 import { useNavigation } from '@react-navigation/native';
 
-const NormalList = ({ items, nextPage, style }) => {
+const NormalList = ({ 
+  items = [], 
+  nextPage,
+  onItemPress,
+  renderItem,
+  style
+}) => {
   // 선택 항목의 index 저장
   const [selectedIndex, setSelectedIndex] = useState(null);
   const navigation = useNavigation();
@@ -26,9 +32,13 @@ const NormalList = ({ items, nextPage, style }) => {
           onPress={() => handleSelect(index)}
           style={[styles.itemBox, selectedIndex === index && styles.selectedItemBox, style]}
         >
-          <Text style={[styles.itemText, selectedIndex === index && styles.selectedItemText]}>
-            {item}
-          </Text>
+          {renderItem ? 
+          renderItem(item, index, selectedIndex === index)
+          : 
+            <Text style={[styles.itemText, selectedIndex === index && styles.selectedItemText]}>
+              {item}
+            </Text>
+          }
         </TouchableOpacity>
       ))}
     </ScrollView>
