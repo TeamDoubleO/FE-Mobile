@@ -6,6 +6,6 @@ const MyAccessListPage = () => {
       <Text>ㅇㅇㅇ</Text>
     </View>
   );
-}
+};
 
 export default MyAccessListPage;

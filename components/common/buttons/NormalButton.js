@@ -11,7 +11,7 @@ const NormalButton = ({
 }) => {
   return (
     <TouchableOpacity
-      disabled={isDisabled}
+      // disabled={isDisabled}
       onPress={onPressHandler}
       style={[length === 'long' ? styles.long : styles.short, isDisabled && styles.disabled, style]}
     >
