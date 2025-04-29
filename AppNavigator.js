@@ -36,7 +36,7 @@ export default function AppNavigator() {
           gestureEnabled: true,
           headerBackImage: () => <Ionicons name="chevron-back" size={24} color={colors.white} />,
           //headerBackTitleVisible: false,
-          headerBackTitle: '',
+          headerBackTitle: '', //ios 헤더 뒤로가기 옆 타이틀 제거
         }}
       >
         <Stack.Screen name="WelcomePage" component={WelcomePage} options={{ headerShown: false }} />

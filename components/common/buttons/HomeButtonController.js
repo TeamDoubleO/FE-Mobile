@@ -16,6 +16,7 @@ export default function HomeButtonController({ state }) {
     'MyAccessListPage', // 권한 조회 페이지
     'AccessRequestPage', // 권한 신청 페이지
     'AccessRequestRolePage', // 환자/보호자 선택 페이지
+    'AccessDetailPage'  // 권한 상세 페이지
   ];
   // screensWithHomeButton 목록에 포함되어 있으면 보여주기
   const showHomeButton = screensWithHomeButton.includes(routeName);
