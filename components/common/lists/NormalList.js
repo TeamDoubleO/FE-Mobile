@@ -4,7 +4,7 @@ import { styles } from './styles/NormalList.styles';
 import { useNavigation } from '@react-navigation/native';
 
 const NormalList = ({ 
-  items = [], 
+  items = [], // props가 없거나 undefined일 때를 방지
   nextPage,
   onItemPress,
   renderItem,
@@ -17,7 +17,11 @@ const NormalList = ({
   const handleSelect = (index) => {
     // 상태변수 변경
     setSelectedIndex(index);
-
+    // onItemPress prop이 있으면 실행 
+    if (onItemPress) {
+      onItemPress(items[index], index);
+    }
+    // nextPage prop이 있으면 해당 페이지로 이동
     if (nextPage) {
       // name: 병원명 혹은 메뉴명
       navigation.navigate(nextPage, { name: items[index] });

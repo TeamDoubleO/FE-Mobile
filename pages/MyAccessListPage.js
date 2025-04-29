@@ -4,12 +4,13 @@ import NormalListDeep from '../components/common/lists/NormalListDeep';
 import { MyAccessList } from '../mocks/MyAccessListSample' //예시 데이터
 
 const MyAccessListPage = () => {
-  // 실제 네비게이션 연결 시 navigation 사용
+  // 아이템 클릭 시 Alert로 상세 정보 표시
   const handleItemPress = (section, item, index) => {
-    // 상세 데이터 찾아서 넘기기
-    // navigation.navigate('AccessDetailPage', { access: item.data });
-    // 여기선 Alert로 대체
     const access = item.data;
+    Alert.alert(
+      `${section.contentTitle} - 상세 정보`,
+      `건물/구역: ${access.building_name} ${access.area_name}\n방문자: ${access.visitor_category}\n만료일: ${access.validate_to}\n만료여부: ${access.expired ? '만료' : '유효'}\n환자번호: ${access.PatientID}\n발급자: ${access.requester_category}`
+    );
   };
 
   // NormalListDeep에 넘길 데이터 가공
@@ -21,9 +22,8 @@ const MyAccessListPage = () => {
   return (
     <>
       <NormalListDeep
-        sections={sections}
-        onItemPress={handleItemPress}
-        nextPage="AccessDetailPage"
+        sections={sections} //섹션 데이터 배열
+        onItemPress={handleItemPress} //아이템 클릭시 Alert 띄우기
         renderItem={(item, idx, selected ) => (
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{}}>
