@@ -6,19 +6,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: '10%',
     paddingTop: '5%',
     backgroundColor: '#ffffff',
-  },
-  // 구분선
-  divider: {
-    width: '100%',
-    height: 2,
-    backgroundColor: '#464646',
-    marginVertical: 10,
+    gap: '3%',
   },
   title: {
     color: '#464646',
     fontSize: 24,
     fontWeight: '600',
-    margin: '5%',
+    marginTop: '5%',
     alignSelf: 'center',
   },
 });
