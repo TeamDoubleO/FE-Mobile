@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import { styles } from './styles/NormalList.styles';
 import { useNavigation } from '@react-navigation/native';
 
-const NormalList = ({ 
+const NormalList = ({
   items = [], // props가 없거나 undefined일 때를 방지
   nextPage,
   onItemPress,
   renderItem,
-  style
+  style,
 }) => {
   // 선택 항목의 index 저장
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -17,7 +17,7 @@ const NormalList = ({
   const handleSelect = (index) => {
     // 상태변수 변경
     setSelectedIndex(index);
-    // onItemPress prop이 있으면 실행 
+    // onItemPress prop이 있으면 실행
     if (onItemPress) {
       onItemPress(items[index], index);
     }
@@ -36,13 +36,13 @@ const NormalList = ({
           onPress={() => handleSelect(index)}
           style={[styles.itemBox, selectedIndex === index && styles.selectedItemBox, style]}
         >
-          {renderItem ? 
-          renderItem(item, index, selectedIndex === index)
-          : 
+          {renderItem ? (
+            renderItem(item, index, selectedIndex === index)
+          ) : (
             <Text style={[styles.itemText, selectedIndex === index && styles.selectedItemText]}>
               {item}
             </Text>
-          }
+          )}
         </TouchableOpacity>
       ))}
     </ScrollView>

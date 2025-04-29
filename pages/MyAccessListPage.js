@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Alert } from 'react-native';
 import NormalListDeep from '../components/common/lists/NormalListDeep';
 import { MyAccessList } from '../mocks/MyAccessListSample'; //예시 데이터
+import { styles } from './styles/MyAccessListPage.styles';
 
 const MyAccessListPage = () => {
   // 아이템 클릭 시 Alert로 상세 정보 표시
@@ -25,17 +26,17 @@ const MyAccessListPage = () => {
         sections={sections} //섹션 데이터 배열
         onItemPress={handleItemPress} //아이템 클릭시 Alert 띄우기
         renderItem={(item, idx, selected) => (
-          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <View style={{}}>
-              <Text>
+          <View style={styles.container}>
+            <View>
+              <Text style={styles.textTitle}>
                 {item.data.building_name} {item.data.area_name} - {item.data.visitor_category}
               </Text>
-              <Text>
+              <Text style={styles.text}>
                 {'\n'}({item.data.validate_to}까지)
               </Text>
             </View>
-            <View style={{}}>
-              <Text>
+            <View>
+              <Text style={styles.validateText}>
                 {'\n'}
                 {item.data.expired ? '만료' : '유효'}
               </Text>

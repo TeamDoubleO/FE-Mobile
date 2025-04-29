@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import NormalButton from '../components/common/buttons/NormalButton';
 import { styles } from './styles/MainPage.styles';
 import QRCode from 'react-native-qrcode-svg';
+import { colors } from '../constants/colors';
 
 const MainPage = () => {
   // 임시: 상태변수로 출입 권한 제어
@@ -47,7 +48,7 @@ const MainPage = () => {
         {hasAccessAuthority ? (
           <>
             <Text style={styles.qrTitle}>임시 출입 QR</Text>
-            <QRCode value={qrData} size={140} color="#000000" backgroundColor="#ffffff" />
+            <QRCode value={qrData} size={140} color={colors.black} backgroundColor={colors.white} />
             <Text style={styles.userName}>{userVC.userName}</Text>
             <Text style={styles.hospital}>{userVC.hospital1}</Text>
             <Text style={styles.hospital}>{userVC.hospital2}</Text>

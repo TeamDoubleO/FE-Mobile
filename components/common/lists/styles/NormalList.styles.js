@@ -20,13 +20,14 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.lightGray,
   },
-  // 선택된 아이템 박스 스타일
-  selectedItemBox: { backgroundColor: colors.lightGreen },
   // 각 아이템 텍스트 스타일
   itemText: {
     fontSize: 20,
+    fontWeight: 500,
     color: colors.black,
   },
-  // 선택된 아이템 텍스트 스타일
-  selectedItemText: { color: colors.secondary },
+  // // 선택된 아이템 박스 스타일
+  // selectedItemBox: { backgroundColor: colors.lightGreen },
+  // // 선택된 아이템 텍스트 스타일
+  // selectedItemText: { color: colors.secondary },
 });

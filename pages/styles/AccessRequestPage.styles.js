@@ -6,7 +6,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: '10%',
     paddingTop: '5%',
-    backgroundColor: colors.white,
     gap: '3%',
   },
   title: {
