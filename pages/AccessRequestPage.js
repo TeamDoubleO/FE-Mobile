@@ -14,6 +14,7 @@ const AccessRequestPage = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>병원 선택</Text>
+      <View style={styles.divider} />
       <NormalInput
         placeholder="방문할 병원 이름을 입력하세요."
         value={searchText}
