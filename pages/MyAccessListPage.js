@@ -4,6 +4,7 @@ import NormalListDeep from '../components/common/lists/NormalListDeep';
 import { MyAccessList } from '../mocks/MyAccessListSample'; //예시 데이터
 import { styles } from './styles/MyAccessListPage.styles';
 
+
 const MyAccessListPage = () => {
   // 아이템 클릭 시 Alert로 상세 정보 표시
   const handleItemPress = (section, item, index) => {
@@ -37,8 +38,7 @@ const MyAccessListPage = () => {
             </View>
             <View>
               <Text style={styles.validateText}>
-                {'\n'}
-                {item.data.expired ? '만료' : '유효'}
+                {'\n'} {item.data.expired ? '만료' : '유효'}
               </Text>
             </View>
           </View>
