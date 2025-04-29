@@ -1,9 +1,8 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../constants/colors';
 
 export const styles = StyleSheet.create({
-  modalBackground: {
-    flex: 1,
-  },
+  modalBackground: { flex: 1 },
   scrollView: {
     flexGrow: 1,
     alignItems: 'center',
@@ -15,14 +14,14 @@ export const styles = StyleSheet.create({
   title: {
     marginBottom: '5%',
     fontSize: 24,
-    fontWeight: 600,
-    color: '#464646',
+    fontWeight: 700,
+    color: colors.black,
     textAlign: 'center',
   },
   text: {
     marginBottom: '10%',
     fontSize: 18,
-    color: '#7E7E7E',
+    color: colors.darkGray,
     textAlign: 'center',
   },
   textInput: { marginBottom: '10%' },

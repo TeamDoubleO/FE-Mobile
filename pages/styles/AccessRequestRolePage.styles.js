@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../constants/colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -6,11 +7,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: '10%',
     paddingTop: '5%',
   },
-  scrollView: {
-    paddingBottom: 50,
-  },
+  scrollView: { paddingBottom: 50 },
   title: {
-    color: '#464646',
+    color: colors.black,
     fontSize: 24,
     fontWeight: 600,
     margin: '5%',
@@ -20,7 +19,7 @@ export const styles = StyleSheet.create({
   divider: {
     width: '100%',
     height: 2,
-    backgroundColor: '#464646',
+    backgroundColor: colors.black,
     marginTop: 10,
   },
   buttonContainer: {
@@ -35,7 +34,7 @@ export const styles = StyleSheet.create({
     gap: 20,
   },
   contentTitle: {
-    color: '#464646',
+    color: colors.black,
     fontSize: 22,
     fontWeight: 500,
     marginTop: '5%',
@@ -49,13 +48,13 @@ export const styles = StyleSheet.create({
     marginLeft: '3%',
     height: 50,
     paddingHorizontal: 15,
-    backgroundColor: '#24562B',
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
   },
   verifyButtonText: {
-    color: '#ffffff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: 500,
   },

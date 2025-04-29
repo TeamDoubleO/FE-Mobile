@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../constants/colors';
 
 export const styles = StyleSheet.create({
   title: {
-    color: '#464646',
+    color: colors.black,
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: 700,
     textAlign: 'center',
     marginVertical: '10%',
   },

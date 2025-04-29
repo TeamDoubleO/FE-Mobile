@@ -2,6 +2,7 @@ import { View, Text } from 'react-native';
 import React, { useState } from 'react';
 import { styles } from './styles/NormalInput.styles';
 import { TextInput } from 'react-native';
+import { colors } from '../../../constants/colors';
 
 const NormalInput = ({
   placeholder = 'placeholder',
@@ -17,7 +18,7 @@ const NormalInput = ({
       {errorText !== '' && <Text style={styles.errorText}>{errorText}</Text>}
       <TextInput
         placeholder={placeholder}
-        placeholderTextColor="#7E7E7E"
+        placeholderTextColor={colors.lightGray}
         value={value}
         editable={isEditable}
         onChangeText={onChangeTextHandler}

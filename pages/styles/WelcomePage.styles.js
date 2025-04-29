@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../constants/colors';
 
 export const styles = StyleSheet.create({
   scrollView: { alignItems: 'center' },
@@ -8,9 +9,20 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  logoTextImage: { width: '60%', height: '10%', marginBottom: '5%' },
-  text: { fontSize: 20, color: '#7E7E7E' },
-  logoIconImage: { width: '60%', height: '30%', marginVertical: '25%' },
+  logoTextImage: {
+    width: '60%',
+    height: '10%',
+    marginBottom: '5%',
+  },
+  text: {
+    fontSize: 20,
+    color: colors.darkGray,
+  },
+  logoIconImage: {
+    width: '60%',
+    height: '30%',
+    marginVertical: '25%',
+  },
   buttonContainer: {
     justifyContent: 'center',
     flexDirection: 'row',

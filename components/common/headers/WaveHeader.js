@@ -1,9 +1,8 @@
-import { View, Image, Touchable, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import { styles } from './styles/WaveHeader.styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import HomeButton from '../buttons/HomeButton';
-import HomeButtonController from '../buttons/HomeButtonController';
+import { colors } from '../../../constants/colors';
 
 const WaveHeader = () => {
   const navigation = useNavigation();
@@ -21,7 +20,7 @@ const WaveHeader = () => {
       />
       <View style={styles.headerContent}>
         <TouchableOpacity onPress={handleBackButton} style={styles.backButton}>
-          <Ionicons name="chevron-back" size={30} color="#ffffff" />
+          <Ionicons name="chevron-back" size={30} color={colors.white} />
         </TouchableOpacity>
         <Image
           source={require('../../../assets/images/logoWhite.png')} // 로고 이미지 경로

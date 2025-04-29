@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../constants/colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -15,7 +16,7 @@ export const styles = StyleSheet.create({
   cardContainer: {
     width: '100%',
     height: '55%',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.white,
     borderRadius: 15,
     padding: '10%',
     alignItems: 'center',
@@ -39,33 +40,33 @@ export const styles = StyleSheet.create({
   cardText: {
     fontSize: 20,
     fontWeight: 600,
-    color: '#464646',
+    color: colors.black,
     textAlign: 'center',
     marginBottom: '5%',
   },
   cardSubText: {
     fontSize: 16,
     fontWeight: 500,
-    color: '#7E7E7E',
+    color: colors.darkGray,
     textAlign: 'center',
   },
   qrTitle: {
     fontSize: 26,
-    fontWeight: 600,
-    color: '#464646',
+    fontWeight: 700,
+    color: colors.black,
     marginBottom: '10%',
     zIndex: 1, // QR과 텍스트를 배경 위에
   },
   userName: {
     fontSize: 24,
     fontWeight: 600,
-    color: '#464646',
+    color: colors.black,
     marginVertical: '8%',
   },
   hospital: {
     fontSize: 16,
     fontWeight: 500,
-    color: '#7E7E7E',
+    color: colors.darkGray,
     marginTop: '2%',
   },
   buttonContainer: {

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../../../constants/colors';
 
 export const styles = StyleSheet.create({
   input: {
@@ -8,16 +9,16 @@ export const styles = StyleSheet.create({
     paddingHorizontal: '5%',
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: '#BCCBBE',
+    borderColor: colors.lightGreen,
     fontSize: 17,
   },
-  focused: { borderColor: '#385E3C' },
-  error: { borderColor: '#FF4943' },
+  focused: { borderColor: colors.tertiary },
+  error: { borderColor: colors.error },
   errorText: {
     marginLeft: '2%',
     marginTop: '1%',
     fontSize: 15,
-    color: '#FF4943',
+    color: colors.error,
   },
-  editable: { backgroundColor: '#E7E7E7' },
+  editable: { backgroundColor: colors.background },
 });

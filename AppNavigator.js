@@ -14,6 +14,7 @@ import AccessListPage from './pages/AccessListPage';
 import MyAccessListPage from './pages/MyAccessListPage';
 import AccessRequestPage from './pages/AccessRequestPage';
 import AccessRequestRolePage from './pages/AccessRequestRolePage';
+import { colors } from './constants/colors';
 
 const Stack = createStackNavigator();
 
@@ -25,15 +26,15 @@ export default function AppNavigator() {
       <StatusBar hidden />
       <HomeButtonController state={navState} />
       <Stack.Navigator
-        initialRouteName="MainPage" //진입점 임시로 메인페이지로 지정
+        initialRouteName="WelcomePage" //진입점 임시로 메인페이지로 지정
         screenOptions={{
-          headerStyle: { backgroundColor: '#19461A', height: 120 },
-          headerTintColor: '#ffffff',
+          headerStyle: { backgroundColor: colors.secondary, height: 120 },
+          headerTintColor: colors.white,
           headerTitleStyle: { fontWeight: '600', fontSize: 26 },
           headerTitleAlign: 'center',
           animationEnabled: false,
           gestureEnabled: true,
-          headerBackImage: () => <Ionicons name="chevron-back" size={24} color="#ffffff" />,
+          headerBackImage: () => <Ionicons name="chevron-back" size={24} color={colors.white} />,
           //headerBackTitleVisible: false,
           headerBackTitle: '',
         }}
@@ -72,8 +73,6 @@ export default function AppNavigator() {
           component={ChangePasswordPage}
           options={{ headerShown: false }}
         />
-        {/* 기본 헤더 필요한 페이지는 아래 형식으로 추가 
-        <Stack.Screen name="LoginPage" component={LoginPage} options={{ title: '한글 타이틀' }} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
