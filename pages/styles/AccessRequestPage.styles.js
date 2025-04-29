@@ -6,11 +6,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: '10%',
     paddingTop: '5%',
     backgroundColor: '#ffffff',
+    gap: '3%',
   },
   title: {
     color: '#464646',
     fontSize: 24,
     fontWeight: '600',
-    margin: '5%',
+    marginTop: '5%',
+    alignSelf: 'center',
   },
 });

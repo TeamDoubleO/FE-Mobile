@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   // ScrollView 내부 전체 컨텐츠 박스 스타일
-  contentContainer: { paddingVertical: 20 },
+  //contentContainer: { paddingVertical: 20 },
   // 체크박스 + 텍스트 감싼 컨테이너 스타일
   container: {
     flexDirection: 'row',
