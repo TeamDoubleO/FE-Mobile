@@ -22,7 +22,7 @@ const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
   };
 
   return (
-    <Modal visible={visible} transparent={true}>
+    <Modal visible={visible}>
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollView}
         keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감
