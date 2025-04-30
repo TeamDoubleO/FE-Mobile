@@ -15,4 +15,11 @@ export const styles = StyleSheet.create({
     marginTop: '5%',
     alignSelf: 'center',
   },
+  infoText: {
+    marginLeft: '2%',
+    marginTop: '1%',
+    fontSize: 20,
+    textAlign: 'center',
+    color: colors.darkGray,
+  },
 });

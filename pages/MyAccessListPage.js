@@ -1,18 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Alert } from 'react-native';
 import NormalListDeep from '../components/common/lists/NormalListDeep';
 import { MyAccessList } from '../mocks/MyAccessListSample'; //예시 데이터
 import { styles } from './styles/MyAccessListPage.styles';
-
+import NormalAlert from '../components/common/alerts/NormalAlert';
 
 const MyAccessListPage = () => {
+  // Alert 관리 상태변수
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertData, setAlertData] = useState({ title: '', message: '' });
+
   // 아이템 클릭 시 Alert로 상세 정보 표시
   const handleItemPress = (section, item, index) => {
     const access = item.data;
-    Alert.alert(
-      `${section.contentTitle} - 상세 정보`,
-      `건물/구역: ${access.building_name} ${access.area_name}\n방문자: ${access.visitor_category}\n만료일: ${access.validate_to}\n만료여부: ${access.expired ? '만료' : '유효'}\n환자번호: ${access.PatientID}\n발급자: ${access.requester_category}`,
-    );
+
+    setAlertData({
+      title: `${section.contentTitle} - 상세 정보`,
+      message: `건물 및 구역: ${access.building_name} ${access.area_name}\n방문자: ${access.visitor_category}\n만료일: ${access.validate_to}\n승인 여부: ${access.expired ? '출입 대기' : '유효'}\n환자 번호: ${access.PatientID}\n발급자: ${access.requester_category}`,
+    });
+
+    setShowAlert(true);
   };
 
   // NormalListDeep에 넘길 데이터 가공
@@ -38,11 +45,19 @@ const MyAccessListPage = () => {
             </View>
             <View>
               <Text style={styles.validateText}>
-                {'\n'} {item.data.expired ? '만료' : '유효'}
+                {'\n'} {item.data.expired ? '출입 대기' : '유효'}
               </Text>
             </View>
           </View>
         )}
+      />
+
+      <NormalAlert
+        show={showAlert}
+        title={alertData.title}
+        message={alertData.message}
+        onConfirmHandler={() => setShowAlert(false)}
+        left={true}
       />
     </>
   );

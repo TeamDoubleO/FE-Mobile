@@ -7,6 +7,7 @@ import GrayButton from '../components/common/buttons/GrayButton';
 import { styles } from './styles/SignUpPage.styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import NormalAlert from '../components/common/alerts/NormalAlert';
 
 // 주민등록번호에서 생년월일 추출 (YYMMDD + 성별코드로 19/20세기 구분)
 const getBirthDateFromRRN = (rrn) => {
@@ -36,6 +37,9 @@ const SignUpPage = () => {
   const route = useRoute();
 
   const { name, rrn, phone } = route.params || {};
+
+  // Alert 관리 상태변수
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   //상태 변수
   const [form, setForm] = useState({
@@ -106,17 +110,9 @@ const SignUpPage = () => {
         // 필요하다면 추가 필드도 전송
       });
       */
-      Alert.alert(
-        '회원가입 완료',
-        '회원가입이 완료되었습니다. 로그인을 해주세요.',
-        [
-          {
-            text: 'OK',
-            onPress: () => navigation.navigate('LoginPage'),
-          },
-        ],
-        { cancelable: false },
-      );
+
+      // Alert 상태변수 값 변경
+      setShowSuccessAlert(true);
     } catch (error) {
       //서버에서 내려주는 에러 메시지 처리
       console.error('회원가입 실패:', error);
@@ -131,71 +127,93 @@ const SignUpPage = () => {
     }
   };
 
+  //로그인 페이지로 이동하는 함수
   const navigateToLogin = () => {
-    //로그인 페이지로 이동하는 함수
-    //navigation.navigate('LoginPage');
-    navigation.navigate('MyPage');
+    navigation.navigate('LoginPage');
+  };
+
+  // Alert 창 확인 버튼 클릭 핸들러러
+  const handleAlertConfirm = () => {
+    setShowSuccessAlert(false);
+
+    //로그인 페이지로 이동
+    navigation.navigate('LoginPage');
   };
 
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={styles.scrollView}
-      keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감
-      extraScrollHeight={70} // 키보드와 입력창 사이 간격
-      enableOnAndroid={true} // 안드로이드 자동 스크롤 설정
-    >
-      <WaveHeader />
-      <View style={styles.padding}>
-        <Text style={styles.title}>회원가입</Text>
-      </View>
-      <NormalInput placeholder="이름" errorText={error.name} isEditable={false} value={form.name} />
-      {/* <NormalInput
+    <>
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.scrollView}
+        keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감
+        extraScrollHeight={70} // 키보드와 입력창 사이 간격
+        enableOnAndroid={true} // 안드로이드 자동 스크롤 설정
+      >
+        <WaveHeader />
+        <View style={styles.padding}>
+          <Text style={styles.title}>회원가입</Text>
+        </View>
+        <NormalInput
+          placeholder="이름"
+          errorText={error.name}
+          isEditable={false}
+          value={form.name}
+        />
+        {/* <NormalInput
         placeholder="주민등록번호"
         errorText={error.rrn}
         isEditable={false}
         value={form.rrn}
       /> */}
-      <NormalInput
-        placeholder="생년월일"
-        errorText={undefined}
-        isEditable={false}
-        value={getBirthDateFromRRN(form.rrn)} //주민등록번호에서 생년월일 변환
+        <NormalInput
+          placeholder="생년월일"
+          errorText={undefined}
+          isEditable={false}
+          value={getBirthDateFromRRN(form.rrn)} //주민등록번호에서 생년월일 변환
+        />
+        <NormalInput
+          placeholder="전화번호"
+          errorText={error.phone}
+          isEditable={false}
+          value={form.phone}
+        />
+        <NormalInput
+          placeholder="이메일"
+          errorText={error.email}
+          isEditable={true}
+          value={form.email}
+          onChangeTextHandler={(text) => handleInputChange('email', text)}
+        />
+        <NormalInput
+          placeholder="비밀번호"
+          errorText={
+            error.pw ||
+            (form.pw && !isPwValid ? '비밀번호는 8자 이상, 영문/숫자/특수문자 포함!' : '')
+          }
+          isEditable={true}
+          value={form.pw}
+          onChangeTextHandler={(text) => handleInputChange('pw', text)}
+          isSecureTextEntry={true}
+        />
+        <NormalInput
+          placeholder="비밀번호 확인"
+          errorText={error.pwCheck || (form.pwCheck && !isPwMatch ? '비밀번호가 다릅니다' : '')}
+          isEditable={true}
+          value={form.pwCheck}
+          onChangeTextHandler={(text) => handleInputChange('pwCheck', text)}
+          isSecureTextEntry={true}
+        />
+        <NormalButton title="회원가입" onPressHandler={handleSignUp} />
+        <GrayButton title="로그인 하러 가기" onPressHandler={navigateToLogin} />
+        <View style={styles.gongback}></View>
+      </KeyboardAwareScrollView>
+
+      <NormalAlert
+        show={showSuccessAlert}
+        title="회원가입 완료"
+        message={`회원가입이 완료되었습니다.\n로그인 후 이용해 주세요.`}
+        onConfirmHandler={handleAlertConfirm}
       />
-      <NormalInput
-        placeholder="전화번호"
-        errorText={error.phone}
-        isEditable={false}
-        value={form.phone}
-      />
-      <NormalInput
-        placeholder="이메일"
-        errorText={error.email}
-        isEditable={true}
-        value={form.email}
-        onChangeTextHandler={(text) => handleInputChange('email', text)}
-      />
-      <NormalInput
-        placeholder="비밀번호"
-        errorText={
-          error.pw || (form.pw && !isPwValid ? '비밀번호는 8자 이상, 영문/숫자/특수문자 포함!' : '')
-        }
-        isEditable={true}
-        value={form.pw}
-        onChangeTextHandler={(text) => handleInputChange('pw', text)}
-        isSecureTextEntry={true}
-      />
-      <NormalInput
-        placeholder="비밀번호 확인"
-        errorText={error.pwCheck || (form.pwCheck && !isPwMatch ? '비밀번호가 다릅니다' : '')}
-        isEditable={true}
-        value={form.pwCheck}
-        onChangeTextHandler={(text) => handleInputChange('pwCheck', text)}
-        isSecureTextEntry={true}
-      />
-      <NormalButton title="회원가입" onPressHandler={handleSignUp} />
-      <GrayButton title="로그인 하러 가기" onPressHandler={navigateToLogin} />
-      <View style={styles.gongback}></View>
-    </KeyboardAwareScrollView>
+    </>
   );
 };
 

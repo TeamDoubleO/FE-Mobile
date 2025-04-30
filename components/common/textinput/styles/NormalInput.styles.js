@@ -20,5 +20,8 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     color: colors.error,
   },
-  editable: { backgroundColor: colors.background },
+  editable: {
+    backgroundColor: colors.background,
+    color: colors.darkGray,
+  },
 });
