@@ -7,6 +7,7 @@ import GrayButton from '../components/common/buttons/GrayButton';
 import { styles } from './styles/SignUpPage.styles';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { dummyVerifyUser } from '../mocks/dummyVerifyUser';
 
 //전화번호 포맷 함수 (하이픈 자동 삽입)
 const formatPhoneNumber = (value) => {
@@ -38,20 +39,6 @@ const maskRRN = (rrn) => {
   const maskedBack = back[0] + '•'.repeat(Math.max(0, back.length - 1));
   return `${front}-${maskedBack}`;
 };
-
-//더미데이터 (개인정보 인증용)
-const dummyVerifyUser = [
-  {
-    name: '홍길동',
-    rrn: '010111-4000000',
-    phone: '010-0000-0000',
-  },
-  {
-    name: '홍길은',
-    rrn: '020222-3000000',
-    phone: '010-1111-1111',
-  },
-];
 
 const SignUpVerificationPage = () => {
   //상태 변수

@@ -42,11 +42,14 @@ const SignUpPage = () => {
     name: name || '', // 이름
     rrn: rrn || '', //주민등록번호
     phone: phone || '', //전화번호
-    id: '', // 아이디
+    email: '', // 이메일
     pw: '', // 비밀번호
     pwCheck: '', // 비밀번호 확인
   });
-
+  //이메일 형식 검증 함수
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
   // 비밀번호 규칙 검사 (8자 이상, 영문/숫자/특수문자 포함)
   const isValidPassword = (pw) =>
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/.test(pw);
@@ -79,7 +82,8 @@ const SignUpPage = () => {
   //회원 가입 버튼 핸들러
   const handleSignUp = () => {
     let newError = {};
-    if (!form.id) newError.id = '아이디를 입력하세요';
+    if (!form.email) newError.email = '이메일을 입력하세요';
+    else if (!isValidEmail(form.email)) newError.email = '올바른 이메일 형식이 아닙니다';
     if (!form.pw) newError.pw = '비밀번호를 입력하세요';
     else if (!isValidPassword(form.pw))
       newError.pw = '비밀번호는 8자 이상, 영문/숫자/특수문자 포함!';
@@ -97,7 +101,7 @@ const SignUpPage = () => {
         name: form.name,
         rrn: form.rrn,
         phone: form.phone,
-        id: form.id,
+        email: form.email,
         pw: form.pw,
         // 필요하다면 추가 필드도 전송
       });
@@ -155,7 +159,7 @@ const SignUpPage = () => {
         placeholder="생년월일"
         errorText={undefined}
         isEditable={false}
-        value={getBirthDateFromRRN(form.rrn)}
+        value={getBirthDateFromRRN(form.rrn)} //주민등록번호에서 생년월일 변환
       />
       <NormalInput
         placeholder="전화번호"
@@ -164,11 +168,11 @@ const SignUpPage = () => {
         value={form.phone}
       />
       <NormalInput
-        placeholder="아이디"
-        errorText={error.id}
+        placeholder="이메일"
+        errorText={error.email}
         isEditable={true}
-        value={form.id}
-        onChangeTextHandler={(text) => handleInputChange('id', text)}
+        value={form.email}
+        onChangeTextHandler={(text) => handleInputChange('email', text)}
       />
       <NormalInput
         placeholder="비밀번호"
