@@ -82,7 +82,7 @@ const LoginPage = () => {
 
   const navigateToSignUp = () => {
     //회원가입 페이지로 이동하는 함수
-    navigation.navigate('SignUpPage');
+    navigation.navigate('SignUpVerificationPage');
   };
 
   return (
