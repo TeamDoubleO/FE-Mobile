@@ -10,8 +10,22 @@ const NormalInput = ({
   isEditable = true,
   value,
   onChangeTextHandler,
+  isSecureTextEntry,
+  maxLengthNum,
+  onFocusHandler,
+  onBlurHandler,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    onFocusHandler && onFocusHandler(); // 부모 컴포넌트가 prop을 넘겨주었을 때만 실행
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    onBlurHandler && onBlurHandler(); // 부모 컴포넌트가 prop을 넘겨주었을 때만 실행
+  };
 
   return (
     <View>
@@ -22,14 +36,16 @@ const NormalInput = ({
         value={value}
         editable={isEditable}
         onChangeText={onChangeTextHandler}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         style={[
           styles.input,
           isFocused && styles.focused,
           errorText && styles.error,
           !isEditable && styles.editable,
         ]}
+        secureTextEntry={isSecureTextEntry}
+        maxLength={maxLengthNum}
       ></TextInput>
     </View>
   );

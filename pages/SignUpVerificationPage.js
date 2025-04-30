@@ -8,17 +8,48 @@ import { styles } from './styles/SignUpPage.styles';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+//전화번호 포맷 함수 (하이픈 자동 삽입)
+const formatPhoneNumber = (value) => {
+  // 숫자만 남김
+  const onlyNums = value.replace(/[^0-9]/g, '');
+
+  if (onlyNums.length < 4) return onlyNums;
+  if (onlyNums.length < 8) return onlyNums.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+  return onlyNums.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
+};
+
+//주민등록번호 포맷 함수 (앞6자리-뒤7자리)
+const formatRRN = (value) => {
+  const onlyNums = value.replace(/[^0-9]/g, '');
+
+  if (onlyNums.length < 7) return onlyNums.replace(/(\d{0,6})/, '$1');
+  return onlyNums.replace(/(\d{6})(\d{1,7})/, '$1-$2');
+};
+
+//주민등록번호 뒷자리 첫글자 이후 마스킹으로 바꿔보이는 함수
+const maskRRN = (rrn) => {
+  // rrn: '123456-1234567'
+  if (!rrn) return '';
+  const [front, back] = rrn.split('-');
+  if (!front) return '';
+  if (!back) return rrn;
+
+  // 앞자리 + 하이픈 + 뒷자리 첫글자 + 마스킹
+  const maskedBack = back[0] + '•'.repeat(Math.max(0, back.length - 1));
+  return `${front}-${maskedBack}`;
+};
+
 //더미데이터 (개인정보 인증용)
 const dummyVerifyUser = [
   {
     name: '홍길동',
-    rrn: '001',
-    phone: '001',
+    rrn: '010111-4000000',
+    phone: '010-0000-0000',
   },
   {
     name: '홍길은',
-    rrn: '002',
-    phone: '002',
+    rrn: '020222-3000000',
+    phone: '010-1111-1111',
   },
 ];
 
@@ -30,15 +61,22 @@ const SignUpVerificationPage = () => {
     phone: '', /// 전화번호
   });
 
-  // 전화번호, 주민등록 번호 검사 추가 필요
-
+  const [isRRNFocused, setIsRRNFocused] = useState(false); //주민등록번호 포커스 여부
   const [error, setError] = useState({}); // 에러 메시지
 
   //공통 핸들러 - 입력값 변경을 처리
   const handleInputChange = (field, value) => {
     // field : 바꿀 필드의 이름 (ex. name), value : 입력된 새로운 값
-    setForm((prev) => ({ ...prev, [field]: value })); //입력값을 form state에 저장 (기존 form 객체 복사 후, 해당 필드만 새 값으로 덮어씀)
+    let formattedValue = value;
+    if (field === 'phone') {
+      formattedValue = formatPhoneNumber(value);
+    }
+    if (field === 'rrn') {
+      formattedValue = formatRRN(value);
+    }
 
+    setForm((prev) => ({ ...prev, [field]: formattedValue })); //입력값을 form state에 저장 (기존 form 객체 복사 후, 해당 필드만 새 값으로 덮어씀)
+    console.log(formatRRN(value));
     if (error[field]) {
       //만약 error 메세지가 있다면
       setError((prev) => ({ ...prev, [field]: undefined })); //경고 이후 입력하면 error 사라지도록 함
@@ -125,8 +163,11 @@ const SignUpVerificationPage = () => {
         placeholder="주민등록번호"
         errorText={error.rrn}
         isEditable={true}
-        value={form.rrn}
+        value={isRRNFocused ? form.rrn : maskRRN(form.rrn)} //포커스시 전체 다 보임
         onChangeTextHandler={(text) => handleInputChange('rrn', text)}
+        onFocusHandler={() => setIsRRNFocused(true)}
+        onBlurHandler={() => setIsRRNFocused(false)}
+        maxLengthNum={14}
       />
       <NormalInput
         placeholder="전화번호"
@@ -134,6 +175,7 @@ const SignUpVerificationPage = () => {
         isEditable={true}
         value={form.phone}
         onChangeTextHandler={(text) => handleInputChange('phone', text)}
+        maxLengthNum={13}
       />
       <NormalButton title="인증하기" onPressHandler={handleVerification} />
       <GrayButton title="로그인 하러 가기" onPressHandler={navigateToLogin} />

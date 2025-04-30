@@ -8,6 +8,29 @@ import { styles } from './styles/SignUpPage.styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+// 주민등록번호에서 생년월일 추출 (YYMMDD + 성별코드로 19/20세기 구분)
+const getBirthDateFromRRN = (rrn) => {
+  if (!rrn || rrn.length < 7) return '';
+  const birthPart = rrn.replace(/[^0-9]/g, '').slice(0, 6); // YYMMDD
+  const genderCode = rrn.replace(/[^0-9]/g, '')[6]; // 7번째 숫자
+  if (!birthPart || !genderCode) return '';
+
+  let year = parseInt(birthPart.slice(0, 2), 10);
+  const month = birthPart.slice(2, 4);
+  const day = birthPart.slice(4, 6);
+
+  // 성별코드로 19/20/21세기 구분
+  let fullYear = '';
+  if (genderCode === '1' || genderCode === '2') fullYear = 1900 + year;
+  else if (genderCode === '3' || genderCode === '4') fullYear = 2000 + year;
+  else if (genderCode === '5' || genderCode === '6')
+    fullYear = 1900 + year; // 외국인
+  else if (genderCode === '7' || genderCode === '8') fullYear = 2000 + year; // 외국인
+
+  if (!fullYear) return '';
+  return `${fullYear}-${month}-${day}`;
+};
+
 const SignUpPage = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -121,26 +144,24 @@ const SignUpPage = () => {
       <View style={styles.padding}>
         <Text style={styles.title}>회원가입</Text>
       </View>
-      <NormalInput
-        placeholder="이름"
-        errorText={error.name}
-        isEditable={false}
-        value={form.name}
-        onChangeTextHandler={(text) => handleInputChange('name', text)}
-      />
-      <NormalInput
+      <NormalInput placeholder="이름" errorText={error.name} isEditable={false} value={form.name} />
+      {/* <NormalInput
         placeholder="주민등록번호"
         errorText={error.rrn}
         isEditable={false}
         value={form.rrn}
-        onChangeTextHandler={(text) => handleInputChange('rrn', text)}
+      /> */}
+      <NormalInput
+        placeholder="생년월일"
+        errorText={undefined}
+        isEditable={false}
+        value={getBirthDateFromRRN(form.rrn)}
       />
       <NormalInput
         placeholder="전화번호"
         errorText={error.phone}
         isEditable={false}
         value={form.phone}
-        onChangeTextHandler={(text) => handleInputChange('phone', text)}
       />
       <NormalInput
         placeholder="아이디"
@@ -157,7 +178,7 @@ const SignUpPage = () => {
         isEditable={true}
         value={form.pw}
         onChangeTextHandler={(text) => handleInputChange('pw', text)}
-        secureTextEntry={true}
+        isSecureTextEntry={true}
       />
       <NormalInput
         placeholder="비밀번호 확인"
@@ -165,7 +186,7 @@ const SignUpPage = () => {
         isEditable={true}
         value={form.pwCheck}
         onChangeTextHandler={(text) => handleInputChange('pwCheck', text)}
-        secureTextEntry={true}
+        isSecureTextEntry={true}
       />
       <NormalButton title="회원가입" onPressHandler={handleSignUp} />
       <GrayButton title="로그인 하러 가기" onPressHandler={navigateToLogin} />
