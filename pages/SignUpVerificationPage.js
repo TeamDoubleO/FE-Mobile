@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import React, { useState } from 'react';
 import WaveHeader from '../components/common/headers/WaveHeader';
 import NormalInput from '../components/common/textinput/NormalInput';
@@ -8,6 +8,20 @@ import { styles } from './styles/SignUpPage.styles';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+//더미데이터 (개인정보 인증용)
+const dummyVerifyUser = [
+  {
+    name: '홍길동',
+    rrn: '001',
+    phone: '001',
+  },
+  {
+    name: '홍길은',
+    rrn: '002',
+    phone: '002',
+  },
+];
+
 const SignUpVerificationPage = () => {
   //상태 변수
   const [form, setForm] = useState({
@@ -16,7 +30,7 @@ const SignUpVerificationPage = () => {
     phone: '', /// 전화번호
   });
 
-  // 전화번호, 주민들록 번호 검사 추가 필요
+  // 전화번호, 주민등록 번호 검사 추가 필요
 
   const [error, setError] = useState({}); // 에러 메시지
 
@@ -31,8 +45,8 @@ const SignUpVerificationPage = () => {
     }
   };
 
-  //회원 가입 버튼 핸들러
-  const handleSignUp = () => {
+  //인증 버튼 핸들러
+  const handleVerification = () => {
     let newError = {};
     if (!form.name) newError.name = '이름을 입력하세요';
     if (!form.rrn) newError.rrn = '주민등록번호를 입력하세요';
@@ -52,7 +66,22 @@ const SignUpVerificationPage = () => {
         // 필요하다면 추가 필드도 전송
       });
       */
-      navigation.navigate('SignUpPage');
+      // 더미 데이터와 비교
+      const isVerified = dummyVerifyUser.some(
+        //.some()메서드로 배열에서 조건을 만족하는 요소가 하나라도 있으면 true를 반환
+        //세 항목이 모두 일차하는 사용자가 있으면 true반환
+        (user) => user.name === form.name && user.rrn === form.rrn && user.phone === form.phone,
+      );
+      if (isVerified) {
+        // 성공 시 회원정보입력 페이지로, 데이터 함께 전달
+        navigation.navigate('SignUpPage', {
+          name: form.name,
+          rrn: form.rrn,
+          phone: form.phone,
+        });
+      } else {
+        Alert.alert('인증 실패', '정보가 일치하지 않습니다. 다시 시도해주세요.');
+      }
     } catch (error) {
       //서버에서 내려주는 에러 메시지 처리
       console.error('개인정보 인증 실패:', error);
@@ -61,7 +90,7 @@ const SignUpVerificationPage = () => {
       if (error.response && error.response.data && error.response.data.message) {
         alert(error.response.data.message);
       } else {
-        alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+        alert('개인정보 인증에 실패했습니다. 다시 시도해주세요.');
       }
       */
     }
@@ -106,7 +135,7 @@ const SignUpVerificationPage = () => {
         value={form.phone}
         onChangeTextHandler={(text) => handleInputChange('phone', text)}
       />
-      <NormalButton title="인증하기" onPressHandler={handleSignUp} />
+      <NormalButton title="인증하기" onPressHandler={handleVerification} />
       <GrayButton title="로그인 하러 가기" onPressHandler={navigateToLogin} />
       <View style={styles.gongback}></View>
     </KeyboardAwareScrollView>

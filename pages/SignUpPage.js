@@ -5,19 +5,25 @@ import NormalInput from '../components/common/textinput/NormalInput';
 import NormalButton from '../components/common/buttons/NormalButton';
 import GrayButton from '../components/common/buttons/GrayButton';
 import { styles } from './styles/SignUpPage.styles';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const SignUpPage = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  const { name, rrn, phone } = route.params || {};
+
   //상태 변수
   const [form, setForm] = useState({
-    name: '', //이름
-    rrn: '', // 주민등록번호
-    phone: '', /// 전화번호
+    name: name || '', // 이름
+    rrn: rrn || '', //주민등록번호
+    phone: phone || '', //전화번호
     id: '', // 아이디
     pw: '', // 비밀번호
     pwCheck: '', // 비밀번호 확인
   });
+
   // 비밀번호 규칙 검사 (8자 이상, 영문/숫자/특수문자 포함)
   const isValidPassword = (pw) =>
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/.test(pw);
@@ -73,8 +79,17 @@ const SignUpPage = () => {
         // 필요하다면 추가 필드도 전송
       });
       */
-      alert('회원가입에 성공했습니다. 로그인 해주세요.');
-      navigation.navigate('LoginPage');
+      Alert.alert(
+        '회원가입 완료',
+        '회원가입이 완료되었습니다. 로그인을 해주세요.',
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('LoginPage'),
+          },
+        ],
+        { cancelable: false },
+      );
     } catch (error) {
       //서버에서 내려주는 에러 메시지 처리
       console.error('회원가입 실패:', error);
@@ -88,8 +103,6 @@ const SignUpPage = () => {
       */
     }
   };
-
-  const navigation = useNavigation();
 
   const navigateToLogin = () => {
     //로그인 페이지로 이동하는 함수
