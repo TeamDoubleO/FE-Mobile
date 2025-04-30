@@ -11,8 +11,8 @@ const WelcomePage = () => {
     navigation.navigate('LoginPage');
   };
 
-  const navigateToSignup = () => {
-    navigation.navigate('SignUpPage');
+  const navigateToSignupVerfication = () => {
+    navigation.navigate('SignUpVerificationPage');
   };
 
   return (
@@ -31,7 +31,11 @@ const WelcomePage = () => {
       />
       <View style={styles.buttonContainer}>
         <NormalButton title={'로그인'} length="short" onPressHandler={navigateToLogin} />
-        <NormalButton title={'회원가입'} length="short" onPressHandler={navigateToSignup} />
+        <NormalButton
+          title={'회원가입'}
+          length="short"
+          onPressHandler={navigateToSignupVerfication}
+        />
       </View>
     </View>
   );

@@ -15,6 +15,7 @@ import MyAccessListPage from './pages/MyAccessListPage';
 import AccessRequestPage from './pages/AccessRequestPage';
 import AccessRequestRolePage from './pages/AccessRequestRolePage';
 import { colors } from './constants/colors';
+import SignUpVerificationPage from './pages/SignUpVerificationPage'
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,7 @@ export default function AppNavigator() {
       >
         <Stack.Screen name="WelcomePage" component={WelcomePage} options={{ headerShown: false }} />
         <Stack.Screen name="LoginPage" component={LoginPage} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUpVerificationPage" component={SignUpVerificationPage} options={{ headerShown: false }} />
         <Stack.Screen name="SignUpPage" component={SignUpPage} options={{ headerShown: false }} />
         <Stack.Screen
           name="MainPage"

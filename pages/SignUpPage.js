@@ -50,9 +50,6 @@ const SignUpPage = () => {
   //회원 가입 버튼 핸들러
   const handleSignUp = () => {
     let newError = {};
-    if (!form.name) newError.name = '이름을 입력하세요';
-    if (!form.rrn) newError.rrn = '주민등록번호를 입력하세요';
-    if (!form.phone) newError.phone = '전화번호를 입력하세요';
     if (!form.id) newError.id = '아이디를 입력하세요';
     if (!form.pw) newError.pw = '비밀번호를 입력하세요';
     else if (!isValidPassword(form.pw))
@@ -114,21 +111,21 @@ const SignUpPage = () => {
       <NormalInput
         placeholder="이름"
         errorText={error.name}
-        isEditable={true}
+        isEditable={false}
         value={form.name}
         onChangeTextHandler={(text) => handleInputChange('name', text)}
       />
       <NormalInput
         placeholder="주민등록번호"
         errorText={error.rrn}
-        isEditable={true}
+        isEditable={false}
         value={form.rrn}
         onChangeTextHandler={(text) => handleInputChange('rrn', text)}
       />
       <NormalInput
         placeholder="전화번호"
         errorText={error.phone}
-        isEditable={true}
+        isEditable={false}
         value={form.phone}
         onChangeTextHandler={(text) => handleInputChange('phone', text)}
       />
