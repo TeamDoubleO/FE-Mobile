@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -21,8 +21,16 @@ const Stack = createStackNavigator();
 export default function AppNavigator() {
   const [navState, setNavState] = useState();
 
+  const navTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: colors.white,
+    },
+  };
+
   return (
-    <NavigationContainer onStateChange={setNavState}>
+    <NavigationContainer onStateChange={setNavState} theme={navTheme}>
       <StatusBar hidden />
       <HomeButtonController state={navState} />
       <Stack.Navigator

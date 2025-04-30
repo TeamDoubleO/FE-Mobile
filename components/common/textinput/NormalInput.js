@@ -18,7 +18,7 @@ const NormalInput = ({
       {errorText !== '' && <Text style={styles.errorText}>{errorText}</Text>}
       <TextInput
         placeholder={placeholder}
-        placeholderTextColor={colors.lightGray}
+        placeholderTextColor={colors.darkGray}
         value={value}
         editable={isEditable}
         onChangeText={onChangeTextHandler}
