@@ -13,23 +13,27 @@ export const styles = StyleSheet.create({
     marginTop: '15%',
     alignSelf: 'center',
   },
-  cardContainer: {
+  shadowWrapper: {
+    // 그림자 설정
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 7, // Android용
+    borderRadius: 15,
     width: '100%',
     height: '55%',
+    marginVertical: '10%',
+  },
+  cardContainer: {
+    flex: 1, // 부모(shadowWrapper)의 크기를 꽉 채워 카드와 그림자 모양을 일치시킴
     backgroundColor: colors.white,
     borderRadius: 15,
     padding: '10%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: '10%',
     overflow: 'hidden', // 배경 이미지가 카드 안에 잘리게
     position: 'relative', // 자식의 absolute 포지션 기준점
-    // 그림자 설정
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 7, // Android용
   },
   backgroundImage: {
     ...StyleSheet.absoluteFillObject, // 전체 카드 덮게 만듦

@@ -39,27 +39,36 @@ const MainPage = () => {
         source={require('../assets/images/logoGreen.png')}
         resizeMode="contain" // 이미지 비율 유지
       />
-      <View style={styles.cardContainer}>
-        <Image
-          style={styles.backgroundImage}
-          source={require('../assets/images/mainBackground.png')}
-          resizeMode="contain" // 이미지 비율 유지
-        />
-        {hasAccessAuthority ? (
-          <>
-            <Text style={styles.qrTitle}>임시 출입 QR</Text>
-            <QRCode value={qrData} size={140} color={colors.black} backgroundColor={colors.white} />
-            <Text style={styles.userName}>{userVC.userName}</Text>
-            <Text style={styles.hospital}>{userVC.hospital1}</Text>
-            <Text style={styles.hospital}>{userVC.hospital2}</Text>
-            <Text style={styles.hospital}>{userVC.hospital3}</Text>
-          </>
-        ) : (
-          <>
-            <Text style={styles.cardText}>등록된 출입 권한이 존재하지 않습니다.</Text>
-            <Text style={styles.cardSubText}>방문 신청 버튼을 눌러 출입 권한을 신청해주세요.</Text>
-          </>
-        )}
+      <View style={styles.shadowWrapper}>
+        <View style={styles.cardContainer}>
+          <Image
+            style={styles.backgroundImage}
+            source={require('../assets/images/mainBackground.png')}
+            resizeMode="contain" // 이미지 비율 유지
+          />
+          {hasAccessAuthority ? (
+            <>
+              <Text style={styles.qrTitle}>임시 출입 QR</Text>
+              <QRCode
+                value={qrData}
+                size={140}
+                color={colors.black}
+                backgroundColor={colors.white}
+              />
+              <Text style={styles.userName}>{userVC.userName}</Text>
+              <Text style={styles.hospital}>{userVC.hospital1}</Text>
+              <Text style={styles.hospital}>{userVC.hospital2}</Text>
+              <Text style={styles.hospital}>{userVC.hospital3}</Text>
+            </>
+          ) : (
+            <>
+              <Text style={styles.cardText}>등록된 출입 권한이 존재하지 않습니다.</Text>
+              <Text style={styles.cardSubText}>
+                방문 신청 버튼을 눌러 출입 권한을 신청해주세요.
+              </Text>
+            </>
+          )}
+        </View>
       </View>
       <View style={styles.buttonContainer}>
         <NormalButton title="방문 신청" length="short" onPressHandler={navigateToAccessList} />
