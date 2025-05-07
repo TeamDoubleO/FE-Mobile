@@ -8,6 +8,7 @@ import { styles } from './styles/SignUpPage.styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NormalAlert from '../components/alerts/NormalAlert';
+import { createMemberInfo } from '../apis/SignUpApi';
 
 // 주민등록번호에서 생년월일 추출 (YYMMDD + 성별코드로 19/20세기 구분)
 const getBirthDateFromRRN = (rrn) => {
@@ -40,6 +41,7 @@ const SignUpPage = () => {
 
   // Alert 관리 상태변수
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
 
   //상태 변수
   const [form, setForm] = useState({
@@ -84,7 +86,7 @@ const SignUpPage = () => {
   };
 
   //회원 가입 버튼 핸들러
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     let newError = {};
     if (!form.email) newError.email = '이메일을 입력하세요';
     else if (!isValidEmail(form.email)) newError.email = '올바른 이메일 형식이 아닙니다';
@@ -98,32 +100,13 @@ const SignUpPage = () => {
     if (Object.keys(newError).length > 0) return; //에러가 하나라도 있으면 함수 종료 => 회원가입 진행 안함
 
     try {
-      // 회원가입 성공 시 처리 로직 추가
-      //회원가입 API 요청 (axios 사용 예시)
-      /*
-      const response = await axios.post('https://your-api-url.com/signup', {
-        name: form.name,
-        rrn: form.rrn,
-        phone: form.phone,
-        email: form.email,
-        pw: form.pw,
-        // 필요하다면 추가 필드도 전송
-      });
-      */
-
-      // Alert 상태변수 값 변경
-      setShowSuccessAlert(true);
+      //회원가입 API 요청
+      await createMemberInfo(form);
+      setShowSuccessAlert(true); // Alert 상태변수 값 변경
     } catch (error) {
-      //서버에서 내려주는 에러 메시지 처리
       console.error('회원가입 실패:', error);
-      //에러 처리 로직 추가 (ex. 에러 메시지 표시)
-      /*
-      if (error.response && error.response.data && error.response.data.message) {
-        alert(error.response.data.message);
-      } else {
-        alert('회원가입에 실패했습니다. 다시 시도해주세요.');
-      }
-      */
+      setShowErrorAlert(true);
+      throw error;
     }
   };
 
@@ -212,6 +195,12 @@ const SignUpPage = () => {
         title="회원가입 완료"
         message={`회원가입이 완료되었습니다.\n로그인 후 이용해 주세요.`}
         onConfirmHandler={handleAlertConfirm}
+      />
+      <NormalAlert
+        show={showErrorAlert}
+        title="회원가입 실패"
+        message={`회원가입에 실패했습니다.\n다시 시도해주세요.`}
+        onConfirmHandler={() => setShowErrorAlert(false)}
       />
     </>
   );

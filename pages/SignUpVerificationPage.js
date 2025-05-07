@@ -7,7 +7,7 @@ import GrayButton from '../components/buttons/GrayButton';
 import { styles } from './styles/SignUpPage.styles';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { dummyVerifyUser } from '../mocks/dummyVerifyUser';
+//import { dummyVerifyUser } from '../mocks/dummyVerifyUser';
 import NormalAlert from '../components/alerts/NormalAlert';
 
 //전화번호 포맷 함수 (하이픈 자동 삽입)
@@ -96,11 +96,12 @@ const SignUpVerificationPage = () => {
       });
       */
       // 더미 데이터와 비교
-      const isVerified = dummyVerifyUser.some(
-        //.some()메서드로 배열에서 조건을 만족하는 요소가 하나라도 있으면 true를 반환
-        //세 항목이 모두 일차하는 사용자가 있으면 true반환
-        (user) => user.name === form.name && user.rrn === form.rrn && user.phone === form.phone,
-      );
+      // const isVerified = dummyVerifyUser.some(
+      //   //.some()메서드로 배열에서 조건을 만족하는 요소가 하나라도 있으면 true를 반환
+      //   //세 항목이 모두 일차하는 사용자가 있으면 true반환
+      //   (user) => user.name === form.name && user.rrn === form.rrn && user.phone === form.phone,
+      // );
+      isVerified = true;
       if (isVerified) {
         // 성공 시 회원정보입력 페이지로, 데이터 함께 전달
         navigation.navigate('SignUpPage', {
