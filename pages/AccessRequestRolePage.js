@@ -76,7 +76,9 @@ const AccessRequestRolePage = ({ route }) => {
   // 방문증 신청 확인 버튼 클릭 핸들러
   const handleConfirmChange = () => {
     setShowConfirmAlert(false);
-    setShowSuccessAlert(true);
+    setTimeout(() => {
+      setShowSuccessAlert(true);
+    }, 300); // 300ms 정도 텀을 둠 (ios는 모달이 닫히자 마자 열리게 하면)
   };
 
   // 방문증 신청 성공 핸들러
