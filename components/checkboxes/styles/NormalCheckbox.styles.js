@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '../../../../constants/colors';
+import { colors } from '../../../constants/colors';
 
 export const styles = StyleSheet.create({
   // ScrollView 내부 전체 컨텐츠 박스 스타일

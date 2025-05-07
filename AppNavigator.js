@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StatusBar } from 'react-native';
 
-import HomeButtonController from './components/common/buttons/HomeButtonController';
+import HomeButtonController from './components/buttons/HomeButtonController';
 
 // 로그인 전 페이지
 import WelcomePage from './pages/WelcomePage';

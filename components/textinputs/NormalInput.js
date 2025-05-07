@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import React, { useState } from 'react';
 import { styles } from './styles/NormalInput.styles';
 import { TextInput } from 'react-native';
-import { colors } from '../../../constants/colors';
+import { colors } from '../../constants/colors';
 
 const NormalInput = ({
   placeholder = 'placeholder',

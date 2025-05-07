@@ -1,13 +1,13 @@
 import { View, Text } from 'react-native';
 import React, { useState } from 'react';
-import WaveHeader from '../components/common/headers/WaveHeader';
-import NormalInput from '../components/common/textinput/NormalInput';
-import NormalButton from '../components/common/buttons/NormalButton';
+import WaveHeader from '../components/headers/WaveHeader';
+import NormalInput from '../components/textinputs/NormalInput';
+import NormalButton from '../components/buttons/NormalButton';
 import { styles } from './styles/LoginPage.styles';
-import GrayUnderlineButton from '../components/common/buttons/GrayButton';
+import GrayUnderlineButton from '../components/buttons/GrayButton';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import NormalAlert from '../components/common/alerts/NormalAlert';
+import NormalAlert from '../components/alerts/NormalAlert';
 
 const LoginPage = ({ setIsLoggedIn }) => {
   //상태 변수
@@ -119,7 +119,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
       <NormalAlert
         show={showAlert}
         title="로그인 성공"
-        message={`로그인에 성공하여\n메인 페이지로 이동합니다.`}
+        message={`로그인에 성공하였습니다.\n메인 페이지로 이동합니다.`}
         onConfirmHandler={handleSuccess}
       />
     </>

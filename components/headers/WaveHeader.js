@@ -2,7 +2,7 @@ import { View, Image, TouchableOpacity } from 'react-native';
 import { styles } from './styles/WaveHeader.styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { colors } from '../../../constants/colors';
+import { colors } from '../../constants/colors';
 
 const WaveHeader = () => {
   const navigation = useNavigation();
@@ -14,7 +14,7 @@ const WaveHeader = () => {
   return (
     <View style={styles.headerContainer}>
       <Image
-        source={require('../../../assets/images/headerWave.png')} // 물결 이미지 경로
+        source={require('../../assets/images/headerWave.png')} // 물결 이미지 경로
         style={styles.waveImage}
         resizeMode="cover"
       />
@@ -23,7 +23,7 @@ const WaveHeader = () => {
           <Ionicons name="chevron-back" size={30} color={colors.white} />
         </TouchableOpacity>
         <Image
-          source={require('../../../assets/images/logoWhite.png')} // 로고 이미지 경로
+          source={require('../../assets/images/logoWhite.png')} // 로고 이미지 경로
           style={styles.logoImage}
           resizeMode="cover"
         />

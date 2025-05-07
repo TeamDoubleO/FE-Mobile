@@ -1,9 +1,9 @@
 import { View, Text, Modal } from 'react-native';
 import React, { useState } from 'react';
 import { styles } from './styles/PasswordConfirmModal.styles';
-import NormalInput from '../components/common/textinput/NormalInput';
-import NormalButton from '../components/common/buttons/NormalButton';
-import WaveHeader from '../components/common/headers/WaveHeader';
+import NormalInput from '../components/textinputs/NormalInput';
+import NormalButton from '../components/buttons/NormalButton';
+import WaveHeader from '../components/headers/WaveHeader';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {

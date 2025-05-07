@@ -1,6 +1,6 @@
-// components/common/alerts/NormalAlert.styles.js
+// components/alerts/NormalAlert.styles.js
 import { StyleSheet } from 'react-native';
-import { colors } from '../../../../constants/colors';
+import { colors } from '../../../constants/colors';
 
 export const styles = StyleSheet.create({
   alert: {

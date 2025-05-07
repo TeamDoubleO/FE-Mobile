@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native';
 import React, { useState } from 'react';
 import { styles } from './styles/ChangePasswordPage.styles';
-import WaveHeader from '../components/common/headers/WaveHeader';
-import NormalInput from '../components/common/textinput/NormalInput';
-import NormalButton from '../components/common/buttons/NormalButton';
+import WaveHeader from '../components/headers/WaveHeader';
+import NormalInput from '../components/textinputs/NormalInput';
+import NormalButton from '../components/buttons/NormalButton';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import NormalAlert from '../components/common/alerts/NormalAlert';
+import NormalAlert from '../components/alerts/NormalAlert';
 
 const ChangePasswordPage = () => {
   const [newPassword, setNewPassword] = useState(''); // 새 비밀번호
@@ -115,7 +115,7 @@ const ChangePasswordPage = () => {
       <NormalAlert
         show={showSuccessAlert}
         title="비밀번호 변경 완료"
-        message={`비밀번호가 변경되었습니다.\n로그인 페이지로 이동합니다.`}
+        message={`비밀번호가 변경되었습니다.\n메인 페이지로 이동합니다.`}
         // 동작 제어
         onConfirmHandler={handleSuccessConfirm}
       />

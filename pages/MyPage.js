@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { styles } from './styles/MyPage.styles';
 import PasswordConfirmModal from '../modals/PasswordConfirmModal';
-import WaveHeader from '../components/common/headers/WaveHeader';
-import NormalInput from '../components/common/textinput/NormalInput';
-import GrayButton from '../components/common/buttons/GrayButton';
+import WaveHeader from '../components/headers/WaveHeader';
+import NormalInput from '../components/textinputs/NormalInput';
+import GrayButton from '../components/buttons/GrayButton';
 import { useNavigation } from '@react-navigation/native';
-import NormalAlert from '../components/common/alerts/NormalAlert';
+import NormalAlert from '../components/alerts/NormalAlert';
 
 export default function MyPage({ setIsLoggedIn }) {
   const [isVerified, setIsVerified] = useState(false); // 비밀번호 인증 여부
@@ -79,7 +79,7 @@ export default function MyPage({ setIsLoggedIn }) {
           <NormalAlert
             show={showSuccessAlert}
             title="로그아웃 성공"
-            message={`로그아웃에 성공하여\n시작 페이지로 이동합니다.`}
+            message={`로그아웃이 완료되었습니다.\n시작 페이지로 이동합니다.`}
             onConfirmHandler={handleSuccessConfirm}
           />
         </>

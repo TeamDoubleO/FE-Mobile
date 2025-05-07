@@ -1,13 +1,13 @@
 import { View, Text } from 'react-native';
 import React, { useState } from 'react';
-import WaveHeader from '../components/common/headers/WaveHeader';
-import NormalInput from '../components/common/textinput/NormalInput';
-import NormalButton from '../components/common/buttons/NormalButton';
-import GrayButton from '../components/common/buttons/GrayButton';
+import WaveHeader from '../components/headers/WaveHeader';
+import NormalInput from '../components/textinputs/NormalInput';
+import NormalButton from '../components/buttons/NormalButton';
+import GrayButton from '../components/buttons/GrayButton';
 import { styles } from './styles/SignUpPage.styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import NormalAlert from '../components/common/alerts/NormalAlert';
+import NormalAlert from '../components/alerts/NormalAlert';
 
 // 주민등록번호에서 생년월일 추출 (YYMMDD + 성별코드로 19/20세기 구분)
 const getBirthDateFromRRN = (rrn) => {

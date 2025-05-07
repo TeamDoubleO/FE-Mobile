@@ -1,7 +1,7 @@
 import { View, Image, Text, StatusBar } from 'react-native';
 import React from 'react';
 import { styles } from './styles/WelcomePage.styles';
-import NormalButton from '../components/common/buttons/NormalButton';
+import NormalButton from '../components/buttons/NormalButton';
 import { useNavigation } from '@react-navigation/native';
 
 const WelcomePage = () => {

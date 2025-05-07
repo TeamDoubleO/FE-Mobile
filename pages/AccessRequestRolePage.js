@@ -1,11 +1,11 @@
 import { View, Text, Alert, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { styles } from './styles/AccessRequestRolePage.styles';
-import NormalButton from '../components/common/buttons/NormalButton';
+import NormalButton from '../components/buttons/NormalButton';
 import { useState } from 'react';
-import NormalInput from '../components/common/textinput/NormalInput';
-import NormalCheckbox from '../components/common/checkboxes/NormalCheckbox';
-import NormalAlert from '../components/common/alerts/NormalAlert';
+import NormalInput from '../components/textinputs/NormalInput';
+import NormalCheckbox from '../components/checkboxes/NormalCheckbox';
+import NormalAlert from '../components/alerts/NormalAlert';
 import { useNavigation } from '@react-navigation/native';
 
 const AccessRequestRolePage = ({ route }) => {
@@ -188,7 +188,7 @@ const AccessRequestRolePage = ({ route }) => {
         title={isVerified ? '환자 번호 검증 성공' : '환자 번호 검증 실패'}
         message={
           isVerified
-            ? '환자 번호가 정상적으로 확인되었습니다.'
+            ? '환자 번호가 정상적으로 확인되었습니다.\n방문 날짜를 선택해주세요.'
             : '입력한 환자 번호와 일치하는\n환자 정보가 존재하지 않습니다.'
         }
         confirmText={isVerified ? '확인' : '다시 입력'}

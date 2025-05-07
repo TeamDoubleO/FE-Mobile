@@ -1,7 +1,7 @@
 import { View, Text, Image } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import NormalButton from '../components/common/buttons/NormalButton';
+import NormalButton from '../components/buttons/NormalButton';
 import { styles } from './styles/MainPage.styles';
 import QRCode from 'react-native-qrcode-svg';
 import { colors } from '../constants/colors';

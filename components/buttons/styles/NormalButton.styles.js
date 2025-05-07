@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '../../../../constants/colors';
+import { colors } from '../../../constants/colors';
 
 export const styles = StyleSheet.create({
   // 긴 버튼 활성화 스타일 (기본 스타일)

@@ -2,8 +2,8 @@ import { View, Text } from 'react-native';
 import { useState } from 'react';
 import { styles } from './styles/AccessRequestPage.styles';
 import { hospitalName } from '../mocks/hospitalData';
-import NormalInput from '../components/common/textinput/NormalInput';
-import NormalList from '../components/common/lists/NormalList';
+import NormalInput from '../components/textinputs/NormalInput';
+import NormalList from '../components/lists/NormalList';
 
 const AccessRequestPage = () => {
   const [searchText, setSearchText] = useState('');

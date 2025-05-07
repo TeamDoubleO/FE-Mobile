@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Alert } from 'react-native';
-import NormalListDeep from '../components/common/lists/NormalListDeep';
+import NormalListDeep from '../components/lists/NormalListDeep';
 import { MyAccessList } from '../mocks/MyAccessListSample'; //예시 데이터
 import { styles } from './styles/MyAccessListPage.styles';
-import NormalAlert from '../components/common/alerts/NormalAlert';
+import NormalAlert from '../components/alerts/NormalAlert';
 
 const MyAccessListPage = () => {
   // Alert 관리 상태변수
