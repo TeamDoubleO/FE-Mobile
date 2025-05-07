@@ -3,24 +3,31 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StatusBar } from 'react-native';
+
 import HomeButtonController from './components/common/buttons/HomeButtonController';
+
+// 로그인 전 페이지
 import WelcomePage from './pages/WelcomePage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
+import SignUpVerificationPage from './pages/SignUpVerificationPage';
+
+// 로그인 후 페이지
+import MainPage from './pages/MainPage';
 import MyPage from './pages/MyPage';
 import ChangePasswordPage from './pages/ChangePasswordPage';
-import MainPage from './pages/MainPage';
 import AccessListPage from './pages/AccessListPage';
 import MyAccessListPage from './pages/MyAccessListPage';
 import AccessRequestPage from './pages/AccessRequestPage';
 import AccessRequestRolePage from './pages/AccessRequestRolePage';
+
 import { colors } from './constants/colors';
-import SignUpVerificationPage from './pages/SignUpVerificationPage';
 
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
-  const [navState, setNavState] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
+  const [navState, setNavState] = useState(null);
 
   const navTheme = {
     ...DefaultTheme,
@@ -35,7 +42,6 @@ export default function AppNavigator() {
       <StatusBar hidden />
       <HomeButtonController state={navState} />
       <Stack.Navigator
-        initialRouteName="MainPage" //진입점 임시로 메인페이지로 지정
         screenOptions={{
           headerStyle: { backgroundColor: colors.secondary, height: 120 },
           headerTintColor: colors.white,
@@ -44,49 +50,67 @@ export default function AppNavigator() {
           animationEnabled: false,
           gestureEnabled: true,
           headerBackImage: () => <Ionicons name="chevron-back" size={24} color={colors.white} />,
-          //headerBackTitleVisible: false,
-          headerBackTitle: '', //ios 헤더 뒤로가기 옆 타이틀 제거
+          headerBackTitle: '',
         }}
       >
-        <Stack.Screen name="WelcomePage" component={WelcomePage} options={{ headerShown: false }} />
-        <Stack.Screen name="LoginPage" component={LoginPage} options={{ headerShown: false }} />
-        <Stack.Screen
-          name="SignUpVerificationPage"
-          component={SignUpVerificationPage}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="SignUpPage" component={SignUpPage} options={{ headerShown: false }} />
-        <Stack.Screen
-          name="MainPage"
-          component={MainPage}
-          options={{ headerShown: false, title: '홈' }}
-        />
-        <Stack.Screen name="MyPage" component={MyPage} options={{ headerShown: false }} />
-        <Stack.Screen
-          name="AccessListPage"
-          component={AccessListPage}
-          options={{ title: '출입 권한' }}
-        />
-        <Stack.Screen
-          name="MyAccessListPage"
-          component={MyAccessListPage}
-          options={{ title: '권한 목록 조회' }}
-        />
-        <Stack.Screen
-          name="AccessRequestPage"
-          component={AccessRequestPage}
-          options={{ title: '출입 권한 신청' }}
-        />
-        <Stack.Screen
-          name="AccessRequestRolePage"
-          component={AccessRequestRolePage}
-          options={{ title: '출입 권한 신청' }}
-        />
-        <Stack.Screen
-          name="ChangePasswordPage"
-          component={ChangePasswordPage}
-          options={{ headerShown: false }}
-        />
+        {isLoggedIn ? (
+          <>
+            <Stack.Screen
+              name="MainPage"
+              component={MainPage}
+              options={{ headerShown: false, title: '홈' }}
+            />
+            <Stack.Screen name="MyPage" options={{ headerShown: false }}>
+              {(props) => <MyPage {...props} setIsLoggedIn={setIsLoggedIn} />}
+            </Stack.Screen>
+            <Stack.Screen
+              name="ChangePasswordPage"
+              component={ChangePasswordPage}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AccessListPage"
+              component={AccessListPage}
+              options={{ title: '출입 권한' }}
+            />
+            <Stack.Screen
+              name="MyAccessListPage"
+              component={MyAccessListPage}
+              options={{ title: '권한 목록 조회' }}
+            />
+            <Stack.Screen
+              name="AccessRequestPage"
+              component={AccessRequestPage}
+              options={{ title: '출입 권한 신청' }}
+            />
+            <Stack.Screen
+              name="AccessRequestRolePage"
+              component={AccessRequestRolePage}
+              options={{ title: '출입 권한 신청' }}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="WelcomePage"
+              component={WelcomePage}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="LoginPage" options={{ headerShown: false }}>
+              {(props) => <LoginPage {...props} setIsLoggedIn={setIsLoggedIn} />}
+            </Stack.Screen>
+            <Stack.Screen
+              name="SignUpPage"
+              component={SignUpPage}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SignUpVerificationPage"
+              component={SignUpVerificationPage}
+              options={{ headerShown: false }}
+            />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

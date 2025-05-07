@@ -8,7 +8,7 @@ import GrayUnderlineButton from '../components/common/buttons/GrayButton';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const LoginPage = () => {
+const LoginPage = ({ setIsLoggedIn }) => {
   //상태 변수
   const [form, setForm] = useState({
     email: '', // 이메일
@@ -62,8 +62,7 @@ const LoginPage = () => {
         // 필요하다면 추가 필드도 전송
       });
       */
-      alert('로그인 성공!');
-      navigation.navigate('MainPage');
+      setIsLoggedIn(true);
     } catch (error) {
       //서버에서 내려주는 에러 메시지 처리
       console.error('로그인 실패:', error);

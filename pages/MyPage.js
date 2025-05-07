@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text } from 'react-native';
 import { styles } from './styles/MyPage.styles';
 import PasswordConfirmModal from '../modals/PasswordConfirmModal';
 import WaveHeader from '../components/common/headers/WaveHeader';
 import NormalInput from '../components/common/textinput/NormalInput';
 import GrayButton from '../components/common/buttons/GrayButton';
 import { useNavigation } from '@react-navigation/native';
+import NormalAlert from '../components/common/alerts/NormalAlert';
 
-export default function MyPage() {
+export default function MyPage({ setIsLoggedIn }) {
   const [isVerified, setIsVerified] = useState(false); // 비밀번호 인증 여부
   const [isModalVisible, setIsModalVisible] = useState(true);
+
+  // Alert 관리 상태변수
+  const [showConfirmAlert, setShowConfirmAlert] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const navigation = useNavigation();
 
@@ -21,23 +26,24 @@ export default function MyPage() {
 
   // 로그아웃 버튼 클릭 핸들러
   const handleLogout = () => {
-    Alert.alert(
-      '로그아웃',
-      '로그아웃 하시겠습니까?',
-      [
-        {
-          text: '확인',
-          onPress: () => {
-            // TODO: 로그아웃 처리
-          },
-        },
-        {
-          text: '취소',
-          style: 'cancel',
-        },
-      ],
-      { cancelable: true },
-    );
+    setShowConfirmAlert(true);
+  };
+
+  // 로그아웃 확인 버튼 클릭 핸들러
+  const handleConfirm = () => {
+    setShowConfirmAlert(false);
+    setShowSuccessAlert(true);
+    setTimeout(() => {
+      setShowSuccessAlert(true);
+    }, 300);
+  };
+
+  // 로그아웃 성공 핸들러
+  const handleSuccessConfirm = () => {
+    setShowSuccessAlert(false);
+
+    // 시작 페이지로 이동되도록 로그인 상태 설정
+    setIsLoggedIn(false);
   };
 
   // 비밀번호 변경 버튼 클릭 핸들러
@@ -50,17 +56,33 @@ export default function MyPage() {
       <WaveHeader />
       {/* 비밀번호 인증 완료 시, 본문 보이도록 설정 */}
       {isVerified && (
-        <View style={styles.container}>
-          <Text style={styles.title}>마이 페이지</Text>
-          <NormalInput placeholder="이름: 김짱구" isEditable={false} />
-          <NormalInput placeholder="전화번호: 010-1234-1234" isEditable={false} />
-          <NormalInput placeholder="생년월일: 2022-08-02" isEditable={false} />
-          <NormalInput placeholder="아이디: zzzzzang_gu" isEditable={false} />
-          <View style={styles.buttonContainer}>
-            <GrayButton title="비밀번호 변경" onPressHandler={handlePassword} />
-            <GrayButton title="로그아웃" onPressHandler={handleLogout} />
+        <>
+          <View style={styles.container}>
+            <Text style={styles.title}>마이 페이지</Text>
+            <NormalInput placeholder="이름: 김짱구" isEditable={false} />
+            <NormalInput placeholder="전화번호: 010-1234-1234" isEditable={false} />
+            <NormalInput placeholder="생년월일: 2022-08-02" isEditable={false} />
+            <NormalInput placeholder="아이디: zzzzzang_gu" isEditable={false} />
+            <View style={styles.buttonContainer}>
+              <GrayButton title="비밀번호 변경" onPressHandler={handlePassword} />
+              <GrayButton title="로그아웃" onPressHandler={handleLogout} />
+            </View>
           </View>
-        </View>
+          <NormalAlert
+            show={showConfirmAlert}
+            title="로그아웃"
+            message={`로그아웃 하시겠습니까?`}
+            showCancel={true}
+            onConfirmHandler={handleConfirm}
+            onCancelHandler={() => setShowConfirmAlert(false)}
+          />
+          <NormalAlert
+            show={showSuccessAlert}
+            title="로그아웃 성공"
+            message={`로그아웃에 성공하여\n시작 페이지로 이동합니다.`}
+            onConfirmHandler={handleSuccessConfirm}
+          />
+        </>
       )}
 
       <PasswordConfirmModal visible={isModalVisible} onCloseHandler={handleCloseModal} />

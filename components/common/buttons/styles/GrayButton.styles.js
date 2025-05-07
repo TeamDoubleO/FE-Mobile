@@ -11,6 +11,6 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: colors.darkGray,
-    fontSize: 15,
+    fontSize: 16,
   },
 });
