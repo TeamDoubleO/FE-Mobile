@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   contentTitle: {
     color: colors.black,
     fontSize: 22,
-    fontWeight: 500,
+    fontWeight: 600,
     marginTop: '5%',
   },
   inputWithButtonConatiner: {

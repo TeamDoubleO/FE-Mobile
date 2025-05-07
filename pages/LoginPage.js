@@ -11,9 +11,15 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 const LoginPage = () => {
   //상태 변수
   const [form, setForm] = useState({
-    id: '', // 아이디
+    email: '', // 이메일
     pw: '', // 비밀번호
   });
+
+  //이메일 형식 검증 함수
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   // 비밀번호 규칙 검사 (8자 이상, 영문/숫자/특수문자 포함)
   const isValidPassword = (pw) =>
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/.test(pw);
@@ -37,7 +43,8 @@ const LoginPage = () => {
 
   const handleLogin = () => {
     let newError = {};
-    if (!form.id) newError.id = '아이디를 입력하세요';
+    if (!form.email) newError.email = '이메일을 입력하세요';
+    else if (!isValidEmail(form.email)) newError.email = '올바른 이메일 형식이 아닙니다';
     if (!form.pw) newError.pw = '비밀번호를 입력하세요';
     else if (!isValidPassword(form.pw))
       newError.pw = '비밀번호는 8자 이상, 영문/숫자/특수문자 포함!';
@@ -50,7 +57,7 @@ const LoginPage = () => {
       //로그인 API 요청 (axios 사용 예시)
       /*
       const response = await axios.post('https://your-api-url.com/login', {
-        id: form.id,
+        email: form.email,
         pw: form.pw,
         // 필요하다면 추가 필드도 전송
       });
@@ -75,7 +82,7 @@ const LoginPage = () => {
 
   const navigateToSignUp = () => {
     //회원가입 페이지로 이동하는 함수
-    navigation.navigate('SignUpPage');
+    navigation.navigate('SignUpVerificationPage');
   };
 
   return (
@@ -88,11 +95,11 @@ const LoginPage = () => {
       <WaveHeader />
       <Text style={styles.title}>로그인</Text>
       <NormalInput
-        placeholder="아이디"
-        errorText={error.id}
+        placeholder="이메일"
+        errorText={error.email}
         isEditable={true}
-        value={form.id}
-        onChangeTextHandler={(text) => handleInputChange('id', text)}
+        value={form.email}
+        onChangeTextHandler={(text) => handleInputChange('email', text)}
       />
       <NormalInput
         placeholder="비밀번호"

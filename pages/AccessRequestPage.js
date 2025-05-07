@@ -19,7 +19,11 @@ const AccessRequestPage = () => {
         value={searchText}
         onChangeTextHandler={setSearchText}
       />
-      <NormalList items={filteredHospitals} nextPage="AccessRequestRolePage" />
+      {filteredHospitals.length > 0 ? (
+        <NormalList items={filteredHospitals} nextPage="AccessRequestRolePage" />
+      ) : (
+        <Text style={styles.infoText}>검색 결과가 존재하지 않습니다.</Text>
+      )}
     </View>
   );
 };
