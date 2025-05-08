@@ -1,17 +1,14 @@
-import axios from 'axios';
-
-const BASE_URL = 'http://192.168.0.115:8081';
+import axios from './AxiosInstance';
 
 // 마이 페이지 진입 시, 비밀번호 검증 함수
 export const verifyPassword = async (token, password) => {
   const response = await axios.post(
-    `${BASE_URL}/members/me/password`,
+    '/members/me/password',
     { password },
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      withCredentials: true,
     },
   );
 
@@ -21,7 +18,7 @@ export const verifyPassword = async (token, password) => {
 // 비밀번호 변경 함수
 export const updatePassword = async (token, data) => {
   const response = await axios.patch(
-    `${BASE_URL}/members/me/password`,
+    '/members/me/password',
     {
       passwordOriginal: data.originalPassword,
       passwordNew: data.newPassword,
@@ -30,7 +27,6 @@ export const updatePassword = async (token, data) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      withCredentials: true,
     },
   );
 

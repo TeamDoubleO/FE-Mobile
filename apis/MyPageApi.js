@@ -1,14 +1,11 @@
-import axios from 'axios';
-
-const BASE_URL = 'http://192.168.0.115:8081';
+import axios from './AxiosInstance';
 
 // 회원 정보 조회 함수
 export const getMyInfo = async (token) => {
-  const response = await axios.get(`${BASE_URL}/members/me`, {
+  const response = await axios.get('/members/me', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-    withCredentials: true,
   });
 
   return response.data.data;
@@ -17,13 +14,12 @@ export const getMyInfo = async (token) => {
 // 로그아웃 함수
 export const logoutUser = async (token) => {
   const response = await axios.post(
-    `${BASE_URL}/auth/logout`,
+    '/auth/logout',
     {}, // body 부분에 빈 객체 명시
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      withCredentials: true,
     },
   );
 
@@ -32,13 +28,11 @@ export const logoutUser = async (token) => {
 
 // 회원 탈퇴 함수
 export const deleteUser = async (token) => {
-  const response = await axios.delete(`${BASE_URL}/members`, {
+  const response = await axios.delete('/members', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-    withCredentials: true,
   });
 
-  console.log(response.status);
   return response.status;
 };
