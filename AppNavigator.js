@@ -2,10 +2,11 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useState, useEffect } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StatusBar } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import HomeButtonController from './components/buttons/HomeButtonController';
+import KiwiSpinner from './components/KiwiSpinner';
 
 // 로그인 전 페이지
 import WelcomePage from './pages/WelcomePage';
@@ -35,6 +36,8 @@ export default function AppNavigator() {
   useEffect(() => {
     const checkToken = async () => {
       try {
+        // 로딩 돌아가는거 강제로 1초 보기
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         const token = await AsyncStorage.getItem('accessToken');
         setIsLoggedIn(!!token); // 토큰 있으면 true
       } catch (e) {
@@ -53,8 +56,21 @@ export default function AppNavigator() {
       background: colors.white,
     },
   };
-
-  if (loading) return null;
+  //로딩 부분, 컴포턴트화 필요
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(255,255,255,0.8)', // 반투명 흰색
+        }}
+      >
+        <KiwiSpinner />
+      </View>
+    );
+  }
 
   return (
     <NavigationContainer onStateChange={setNavState} theme={navTheme}>
