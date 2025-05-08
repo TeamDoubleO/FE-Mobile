@@ -27,7 +27,7 @@ import { colors } from './constants/colors';
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // 로그인 상태
   const [navState, setNavState] = useState(null);
   const [loading, setLoading] = useState(true); // 토큰 확인 중 상태
 

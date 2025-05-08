@@ -84,6 +84,9 @@ export default function MyPage({ setIsLoggedIn }) {
 
       await logoutUser(accessToken);
 
+      // 토큰 삭제
+      await AsyncStorage.removeItem('accessToken');
+
       // 시작 페이지로 이동되도록 로그인 상태 설정
       setIsLoggedIn(false);
     } catch (error) {
@@ -115,6 +118,9 @@ export default function MyPage({ setIsLoggedIn }) {
       }
 
       await deleteUser(accessToken);
+
+      // 토큰 삭제
+      await AsyncStorage.removeItem('accessToken');
 
       // 시작 페이지로 이동되도록 로그인 상태 설정
       setIsLoggedIn(false);

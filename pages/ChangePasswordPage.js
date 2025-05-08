@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styles } from './styles/ChangePasswordPage.styles';
 import WaveHeader from '../components/headers/WaveHeader';
 import NormalInput from '../components/textinputs/NormalInput';
@@ -7,17 +7,21 @@ import NormalButton from '../components/buttons/NormalButton';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NormalAlert from '../components/alerts/NormalAlert';
+import { updatePassword } from '../apis/PasswordApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ChangePasswordPage = () => {
+  const [originalPassword, setOriginalPassword] = useState(''); // 기존 비밀번호
   const [newPassword, setNewPassword] = useState(''); // 새 비밀번호
   const [confirmNewPassword, setConfirmNewPassword] = useState(''); // 새 비밀번호 확인
-  const [isAllowedForm, setIsAllowedForm] = useState(false); // 비밀번호 형식 검증 여부
   const [isVerified, setIsVerified] = useState(false); // 새 비밀번호 확인 인증 여부
   const [isSubmitted, setIsSubmitted] = useState(false); // 제출 버튼 눌렀는지 여부
 
   // Alert 관리 상태변수
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [errorAlertMessage, setErrorAlertMessage] = useState('');
 
   const navigation = useNavigation();
 
@@ -25,21 +29,12 @@ const ChangePasswordPage = () => {
   const isValidPassword = (pw) =>
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/.test(pw);
 
-  // 입력 변경 핸들러
-  const handleNewPasswordChange = (text) => {
-    setNewPassword(text);
-    // TODO: 비밀번호 형식 검증
-  };
-
-  // 비밀번호 확인 입력 변경 핸들러
-  const handleConfirmNewPassword = (text) => {
-    setConfirmNewPassword(text);
-    setIsVerified(text === newPassword);
-  };
+  useEffect(() => {
+    setIsVerified(confirmNewPassword === newPassword);
+  }, [confirmNewPassword, newPassword]);
 
   // 변경 버튼 클릭 핸들러
   const handlePressButton = () => {
-    // 변경 버튼 클릭
     setIsSubmitted(true);
 
     // 비밀번호 변경이 불가능한 경우 return
@@ -51,9 +46,33 @@ const ChangePasswordPage = () => {
   };
 
   // 비밀번호 변경 확인 버튼 클릭 핸들러
-  const handleConfirmChange = () => {
+  const handleConfirmChange = async () => {
     setShowConfirmAlert(false);
-    setShowSuccessAlert(true);
+    try {
+      // 토큰 불러오기
+      const token = await AsyncStorage.getItem('accessToken');
+      if (!token) {
+        throw new Error('토큰이 존재하지 않습니다.');
+      }
+
+      await updatePassword(token, { originalPassword, newPassword });
+
+      setTimeout(() => {
+        setShowSuccessAlert(true);
+      }, 300);
+    } catch (error) {
+      const status = error.response.data.status;
+      let message = '비밀번호 변경에 실패했습니다.';
+
+      if (status === 400) {
+        message = '기존 비밀번호를 다시 입력해주세요.';
+      } else if (status === 409) {
+        message = `기존과 동일한 비밀번호는\n사용하실 수 없습니다.`;
+      }
+
+      setErrorAlertMessage(message);
+      setShowErrorAlert(true);
+    }
   };
 
   // 비밀번호 변경 성공 핸들러
@@ -76,24 +95,37 @@ const ChangePasswordPage = () => {
           <Text style={styles.title}>비밀번호 변경</Text>
           <Text style={styles.text}>새로운 비밀번호를 입력해주세요.</Text>
           <NormalInput
-            placeholder="새 비밀번호 (영문, 숫자, 특수문자 조합)"
-            value={newPassword}
-            onChangeTextHandler={handleNewPasswordChange}
+            placeholder="기존 비밀번호"
+            value={originalPassword}
+            onChangeTextHandler={setOriginalPassword}
             errorText={
-              isSubmitted && (!newPassword || !isValidPassword(newPassword))
-                ? '비밀번호를 입력하고 형식을 확인해주세요'
+              isSubmitted && (!originalPassword || !isValidPassword(originalPassword))
+                ? '기존 비밀번호를 입력하고 형식을 확인해주세요'
                 : ''
             }
+            isSecureTextEntry={true}
+          />
+          <NormalInput
+            placeholder="새 비밀번호 (영문, 숫자, 특수문자 조합)"
+            value={newPassword}
+            onChangeTextHandler={setNewPassword}
+            errorText={
+              isSubmitted && (!newPassword || !isValidPassword(newPassword))
+                ? '새 비밀번호를 입력하고 형식을 확인해주세요'
+                : ''
+            }
+            isSecureTextEntry={true}
           />
           <NormalInput
             placeholder="새 비밀번호 확인"
             value={confirmNewPassword}
-            onChangeTextHandler={handleConfirmNewPassword}
+            onChangeTextHandler={setConfirmNewPassword}
             errorText={
               isSubmitted && (!confirmNewPassword || !isVerified)
                 ? '비밀번호가 일치하지 않습니다'
                 : ''
             }
+            isSecureTextEntry={true}
           />
           <NormalButton title="변경" style={styles.button} onPressHandler={handlePressButton} />
         </View>
@@ -118,6 +150,13 @@ const ChangePasswordPage = () => {
         message={`비밀번호가 변경되었습니다.\n메인 페이지로 이동합니다.`}
         // 동작 제어
         onConfirmHandler={handleSuccessConfirm}
+      />
+
+      <NormalAlert
+        show={showErrorAlert}
+        title="비밀번호 변경 실패"
+        message={errorAlertMessage}
+        onConfirmHandler={() => setShowErrorAlert(false)}
       />
     </>
   );
