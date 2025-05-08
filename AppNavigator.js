@@ -6,7 +6,7 @@ import { StatusBar, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import HomeButtonController from './components/buttons/HomeButtonController';
-import KiwiSpinner from './components/KiwiSpinner';
+import LoadingOverlay from './components/loadings/LoadingOverlay';
 
 // 로그인 전 페이지
 import WelcomePage from './pages/WelcomePage';
@@ -30,11 +30,12 @@ const Stack = createStackNavigator();
 export default function AppNavigator() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
   const [navState, setNavState] = useState(null);
-  const [loading, setLoading] = useState(true); // 토큰 확인 중 상태
+  const [loading, setLoading] = useState(false); // 토큰 확인 중 상태
 
   // 앱 시작 시 토큰 확인
   useEffect(() => {
     const checkToken = async () => {
+      setLoading(true);
       try {
         // 로딩 돌아가는거 강제로 1초 보기
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -56,24 +57,10 @@ export default function AppNavigator() {
       background: colors.white,
     },
   };
-  //로딩 부분, 컴포턴트화 필요
-  if (loading) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'rgba(255,255,255,0.8)', // 반투명 흰색
-        }}
-      >
-        <KiwiSpinner />
-      </View>
-    );
-  }
 
   return (
     <NavigationContainer onStateChange={setNavState} theme={navTheme}>
+      <LoadingOverlay visible={loading} /*로딩*/ />
       <StatusBar hidden />
       <HomeButtonController state={navState} />
       <Stack.Navigator
