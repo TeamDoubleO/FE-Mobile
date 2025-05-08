@@ -10,6 +10,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import NormalAlert from '../components/alerts/NormalAlert';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loginUser } from '../apis/LoginApi';
+import LoadingOverlay from '../components/loadings/LoadingOverlay';
 
 const LoginPage = ({ setIsLoggedIn }) => {
   //상태 변수
@@ -33,6 +34,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
 
   const [error, setError] = useState({}); // 에러 메시지
   const [isPwValid, setIsPwValid] = useState(false); //비밀번호 유효성
+  const [loading, setLoading] = useState(false); // 토큰 확인 중 상태
 
   const handleInputChange = (field, value) => {
     // field : 바꿀 필드의 이름 (ex. name), value : 입력된 새로운 값
@@ -49,6 +51,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
   };
 
   const handleLogin = async () => {
+    setLoading(true);
     let newError = {};
     if (!form.email) newError.email = '이메일을 입력하세요';
     else if (!isValidEmail(form.email)) newError.email = '올바른 이메일 형식이 아닙니다';
@@ -57,7 +60,12 @@ const LoginPage = ({ setIsLoggedIn }) => {
       newError.pw = '비밀번호는 8자 이상, 영문/숫자/특수문자 포함!';
 
     setError(newError);
-    if (Object.keys(newError).length > 0) return; //에러가 하나라도 있으면 함수 종료 => 로그인 진행 안함
+
+    //에러가 하나라도 있으면 함수 종료 => 로그인 진행 안함
+    if (Object.keys(newError).length > 0) {
+      setLoading(false);
+      return;
+    }
 
     try {
       //로그인 API 연결
@@ -73,6 +81,8 @@ const LoginPage = ({ setIsLoggedIn }) => {
       console.error('로그인 실패:', error);
       setShowErrorAlert(true);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,6 +102,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
 
   return (
     <>
+      <LoadingOverlay visible={loading} /*로딩*/ />
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollView}
         keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감

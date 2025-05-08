@@ -9,6 +9,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NormalAlert from '../components/alerts/NormalAlert';
 import { createMemberInfo } from '../apis/SignUpApi';
+import LoadingOverlay from '../components/loadings/LoadingOverlay';
 
 // 주민등록번호에서 생년월일 추출 (YYMMDD + 성별코드로 19/20세기 구분)
 const getBirthDateFromRRN = (rrn) => {
@@ -64,6 +65,7 @@ const SignUpPage = () => {
   const [error, setError] = useState({}); // 에러 메시지
   const [isPwValid, setIsPwValid] = useState(false); //비밀번호 유효성
   const [isPwMatch, setIsPwMatch] = useState(false); //비밀번호 일치성
+  const [loading, setLoading] = useState(false); // 토큰 확인 중 상태
 
   //공통 핸들러 - 입력값 변경을 처리
   const handleInputChange = (field, value) => {
@@ -87,6 +89,7 @@ const SignUpPage = () => {
 
   //회원 가입 버튼 핸들러
   const handleSignUp = async () => {
+    setLoading(true); //로딩 켜기
     let newError = {};
     if (!form.email) newError.email = '이메일을 입력하세요';
     else if (!isValidEmail(form.email)) newError.email = '올바른 이메일 형식이 아닙니다';
@@ -96,8 +99,12 @@ const SignUpPage = () => {
     if (!form.pwCheck) newError.pwCheck = '비밀번호 확인을 입력하세요';
     if (form.pw !== form.pwCheck) newError.pwCheck = '비밀번호가 다릅니다';
 
+    //에러가 하나라도 있으면 함수 종료 => 회원가입 진행 안함
     setError(newError);
-    if (Object.keys(newError).length > 0) return; //에러가 하나라도 있으면 함수 종료 => 회원가입 진행 안함
+    if (Object.keys(newError).length > 0) {
+      setLoading(false);
+      return;
+    }
 
     try {
       //회원가입 API 요청
@@ -107,6 +114,8 @@ const SignUpPage = () => {
       console.error('회원가입 실패:', error);
       setShowErrorAlert(true);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -125,6 +134,7 @@ const SignUpPage = () => {
 
   return (
     <>
+      <LoadingOverlay visible={loading} /*로딩*/ />
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollView}
         keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감
