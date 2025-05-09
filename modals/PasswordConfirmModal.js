@@ -21,7 +21,7 @@ const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
     setPassword(text);
 
     if (!isValidPassword(text)) {
-      setErrorText('비밀번호는 8자 이상, 영문/숫자/특수문자를 포함해야 합니다.');
+      setErrorText('8자 이상, 영문/숫자/특수문자를 포함해야 합니다.');
     } else {
       setErrorText('');
     }
@@ -29,7 +29,7 @@ const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
 
   const handleConfirm = async () => {
     if (!isValidPassword(password)) {
-      setErrorText('비밀번호는 8자 이상, 영문/숫자/특수문자를 포함해야 합니다.');
+      setErrorText('8자 이상, 영문/숫자/특수문자를 포함해야 합니다.');
       return;
     }
 
@@ -68,6 +68,7 @@ const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
             errorText={errorText}
             style={styles.textInput}
             isSecureTextEntry={true}
+            inputWrpperWidth={{ width: '80%' }}
           />
           <NormalButton title="확인" onPressHandler={handleConfirm} style={styles.button} />
         </View>

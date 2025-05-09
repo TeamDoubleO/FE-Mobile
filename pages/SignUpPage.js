@@ -150,6 +150,7 @@ const SignUpPage = () => {
           errorText={error.name}
           isEditable={false}
           value={form.name}
+          inputWrpperWidth={{ width: '80%' }}
         />
         {/* <NormalInput
         placeholder="주민등록번호"
@@ -162,12 +163,14 @@ const SignUpPage = () => {
           errorText={undefined}
           isEditable={false}
           value={getBirthDateFromRRN(form.rrn)} //주민등록번호에서 생년월일 변환
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalInput
           placeholder="전화번호"
           errorText={error.phone}
           isEditable={false}
           value={form.phone}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalInput
           placeholder="이메일"
@@ -175,6 +178,7 @@ const SignUpPage = () => {
           isEditable={true}
           value={form.email}
           onChangeTextHandler={(text) => handleInputChange('email', text)}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalInput
           placeholder="비밀번호"
@@ -186,6 +190,7 @@ const SignUpPage = () => {
           value={form.pw}
           onChangeTextHandler={(text) => handleInputChange('pw', text)}
           isSecureTextEntry={true}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalInput
           placeholder="비밀번호 확인"
@@ -194,6 +199,7 @@ const SignUpPage = () => {
           value={form.pwCheck}
           onChangeTextHandler={(text) => handleInputChange('pwCheck', text)}
           isSecureTextEntry={true}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalButton title="회원가입" onPressHandler={handleSignUp} />
         <GrayButton title="로그인 하러 가기" onPressHandler={navigateToLogin} />

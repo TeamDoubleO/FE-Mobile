@@ -40,9 +40,9 @@ export const styles = StyleSheet.create({
     marginTop: '5%',
   },
   inputWithButtonConatiner: {
+    width: '85%',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
   },
   verifyButton: {
     marginLeft: '3%',

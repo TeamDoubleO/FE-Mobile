@@ -3,7 +3,8 @@ import { colors } from '../../../constants/colors';
 
 export const styles = StyleSheet.create({
   inputWrapper: {
-    width: '80%', // 입력창 길이 고정
+    width: '100%', // 입력창 길이 부모에 맞춤
+    alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
     position: 'relative',

@@ -117,6 +117,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
           isEditable={true}
           value={form.email}
           onChangeTextHandler={(text) => handleInputChange('email', text)}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalInput
           placeholder="비밀번호"
@@ -128,6 +129,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
           value={form.pw}
           onChangeTextHandler={(text) => handleInputChange('pw', text)}
           isSecureTextEntry={true}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalButton title="로그인" onPressHandler={handleLogin} style={styles.button} />
         <GrayUnderlineButton title="계정 만들기" onPressHandler={navigateToSignUp} />
