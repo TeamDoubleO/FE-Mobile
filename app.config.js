@@ -25,7 +25,7 @@ export default {
       favicon: './assets/images/logoIcon.png',
     },
     extra: {
-      BASE_URL: 'http://192.168.0.111:8081', // 본인 pc IPv4 주소로 수정하세용
+      BASE_URL: 'http://192.168.0.115:8081', // 본인 pc IPv4 주소로 수정하세용
     },
   },
 };

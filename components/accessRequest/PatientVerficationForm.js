@@ -4,7 +4,6 @@ import NormalButton from '../buttons/NormalButton';
 import { useState, useEffect } from 'react';
 import NormalInput from '../textinputs/NormalInput';
 import NormalAlert from '../alerts/NormalAlert';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getMyInfo } from '../../apis/MyPageApi';
 
 const PatientVerficationForm = ({ onVerifiedHandler }) => {
@@ -19,10 +18,7 @@ const PatientVerficationForm = ({ onVerifiedHandler }) => {
   useEffect(() => {
     const loadInfo = async () => {
       try {
-        const token = await AsyncStorage.getItem('accessToken');
-        if (!token) throw new Error('토큰이 존재하지 않습니다.');
-
-        const data = await getMyInfo(token);
+        const data = await getMyInfo();
         setUserInfo({
           name: data.name,
           birth: data.birthDate,
