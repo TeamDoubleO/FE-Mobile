@@ -9,6 +9,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NormalAlert from '../components/alerts/NormalAlert';
 import { createMemberInfo } from '../apis/SignUpApi';
+import LoadingOverlay from '../components/loadings/LoadingOverlay';
 
 // 주민등록번호에서 생년월일 추출 (YYMMDD + 성별코드로 19/20세기 구분)
 const getBirthDateFromRRN = (rrn) => {
@@ -42,6 +43,7 @@ const SignUpPage = () => {
   // Alert 관리 상태변수
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [errorAlertMessage, setErrorAlertMessage] = useState('');
 
   //상태 변수
   const [form, setForm] = useState({
@@ -64,6 +66,7 @@ const SignUpPage = () => {
   const [error, setError] = useState({}); // 에러 메시지
   const [isPwValid, setIsPwValid] = useState(false); //비밀번호 유효성
   const [isPwMatch, setIsPwMatch] = useState(false); //비밀번호 일치성
+  const [loading, setLoading] = useState(false); // 토큰 확인 중 상태
 
   //공통 핸들러 - 입력값 변경을 처리
   const handleInputChange = (field, value) => {
@@ -87,6 +90,7 @@ const SignUpPage = () => {
 
   //회원 가입 버튼 핸들러
   const handleSignUp = async () => {
+    setLoading(true); //로딩 켜기
     let newError = {};
     if (!form.email) newError.email = '이메일을 입력하세요';
     else if (!isValidEmail(form.email)) newError.email = '올바른 이메일 형식이 아닙니다';
@@ -96,17 +100,31 @@ const SignUpPage = () => {
     if (!form.pwCheck) newError.pwCheck = '비밀번호 확인을 입력하세요';
     if (form.pw !== form.pwCheck) newError.pwCheck = '비밀번호가 다릅니다';
 
+    //에러가 하나라도 있으면 함수 종료 => 회원가입 진행 안함
     setError(newError);
-    if (Object.keys(newError).length > 0) return; //에러가 하나라도 있으면 함수 종료 => 회원가입 진행 안함
+    if (Object.keys(newError).length > 0) {
+      setLoading(false);
+      return;
+    }
 
     try {
       //회원가입 API 요청
       await createMemberInfo(form);
       setShowSuccessAlert(true); // Alert 상태변수 값 변경
     } catch (error) {
-      console.error('회원가입 실패:', error);
+      const status = error.response.data.status;
+      let message = '회원가입에 실패했습니다.';
+
+      if (status === 400) {
+        message = `입력 정보 확인 후\n다시 가입해 주세요.`;
+      } else if (status === 409) {
+        message = `이미 가입된 계정입니다.`;
+      }
+
+      setErrorAlertMessage(message);
       setShowErrorAlert(true);
-      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -115,7 +133,7 @@ const SignUpPage = () => {
     navigation.navigate('LoginPage');
   };
 
-  // Alert 창 확인 버튼 클릭 핸들러러
+  // Alert 창 확인 버튼 클릭 핸들러
   const handleAlertConfirm = () => {
     setShowSuccessAlert(false);
 
@@ -125,6 +143,7 @@ const SignUpPage = () => {
 
   return (
     <>
+      <LoadingOverlay visible={loading} /*로딩*/ />
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollView}
         keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감
@@ -140,6 +159,7 @@ const SignUpPage = () => {
           errorText={error.name}
           isEditable={false}
           value={form.name}
+          inputWrpperWidth={{ width: '80%' }}
         />
         {/* <NormalInput
         placeholder="주민등록번호"
@@ -152,12 +172,14 @@ const SignUpPage = () => {
           errorText={undefined}
           isEditable={false}
           value={getBirthDateFromRRN(form.rrn)} //주민등록번호에서 생년월일 변환
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalInput
           placeholder="전화번호"
           errorText={error.phone}
           isEditable={false}
           value={form.phone}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalInput
           placeholder="이메일"
@@ -165,6 +187,7 @@ const SignUpPage = () => {
           isEditable={true}
           value={form.email}
           onChangeTextHandler={(text) => handleInputChange('email', text)}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalInput
           placeholder="비밀번호"
@@ -176,6 +199,7 @@ const SignUpPage = () => {
           value={form.pw}
           onChangeTextHandler={(text) => handleInputChange('pw', text)}
           isSecureTextEntry={true}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalInput
           placeholder="비밀번호 확인"
@@ -184,6 +208,7 @@ const SignUpPage = () => {
           value={form.pwCheck}
           onChangeTextHandler={(text) => handleInputChange('pwCheck', text)}
           isSecureTextEntry={true}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalButton title="회원가입" onPressHandler={handleSignUp} />
         <GrayButton title="로그인 하러 가기" onPressHandler={navigateToLogin} />
@@ -199,7 +224,7 @@ const SignUpPage = () => {
       <NormalAlert
         show={showErrorAlert}
         title="회원가입 실패"
-        message={`회원가입에 실패했습니다.\n다시 시도해주세요.`}
+        message={errorAlertMessage}
         onConfirmHandler={() => setShowErrorAlert(false)}
       />
     </>

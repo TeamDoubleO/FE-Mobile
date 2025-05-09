@@ -1,10 +1,12 @@
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StatusBar } from 'react-native';
+import { StatusBar, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import HomeButtonController from './components/buttons/HomeButtonController';
+import LoadingOverlay from './components/loadings/LoadingOverlay';
 
 // 로그인 전 페이지
 import WelcomePage from './pages/WelcomePage';
@@ -26,8 +28,27 @@ import { colors } from './constants/colors';
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // 로그인 상태
   const [navState, setNavState] = useState(null);
+  const [loading, setLoading] = useState(false); // 토큰 확인 중 상태
+
+  // 앱 시작 시 토큰 확인
+  useEffect(() => {
+    const checkToken = async () => {
+      setLoading(true);
+      try {
+        // 로딩 돌아가는거 강제로 1초 보기
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        const token = await AsyncStorage.getItem('accessToken');
+        setIsLoggedIn(!!token); // 토큰 있으면 true
+      } catch (e) {
+        setIsLoggedIn(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkToken();
+  }, []);
 
   const navTheme = {
     ...DefaultTheme,
@@ -39,6 +60,7 @@ export default function AppNavigator() {
 
   return (
     <NavigationContainer onStateChange={setNavState} theme={navTheme}>
+      <LoadingOverlay visible={loading} /*로딩*/ />
       <StatusBar hidden />
       <HomeButtonController state={navState} />
       <Stack.Navigator

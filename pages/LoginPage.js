@@ -8,6 +8,9 @@ import GrayUnderlineButton from '../components/buttons/GrayButton';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NormalAlert from '../components/alerts/NormalAlert';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { loginUser } from '../apis/LoginApi';
+import LoadingOverlay from '../components/loadings/LoadingOverlay';
 
 const LoginPage = ({ setIsLoggedIn }) => {
   //상태 변수
@@ -18,6 +21,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
 
   // Alert 관리 상태변수
   const [showAlert, setShowAlert] = useState(null);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
 
   //이메일 형식 검증 함수
   const isValidEmail = (email) => {
@@ -30,6 +34,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
 
   const [error, setError] = useState({}); // 에러 메시지
   const [isPwValid, setIsPwValid] = useState(false); //비밀번호 유효성
+  const [loading, setLoading] = useState(false); // 토큰 확인 중 상태
 
   const handleInputChange = (field, value) => {
     // field : 바꿀 필드의 이름 (ex. name), value : 입력된 새로운 값
@@ -45,7 +50,8 @@ const LoginPage = ({ setIsLoggedIn }) => {
     }
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    setLoading(true);
     let newError = {};
     if (!form.email) newError.email = '이메일을 입력하세요';
     else if (!isValidEmail(form.email)) newError.email = '올바른 이메일 형식이 아닙니다';
@@ -54,25 +60,33 @@ const LoginPage = ({ setIsLoggedIn }) => {
       newError.pw = '비밀번호는 8자 이상, 영문/숫자/특수문자 포함!';
 
     setError(newError);
-    if (Object.keys(newError).length > 0) return; //에러가 하나라도 있으면 함수 종료 => 로그인 진행 안함
+
+    //에러가 하나라도 있으면 함수 종료 => 로그인 진행 안함
+    if (Object.keys(newError).length > 0) {
+      setLoading(false);
+      return;
+    }
 
     try {
-      // TODO: 로그인 API 연결
-
-      // Alert 상태 변경
-      setShowAlert(true);
+      //로그인 API 연결
+      const data = await loginUser(form);
+      if (data && data.data.accessToken) {
+        //토큰 있어야만 저장하도록함
+        await AsyncStorage.setItem('accessToken', data.data.accessToken);
+        setShowAlert(true);
+      } else {
+        setShowErrorAlert(true);
+      }
     } catch (error) {
-      //서버에서 내려주는 에러 메시지 처리
-      console.error('로그인 실패:', error);
-
-      //TODO: 에러 처리 로직 추가 (ex. 에러 메시지 표시)
+      setShowErrorAlert(true);
+    } finally {
+      setLoading(false);
     }
   };
 
   // 로그인 성공 핸들러
   const handleSuccess = () => {
     setShowAlert(false);
-
     // 메인 페이지로 이동되도록 로그인 상태 설정
     setIsLoggedIn(true);
   };
@@ -86,6 +100,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
 
   return (
     <>
+      <LoadingOverlay visible={loading} /*로딩*/ />
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollView}
         keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감
@@ -100,6 +115,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
           isEditable={true}
           value={form.email}
           onChangeTextHandler={(text) => handleInputChange('email', text)}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalInput
           placeholder="비밀번호"
@@ -110,7 +126,8 @@ const LoginPage = ({ setIsLoggedIn }) => {
           isEditable={true}
           value={form.pw}
           onChangeTextHandler={(text) => handleInputChange('pw', text)}
-          //secureTextEntry={true}
+          isSecureTextEntry={true}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalButton title="로그인" onPressHandler={handleLogin} style={styles.button} />
         <GrayUnderlineButton title="계정 만들기" onPressHandler={navigateToSignUp} />
@@ -121,6 +138,12 @@ const LoginPage = ({ setIsLoggedIn }) => {
         title="로그인 성공"
         message={`로그인에 성공하였습니다.\n메인 페이지로 이동합니다.`}
         onConfirmHandler={handleSuccess}
+      />
+      <NormalAlert
+        show={showErrorAlert}
+        title="로그인 실패"
+        message={`로그인에 실패했습니다.\n다시 시도해주세요.`}
+        onConfirmHandler={() => setShowErrorAlert(false)}
       />
     </>
   );

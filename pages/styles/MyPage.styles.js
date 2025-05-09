@@ -9,9 +9,15 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    gap: '10%',
+    gap: '5%',
     marginTop: '5%',
-    marginLeft: '40%',
+    alignContent: 'center',
+  },
+  buttonDivider: {
+    paddingVertical: 2,
+    paddingTop: '5%',
+    color: colors.darkGray,
+    fontSize: 16,
   },
   title: {
     marginBottom: '10%',
