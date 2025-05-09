@@ -2,11 +2,17 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../../constants/colors';
 
 export const styles = StyleSheet.create({
+  inputWrapper: {
+    width: '80%', // 입력창 길이 고정
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+  },
   input: {
-    minWidth: '80%',
+    width: '100%',
     height: 50,
     marginVertical: '1.5%',
-    paddingHorizontal: '5%',
+    paddingLeft: '5%',
     borderWidth: 2,
     borderRadius: 10,
     borderColor: colors.lightGreen,
@@ -23,5 +29,10 @@ export const styles = StyleSheet.create({
   editable: {
     backgroundColor: colors.background,
     color: colors.darkGray,
+  },
+  eyeIcon: {
+    position: 'absolute',
+    padding: '5%',
+    right: '1%',
   },
 });
