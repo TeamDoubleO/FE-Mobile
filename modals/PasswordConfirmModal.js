@@ -82,6 +82,7 @@ const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
             errorText={errorText}
             style={styles.textInput}
             isSecureTextEntry={true}
+            inputWrpperWidth={{ width: '80%' }}
           />
           <NormalButton title="확인" onPressHandler={handleConfirm} style={styles.button} />
         </View>

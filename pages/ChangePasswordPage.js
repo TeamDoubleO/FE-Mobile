@@ -104,6 +104,7 @@ const ChangePasswordPage = () => {
                 : ''
             }
             isSecureTextEntry={true}
+            inputWrpperWidth={{ width: '80%' }}
           />
           <NormalInput
             placeholder="새 비밀번호 (영문, 숫자, 특수문자 조합)"
@@ -115,6 +116,7 @@ const ChangePasswordPage = () => {
                 : ''
             }
             isSecureTextEntry={true}
+            inputWrpperWidth={{ width: '80%' }}
           />
           <NormalInput
             placeholder="새 비밀번호 확인"
@@ -126,6 +128,7 @@ const ChangePasswordPage = () => {
                 : ''
             }
             isSecureTextEntry={true}
+            inputWrpperWidth={{ width: '80%' }}
           />
           <NormalButton title="변경" style={styles.button} onPressHandler={handlePressButton} />
         </View>
