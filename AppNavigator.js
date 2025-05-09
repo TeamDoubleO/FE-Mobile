@@ -5,8 +5,10 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { StatusBar, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { setLogoutCallback } from './handler/logoutHandler';
 import HomeButtonController from './components/buttons/HomeButtonController';
 import LoadingOverlay from './components/loadings/LoadingOverlay';
+import { getMyInfo } from './apis/MyPageApi';
 
 // 로그인 전 페이지
 import WelcomePage from './pages/WelcomePage';
@@ -32,15 +34,26 @@ export default function AppNavigator() {
   const [navState, setNavState] = useState(null);
   const [loading, setLoading] = useState(false); // 토큰 확인 중 상태
 
-  // 앱 시작 시 토큰 확인
+  // 앱 시작 시 토큰 유효성 확인
   useEffect(() => {
     const checkToken = async () => {
       setLoading(true);
       try {
-        // 로딩 돌아가는거 강제로 1초 보기
         await new Promise((resolve) => setTimeout(resolve, 1000));
         const token = await AsyncStorage.getItem('accessToken');
-        setIsLoggedIn(!!token); // 토큰 있으면 true
+        if (token) {
+          // 회원 정보 조회로 토큰 유효성 검증
+          try {
+            await getMyInfo(token);
+            setIsLoggedIn(true); // 토큰 유효
+          } catch (err) {
+            //에러 발생 시
+            setIsLoggedIn(false);
+            await AsyncStorage.removeItem('accessToken');
+          }
+        } else {
+          setIsLoggedIn(false);
+        }
       } catch (e) {
         setIsLoggedIn(false);
       } finally {
@@ -48,6 +61,11 @@ export default function AppNavigator() {
       }
     };
     checkToken();
+  }, []);
+
+  // 앱 시작시 logoutHandler.js에 콜백 함수 등록
+  useEffect(() => {
+    setLogoutCallback(() => setIsLoggedIn(false));
   }, []);
 
   const navTheme = {
