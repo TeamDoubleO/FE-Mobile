@@ -44,7 +44,7 @@ export default function AppNavigator() {
         if (token) {
           // 회원 정보 조회로 토큰 유효성 검증
           try {
-            await getMyInfo(token);
+            await getMyInfo();
             setIsLoggedIn(true); // 토큰 유효
           } catch (err) {
             //에러 발생 시

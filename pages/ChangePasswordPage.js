@@ -51,11 +51,7 @@ const ChangePasswordPage = () => {
     try {
       // 토큰 불러오기
       const token = await AsyncStorage.getItem('accessToken');
-      if (!token) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
-
-      await updatePassword(token, { originalPassword, newPassword });
+      await updatePassword({ originalPassword, newPassword });
 
       setTimeout(() => {
         setShowSuccessAlert(true);

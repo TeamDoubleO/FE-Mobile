@@ -27,41 +27,37 @@ const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
     }
   };
 
-  // const handleConfirm = async () => {
-  //   if (!isValidPassword(password)) {
-  //     setErrorText('8자 이상, 영문/숫자/특수문자를 포함해야 합니다.');
-  //     return;
-  //   }
-
-  //   try {
-  //     // 토큰 불러오기
-  //     const token = await AsyncStorage.getItem('accessToken');
-  //     if (!token) {
-  //       throw new Error('토큰이 존재하지 않습니다.');
-  //     }
-
-  //     await verifyPassword(token, password);
-
-  //     // 모달창 닫기
-  //     onCloseHandler();
-  //   } catch (error) {
-  //     console.log(error);
-  //     setErrorText('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
-  //   }
-  // };
   const handleConfirm = async () => {
     if (!isValidPassword(password)) {
       setErrorText('8자 이상, 영문/숫자/특수문자를 포함해야 합니다.');
       return;
     }
 
-    // 임시: 비밀번호가 'Lgcns01!'이면 성공, 아니면 실패
-    if (password === 'Lgcns01!') {
-      onCloseHandler(); // 성공 시 모달 닫기
-    } else {
+    try {
+      // 토큰 불러오기
+      const token = await AsyncStorage.getItem('accessToken');
+      await verifyPassword(password);
+
+      // 모달창 닫기
+      onCloseHandler();
+    } catch (error) {
+      console.log(error);
       setErrorText('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
     }
   };
+  // const handleConfirm = async () => {
+  //   if (!isValidPassword(password)) {
+  //     setErrorText('8자 이상, 영문/숫자/특수문자를 포함해야 합니다.');
+  //     return;
+  //   }
+
+  //   // 임시: 비밀번호가 'Lgcns01!'이면 성공, 아니면 실패
+  //   if (password === 'Lgcns01!') {
+  //     onCloseHandler(); // 성공 시 모달 닫기
+  //   } else {
+  //     setErrorText('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
+  //   }
+  // };
 
   return (
     <Modal visible={visible}>

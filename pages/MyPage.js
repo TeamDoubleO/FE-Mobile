@@ -47,7 +47,7 @@ export default function MyPage({ setIsLoggedIn }) {
 
       setAccessToken(token);
 
-      const data = await getMyInfo(token);
+      const data = await getMyInfo();
       setUserInfo({
         name: data.name,
         birth: data.birthDate,
@@ -78,15 +78,9 @@ export default function MyPage({ setIsLoggedIn }) {
 
     // 로그아웃 처리
     try {
-      if (!accessToken) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
-
-      await logoutUser(accessToken);
-
+      await logoutUser();
       // 토큰 삭제
       await AsyncStorage.removeItem('accessToken');
-
       // 시작 페이지로 이동되도록 로그인 상태 설정
       setIsLoggedIn(false);
     } catch (error) {
@@ -113,15 +107,9 @@ export default function MyPage({ setIsLoggedIn }) {
 
     // 회원 탈퇴 처리
     try {
-      if (!accessToken) {
-        throw new Error('토큰이 존재하지 않습니다.');
-      }
-
-      await deleteUser(accessToken);
-
+      await deleteUser();
       // 토큰 삭제
       await AsyncStorage.removeItem('accessToken');
-
       // 시작 페이지로 이동되도록 로그인 상태 설정
       setIsLoggedIn(false);
     } catch (error) {
@@ -186,7 +174,7 @@ export default function MyPage({ setIsLoggedIn }) {
           />
           <NormalAlert
             show={showDeleteUserConfirmAlert}
-            title="회월 탈퇴"
+            title="회원 탈퇴"
             message={`탈퇴 하시겠습니까?`}
             showCancel={true}
             onConfirmHandler={handleDeleteUserConfirm}
