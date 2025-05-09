@@ -28,10 +28,9 @@ export const styles = StyleSheet.create({
     marginTop: '10%',
     gap: '10%',
   },
-  // 환자/보호자 버튼 아래 정보
   contentContainer: {
     marginTop: '10%',
-    gap: 20,
+    gap: 15,
   },
   contentTitle: {
     color: colors.black,
@@ -39,26 +38,8 @@ export const styles = StyleSheet.create({
     fontWeight: 600,
     marginTop: '5%',
   },
-  inputWithButtonConatiner: {
-    width: '90%',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  verifyButton: {
-    height: 50,
-    paddingHorizontal: 15,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-  verifyButtonText: {
-    color: colors.white,
-    fontSize: 16,
-    fontWeight: 500,
-  },
   submitButton: {
-    marginTop: 30,
-    marginBottom: 60,
+    marginTop: 15,
+    marginBottom: 50,
   },
 });
