@@ -40,12 +40,11 @@ export const styles = StyleSheet.create({
     marginTop: '5%',
   },
   inputWithButtonConatiner: {
+    width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
   },
   verifyButton: {
-    marginLeft: '3%',
     height: 50,
     paddingHorizontal: 15,
     backgroundColor: colors.primary,

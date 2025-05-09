@@ -142,10 +142,26 @@ export default function MyPage({ setIsLoggedIn }) {
         <>
           <View style={styles.container}>
             <Text style={styles.title}>마이 페이지</Text>
-            <NormalInput placeholder={`이름: ${userInfo.name}`} isEditable={false} />
-            <NormalInput placeholder={`생년월일: ${userInfo.birth}`} isEditable={false} />
-            <NormalInput placeholder={`전화번호: ${userInfo.contact}`} isEditable={false} />
-            <NormalInput placeholder={`이메일: ${userInfo.email}`} isEditable={false} />
+            <NormalInput
+              placeholder={`이름: ${userInfo.name}`}
+              isEditable={false}
+              inputWrpperWidth={{ width: '80%' }}
+            />
+            <NormalInput
+              placeholder={`생년월일: ${userInfo.birth}`}
+              isEditable={false}
+              inputWrpperWidth={{ width: '80%' }}
+            />
+            <NormalInput
+              placeholder={`전화번호: ${userInfo.contact}`}
+              isEditable={false}
+              inputWrpperWidth={{ width: '80%' }}
+            />
+            <NormalInput
+              placeholder={`이메일: ${userInfo.email}`}
+              isEditable={false}
+              inputWrpperWidth={{ width: '80%' }}
+            />
             <View style={styles.buttonContainer}>
               <GrayButton title="비밀번호 변경" onPressHandler={handlePassword} />
               <Text style={styles.buttonDivider}>|</Text>

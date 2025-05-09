@@ -180,6 +180,7 @@ const AccessRequestRolePage = ({ route }) => {
                 value={patientNumber}
                 onChangeTextHandler={setPatientNumber}
                 isEditable={isVerified ? false : true}
+                inputWrpperWidth={{ width: '90%' }}
               />
               <TouchableOpacity onPress={handleVerifyPatient} style={styles.verifyButton}>
                 <Text style={styles.verifyButtonText}>검증</Text>

@@ -15,6 +15,7 @@ const NormalInput = ({
   maxLengthNum,
   onFocusHandler,
   onBlurHandler,
+  inputWrpperWidth,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // 비밀번호 표시 여부
@@ -32,7 +33,7 @@ const NormalInput = ({
   return (
     <View>
       {errorText !== '' && <Text style={styles.errorText}>{errorText}</Text>}
-      <View style={styles.inputWrapper}>
+      <View style={[styles.inputWrapper, inputWrpperWidth]}>
         <TextInput
           placeholder={placeholder}
           placeholderTextColor={colors.darkGray}

@@ -101,7 +101,7 @@ const SignUpVerificationPage = () => {
       //   //세 항목이 모두 일차하는 사용자가 있으면 true반환
       //   (user) => user.name === form.name && user.rrn === form.rrn && user.phone === form.phone,
       // );
-      isVerified = true;
+      const isVerified = true;
       if (isVerified) {
         // 성공 시 회원정보입력 페이지로, 데이터 함께 전달
         navigation.navigate('SignUpPage', {
@@ -152,6 +152,7 @@ const SignUpVerificationPage = () => {
           isEditable={true}
           value={form.name}
           onChangeTextHandler={(text) => handleInputChange('name', text)}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalInput
           placeholder="주민등록번호"
@@ -162,6 +163,7 @@ const SignUpVerificationPage = () => {
           onFocusHandler={() => setIsRRNFocused(true)}
           onBlurHandler={() => setIsRRNFocused(false)}
           maxLengthNum={14}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalInput
           placeholder="전화번호"
@@ -170,6 +172,7 @@ const SignUpVerificationPage = () => {
           value={form.phone}
           onChangeTextHandler={(text) => handleInputChange('phone', text)}
           maxLengthNum={13}
+          inputWrpperWidth={{ width: '80%' }}
         />
         <NormalButton title="인증하기" onPressHandler={handleVerification} />
         <GrayButton title="로그인 하러 가기" onPressHandler={navigateToLogin} />
