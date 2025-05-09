@@ -2,11 +2,13 @@ import { View, Text, Alert, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { styles } from './styles/AccessRequestRolePage.styles';
 import NormalButton from '../components/buttons/NormalButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NormalInput from '../components/textinputs/NormalInput';
 import NormalCheckbox from '../components/checkboxes/NormalCheckbox';
 import NormalAlert from '../components/alerts/NormalAlert';
 import { useNavigation } from '@react-navigation/native';
+import { getMyInfo } from '../apis/MyPageApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AccessRequestRolePage = ({ route }) => {
   const { name } = route.params;
@@ -22,7 +24,36 @@ const AccessRequestRolePage = ({ route }) => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showInvalidDateAlert, setShowInvalidDateAlert] = useState(false);
 
+  // 회원 정보 관리 상태변수
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    birth: '',
+    contact: '',
+    email: '',
+  });
+
   const navigation = useNavigation();
+
+  // 사용자 정보 불러오기
+  useEffect(() => {
+    const loadInfo = async () => {
+      setIsVerified(true);
+      try {
+        const token = await AsyncStorage.getItem('accessToken');
+        if (!token) throw new Error('토큰이 존재하지 않습니다.');
+        const data = await getMyInfo(token);
+        setUserInfo({
+          name: data.name,
+          birth: data.birthDate,
+          contact: data.contact,
+        });
+      } catch (error) {
+        console.log('내 정보 조회 실패:', error.response?.data || error.message);
+      }
+    };
+
+    loadInfo();
+  }, []);
 
   const handlePatientButton = () => {
     setSelectedRole('patient');
@@ -128,9 +159,9 @@ const AccessRequestRolePage = ({ route }) => {
         {selectedRole === 'patient' && (
           <View style={styles.contentContainer}>
             <Text style={styles.contentTitle}>환자 정보 확인</Text>
-            <NormalInput placeholder="이름: 김짱구" isEditable={false} />
-            <NormalInput placeholder="전화번호: 010-1234-1234" isEditable={false} />
-            <NormalInput placeholder="생년월일: 2022-08-02" isEditable={false} />
+            <NormalInput placeholder={`이름: ${userInfo.name}`} isEditable={false} />
+            <NormalInput placeholder={`생년월일: ${userInfo.birth}`} isEditable={false} />
+            <NormalInput placeholder={`전화번호: ${userInfo.contact}`} isEditable={false} />
             <NormalButton
               title="방문증 신청"
               onPressHandler={handleSubmitButton}
