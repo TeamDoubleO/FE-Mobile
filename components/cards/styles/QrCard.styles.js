@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 7, // Android용
     borderRadius: 15,
-    width: '80%',
+    width: '70%',
     height: '80%',
     marginVertical: '10%',
   },

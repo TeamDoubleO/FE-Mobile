@@ -4,7 +4,6 @@ import { colors } from '../../constants/colors';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingHorizontal: '10%',
     paddingTop: '5%',
   },
   logoImage: {
@@ -17,6 +16,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: '3%',
-    gap: '10%',
+    gap: '5%',
   },
 });
