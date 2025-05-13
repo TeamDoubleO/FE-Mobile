@@ -20,4 +20,10 @@ export const styles = StyleSheet.create({
     fontWeight: 600,
     color: colors.tertiary,
   },
+  infoText: {
+    marginTop: '10%',
+    fontSize: 20,
+    textAlign: 'center',
+    color: colors.darkGray,
+  },
 });

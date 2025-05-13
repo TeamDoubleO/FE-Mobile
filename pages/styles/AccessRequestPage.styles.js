@@ -21,7 +21,6 @@ export const styles = StyleSheet.create({
     color: colors.black,
   },
   infoText: {
-    marginLeft: '2%',
     marginTop: '1%',
     fontSize: 20,
     textAlign: 'center',
