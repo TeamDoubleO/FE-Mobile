@@ -10,8 +10,8 @@ export const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 7, // Android용
     borderRadius: 15,
-    width: '100%',
-    height: '55%',
+    width: '80%',
+    height: '80%',
     marginVertical: '10%',
   },
   cardContainer: {

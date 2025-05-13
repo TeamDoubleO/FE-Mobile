@@ -6,15 +6,18 @@ import QRCode from 'react-native-qrcode-svg';
 import NormalButton from '../../components/buttons/NormalButton';
 import { styles } from './styles/QrCard.styles';
 import { colors } from '../../constants/colors';
+import { hospitalName } from '../../mocks/hospitalData';
 
 // hasAccessAuthority: 출입 권한 여부, userVC : VC에 담을 사용자 정보, qrData : QR에 담을 JSON 문자열
-const QrCard = ({ hasAccessAuthority, userVC, qrData }) => {
+const QrCard = ({ hasAccessAuthority, did, userName, hospitalName }) => {
   // 해당 QR의 상세 페이지로 이동 (아직 미구현)
   //const navigation = useNavigation();
   //   const navigateToAccessListDeatail = () => {
   //     navigation.navigate('AccessListDetailPage');
   //   };
 
+  // 임시: QR에 담을 JSON 문자열
+  const qrData = JSON.stringify({ did, userName, hospitalName });
   return (
     <View style={styles.shadowWrapper}>
       <View style={styles.cardContainer}>
@@ -27,10 +30,8 @@ const QrCard = ({ hasAccessAuthority, userVC, qrData }) => {
           <>
             <Text style={styles.qrTitle}>임시 출입 QR</Text>
             <QRCode value={qrData} size={140} color={colors.black} backgroundColor={colors.white} />
-            <Text style={styles.userName}>{userVC.userName}</Text>
-            <Text style={styles.hospital}>{userVC.hospital1}</Text>
-            <Text style={styles.hospital}>{userVC.hospital2}</Text>
-            <Text style={styles.hospital}>{userVC.hospital3}</Text>
+            <Text style={styles.userName}>{userName}</Text>
+            <Text style={styles.hospital}>{hospitalName}</Text>
           </>
         ) : (
           <>
