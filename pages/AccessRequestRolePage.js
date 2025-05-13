@@ -10,7 +10,7 @@ import GuardianVerificationForm from '../components/accessRequest/GuardianVerifi
 import { useNavigation } from '@react-navigation/native';
 
 const AccessRequestRolePage = ({ route }) => {
-  const { name } = route.params;
+  const { hospitalName } = route.params;
 
   const [role, setRole] = useState('patient');
   const [isVerified, setIsVerified] = useState(false); // 검증 여부
@@ -82,7 +82,7 @@ const AccessRequestRolePage = ({ route }) => {
         extraScrollHeight={40} // 키보드와 입력창 사이 간격
         enableOnAndroid={true} // 안드로이드 자동 스크롤 설정
       >
-        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.title}>{hospitalName}</Text>
         <View style={styles.divider} />
         <View style={styles.buttonContainer}>
           <NormalButton

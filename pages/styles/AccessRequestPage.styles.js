@@ -15,8 +15,12 @@ export const styles = StyleSheet.create({
     marginTop: '5%',
     alignSelf: 'center',
   },
+  itemText: {
+    fontSize: 20,
+    fontWeight: 500,
+    color: colors.black,
+  },
   infoText: {
-    marginLeft: '2%',
     marginTop: '1%',
     fontSize: 20,
     textAlign: 'center',

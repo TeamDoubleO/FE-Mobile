@@ -8,7 +8,8 @@ const NormalList = ({
   nextPage,
   onItemPress,
   renderItem,
-  style,
+  navigationParams, // 다음 페이지에 넘길 정보
+  style, // 각 항목 style
 }) => {
   // 선택 항목의 index 저장
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -24,7 +25,8 @@ const NormalList = ({
     // nextPage prop이 있으면 해당 페이지로 이동
     if (nextPage) {
       // name: 병원명 혹은 메뉴명
-      navigation.navigate(nextPage, { name: items[index] });
+      const params = navigationParams ? navigationParams(items[index]) : { name: items[index] };
+      navigation.navigate(nextPage, params);
     }
   };
 
@@ -34,14 +36,12 @@ const NormalList = ({
         <TouchableOpacity
           key={index}
           onPress={() => handleSelect(index)}
-          style={[styles.itemBox, selectedIndex === index && styles.selectedItemBox, style]}
+          style={[styles.itemBox, style]}
         >
           {renderItem ? (
             renderItem(item, index, selectedIndex === index)
           ) : (
-            <Text style={[styles.itemText, selectedIndex === index && styles.selectedItemText]}>
-              {item}
-            </Text>
+            <Text style={styles.itemText}>{item}</Text>
           )}
         </TouchableOpacity>
       ))}

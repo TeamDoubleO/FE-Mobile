@@ -1,15 +1,34 @@
 import { View, Text } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styles } from './styles/AccessRequestPage.styles';
-import { hospitalName } from '../mocks/hospitalData';
 import NormalInput from '../components/textinputs/NormalInput';
 import NormalList from '../components/lists/NormalList';
+import { getHospitalList } from '../apis/AccessRequestApi';
 
 const AccessRequestPage = () => {
   const [searchText, setSearchText] = useState('');
+  const [hospitalName, setHospitalName] = useState([]);
+
+  // 병원 목록 불러오기
+  useEffect(() => {
+    const getHospitalsName = async () => {
+      try {
+        const data = await getHospitalList();
+        console.log(data);
+
+        setHospitalName(data);
+      } catch (error) {
+        console.error('병원 목록 불러오기 실패:', error);
+      }
+    };
+
+    getHospitalsName();
+  }, []);
 
   // 검색 결과 필터링
-  const filteredHospitals = hospitalName.filter((name) => name.includes(searchText));
+  const filteredHospitals = hospitalName.filter((hospital) =>
+    hospital.hospitalName.includes(searchText),
+  );
 
   return (
     <View style={styles.container}>
@@ -20,7 +39,17 @@ const AccessRequestPage = () => {
         onChangeTextHandler={setSearchText}
       />
       {filteredHospitals.length > 0 ? (
-        <NormalList items={filteredHospitals} nextPage="AccessRequestRolePage" />
+        <NormalList
+          items={filteredHospitals}
+          nextPage="AccessRequestRolePage"
+          renderItem={(item, index, isSelected) => (
+            <Text style={styles.itemText}>{item.hospitalName}</Text>
+          )}
+          navigationParams={(item) => ({
+            hospitalId: item.hospitalId,
+            hospitalName: item.hospitalName,
+          })}
+        />
       ) : (
         <Text style={styles.infoText}>검색 결과가 존재하지 않습니다.</Text>
       )}
