@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import NormalListDeep from '../components/lists/NormalListDeep';
-//import { MyAccessList } from '../mocks/MyAccessListSample'; //예시 데이터
+import { MyAccessList } from '../mocks/MyAccessListSample'; //예시 데이터
 import { styles } from './styles/MyAccessListPage.styles';
-//import NormalAlert from '../components/alerts/NormalAlert';
 import { getAccessList } from '../apis/MyAccessListApi';
+import MyAccessDetailModal from '../modals/MyAccessDetailModal';
 
 const MyAccessListPage = () => {
   const [myAccessList, setMyAccessList] = useState([]);
 
   // Alert 관리 상태변수
-  // const [showAlert, setShowAlert] = useState(false);
-  // const [alertData, setAlertData] = useState({ title: '', message: '' });
+  const [showModal, setShowModal] = useState(false); // 모달 표시 여부
+  const [selectedAccess, setSelectedAccess] = useState(null); // 클릭된 출입증
 
   // 출입증 목록 불러오기
   useEffect(() => {
@@ -28,17 +28,23 @@ const MyAccessListPage = () => {
     getMyAccessList();
   }, []);
 
-  // 아이템 클릭 시 Alert로 상세 정보 표시
-  // const handleItemPress = (section, item, index) => {
-  //   const access = item.data;
+  // 출입 권한 클릭 시 모달 띄우기
+  // TODO: Pass-Service 구현 완료 시, 실제 데이터로 변경 필요
+  const handleItemPress = (section, item, index) => {
+    const access = item.data;
 
-  //   setAlertData({
-  //     title: `${section.contentTitle} - 상세 정보`,
-  //     message: `건물 및 구역: ${access.building_name} ${access.area_name}\n방문자: ${access.visitor_category}\n만료일: ${access.validate_to}\n승인 여부: ${access.expired ? '출입 대기' : '유효'}\n환자 번호: ${access.PatientID}\n발급자: ${access.requester_category}`,
-  //   });
+    setSelectedAccess({
+      hospitalName: section.contentTitle,
+      area: `${access.building_name} ${access.area_name}`,
+      visitorType: access.visitor_category,
+      expireDate: access.validate_to,
+      approval: access.expired ? '출입 대기' : '유효',
+      patientNumber: access.PatientID,
+      issuer: access.requester_category,
+    });
 
-  //   setShowAlert(true);
-  // };
+    setShowModal(true);
+  };
 
   // NormalListDeep에 넘길 데이터 가공
   const sections = myAccessList.map((section) => ({
@@ -50,8 +56,8 @@ const MyAccessListPage = () => {
     <>
       {myAccessList.length > 0 ? (
         <NormalListDeep
-          sections={sections} //섹션 데이터 배열
-          onItemPress={handleItemPress} //아이템 클릭시 Alert 띄우기
+          sections={sections}
+          onItemPress={handleItemPress}
           renderItem={(item, idx, selected) => (
             <View style={styles.container}>
               <View>
@@ -74,13 +80,15 @@ const MyAccessListPage = () => {
         <Text style={styles.infoText}>유효한 출입증이 존재하지 않습니다.</Text>
       )}
 
-      {/* <NormalAlert
-        show={showAlert}
-        title={alertData.title}
-        message={alertData.message}
-        onConfirmHandler={() => setShowAlert(false)}
-        left={true}
-      /> */}
+      <MyAccessDetailModal
+        isVisible={showModal}
+        onClose={() => setShowModal(false)}
+        onModify={() => {
+          setShowModal(false);
+          // TODO: 수정 페이지 이동 시 navigation 사용
+        }}
+        data={selectedAccess}
+      />
     </>
   );
 };
