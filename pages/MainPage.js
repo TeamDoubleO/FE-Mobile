@@ -5,6 +5,7 @@ import NormalButton from '../components/buttons/NormalButton';
 import { styles } from './styles/MainPage.styles';
 import QRCode from 'react-native-qrcode-svg';
 import { colors } from '../constants/colors';
+import QrCard from '../components/cards/QrCard';
 
 const MainPage = () => {
   // 임시: 상태변수로 출입 권한 제어
@@ -39,37 +40,7 @@ const MainPage = () => {
         source={require('../assets/images/logoGreen.png')}
         resizeMode="contain" // 이미지 비율 유지
       />
-      <View style={styles.shadowWrapper}>
-        <View style={styles.cardContainer}>
-          <Image
-            style={styles.backgroundImage}
-            source={require('../assets/images/mainBackground.png')}
-            resizeMode="contain" // 이미지 비율 유지
-          />
-          {hasAccessAuthority ? (
-            <>
-              <Text style={styles.qrTitle}>임시 출입 QR</Text>
-              <QRCode
-                value={qrData}
-                size={140}
-                color={colors.black}
-                backgroundColor={colors.white}
-              />
-              <Text style={styles.userName}>{userVC.userName}</Text>
-              <Text style={styles.hospital}>{userVC.hospital1}</Text>
-              <Text style={styles.hospital}>{userVC.hospital2}</Text>
-              <Text style={styles.hospital}>{userVC.hospital3}</Text>
-            </>
-          ) : (
-            <>
-              <Text style={styles.cardText}>등록된 출입 권한이 존재하지 않습니다.</Text>
-              <Text style={styles.cardSubText}>
-                방문 신청 버튼을 눌러 출입 권한을 신청해주세요.
-              </Text>
-            </>
-          )}
-        </View>
-      </View>
+      <QrCard hasAccessAuthority={hasAccessAuthority} userVC={userVC} qrData={qrData} />
       <View style={styles.buttonContainer}>
         <NormalButton title="방문 신청" length="short" onPressHandler={navigateToAccessList} />
         <NormalButton title="마이 페이지" length="short" onPressHandler={navigateToMyPage} />
