@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { styles } from './styles/AccessRequestRolePage.styles';
@@ -8,14 +9,30 @@ import NormalAlert from '../components/alerts/NormalAlert';
 import PatientVerficationForm from '../components/accessRequest/PatientVerficationForm';
 import GuardianVerificationForm from '../components/accessRequest/GuardianVerificationForm';
 import { useNavigation } from '@react-navigation/native';
+import { getAvailableDates } from '../apis/AccessRequestApi';
 
 const AccessRequestRolePage = ({ route }) => {
-  const { hospitalName } = route.params;
+  const { hospitalId, hospitalName } = route.params;
 
   const [role, setRole] = useState('patient');
   const [isVerified, setIsVerified] = useState(false); // 검증 여부
   const [verifiedData, setVerifiedData] = useState(null); // 자식 컴포넌트의 검증 정보
   const [checkedDates, setCheckedDates] = useState([]);
+  const [availableDates, setAvailableDates] = useState([]); // 방문 가능 날짜 설정
+
+  // 방문 가능 날짜 불러오기
+  useEffect(() => {
+    const fetchAvailableDates = async () => {
+      try {
+        const dates = await getAvailableDates(hospitalId);
+        setAvailableDates(dates);
+      } catch (error) {
+        console.error('방문 가능 날짜 불러오기 실패:', error);
+      }
+    };
+
+    fetchAvailableDates();
+  }, [hospitalId]);
 
   // Alert 관리 상태변수
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);
@@ -111,18 +128,7 @@ const AccessRequestRolePage = ({ route }) => {
           {isVerified && (
             <>
               <Text style={styles.contentTitle}>방문 일시 선택</Text>
-              <NormalCheckbox
-                labels={[
-                  '2025-08-02',
-                  '2025-08-03',
-                  '2025-08-04',
-                  '2025-08-05',
-                  '2025-08-06',
-                  '2025-08-07',
-                  '2025-08-08',
-                ]}
-                onChangeHandler={handleDateCheckbox}
-              />
+              <NormalCheckbox labels={availableDates} onChangeHandler={handleDateCheckbox} />
               <NormalButton
                 title="방문증 신청"
                 onPressHandler={handleSubmitButton}

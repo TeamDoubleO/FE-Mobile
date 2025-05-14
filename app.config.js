@@ -25,7 +25,8 @@ export default {
       favicon: './assets/images/logoIcon.png',
     },
     extra: {
-      BASE_URL: 'http://192.168.0.181:8081', // 본인 pc IPv4 주소로 수정하세용
+      BASE_URL: 'http://keywe.site', // EKS 사용시
+      //BASE_URL: 'http://192.168.0.181:8081', // 도커 사용시 - 본인 pc IPv4 주소로 수정하세용
     },
   },
 };
