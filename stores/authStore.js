@@ -27,11 +27,11 @@ export const useAuthStore = create(
       setLoading: (value) => set({ loading: value }),
 
       // 로그아웃시 상태 설정
-      logout: () =>
-        set({
-          isLoggedIn: false,
-          accessToken: null,
-        }),
+      // logout: () =>
+      //   set({
+      //     isLoggedIn: false,
+      //     accessToken: null,
+      //   }),
     }),
     {
       name: 'auth-storage',

@@ -9,6 +9,7 @@ import { setLogoutCallback } from './handler/logoutHandler';
 import HomeButtonController from './components/buttons/HomeButtonController';
 import LoadingOverlay from './components/loadings/LoadingOverlay';
 import { getMyInfo } from './apis/MyPageApi';
+import { useAuthStore } from './stores/authStore';
 
 // 로그인 전 페이지
 import WelcomePage from './pages/WelcomePage';
