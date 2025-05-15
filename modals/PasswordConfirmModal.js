@@ -5,7 +5,6 @@ import NormalInput from '../components/textinputs/NormalInput';
 import NormalButton from '../components/buttons/NormalButton';
 import WaveHeader from '../components/headers/WaveHeader';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { verifyPassword } from '../apis/PasswordApi';
 
 const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
@@ -34,8 +33,6 @@ const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
     }
 
     try {
-      // 토큰 불러오기
-      const token = await AsyncStorage.getItem('accessToken');
       await verifyPassword(password);
 
       // 모달창 닫기
@@ -45,6 +42,7 @@ const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
       setErrorText('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
     }
   };
+  // 모달 오류시 임시 코드
   // const handleConfirm = async () => {
   //   if (!isValidPassword(password)) {
   //     setErrorText('8자 이상, 영문/숫자/특수문자를 포함해야 합니다.');

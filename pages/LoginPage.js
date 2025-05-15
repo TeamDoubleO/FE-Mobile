@@ -8,11 +8,11 @@ import GrayUnderlineButton from '../components/buttons/GrayButton';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NormalAlert from '../components/alerts/NormalAlert';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loginUser } from '../apis/LoginApi';
-import LoadingOverlay from '../components/loadings/LoadingOverlay';
+import { useAuthStore } from '../stores/authStore';
 
-const LoginPage = ({ setIsLoggedIn }) => {
+const LoginPage = () => {
+  const { setIsLoggedIn, setLoading, setOnlyAccessToken } = useAuthStore();
   //상태 변수
   const [form, setForm] = useState({
     email: '', // 이메일
@@ -20,7 +20,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
   });
 
   // Alert 관리 상태변수
-  const [showAlert, setShowAlert] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
 
   //이메일 형식 검증 함수
@@ -34,7 +34,6 @@ const LoginPage = ({ setIsLoggedIn }) => {
 
   const [error, setError] = useState({}); // 에러 메시지
   const [isPwValid, setIsPwValid] = useState(false); //비밀번호 유효성
-  const [loading, setLoading] = useState(false); // 토큰 확인 중 상태
 
   const handleInputChange = (field, value) => {
     // field : 바꿀 필드의 이름 (ex. name), value : 입력된 새로운 값
@@ -70,9 +69,9 @@ const LoginPage = ({ setIsLoggedIn }) => {
     try {
       //로그인 API 연결
       const data = await loginUser(form);
+      //토큰 있어야만 저장하도록함
       if (data && data.data.accessToken) {
-        //토큰 있어야만 저장하도록함
-        await AsyncStorage.setItem('accessToken', data.data.accessToken);
+        setOnlyAccessToken(data.data.accessToken);
         setShowAlert(true);
       } else {
         setShowErrorAlert(true);
@@ -100,7 +99,6 @@ const LoginPage = ({ setIsLoggedIn }) => {
 
   return (
     <>
-      <LoadingOverlay visible={loading} /*로딩*/ />
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollView}
         keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감

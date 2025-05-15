@@ -9,7 +9,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NormalAlert from '../components/alerts/NormalAlert';
 import { createMemberInfo } from '../apis/SignUpApi';
-import LoadingOverlay from '../components/loadings/LoadingOverlay';
+import { useAuthStore } from '../stores/authStore';
 
 // 주민등록번호에서 생년월일 추출 (YYMMDD + 성별코드로 19/20세기 구분)
 const getBirthDateFromRRN = (rrn) => {
@@ -35,6 +35,7 @@ const getBirthDateFromRRN = (rrn) => {
 };
 
 const SignUpPage = () => {
+  const { setLoading } = useAuthStore();
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -66,7 +67,6 @@ const SignUpPage = () => {
   const [error, setError] = useState({}); // 에러 메시지
   const [isPwValid, setIsPwValid] = useState(false); //비밀번호 유효성
   const [isPwMatch, setIsPwMatch] = useState(false); //비밀번호 일치성
-  const [loading, setLoading] = useState(false); // 토큰 확인 중 상태
 
   //공통 핸들러 - 입력값 변경을 처리
   const handleInputChange = (field, value) => {
@@ -143,7 +143,6 @@ const SignUpPage = () => {
 
   return (
     <>
-      <LoadingOverlay visible={loading} /*로딩*/ />
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollView}
         keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감

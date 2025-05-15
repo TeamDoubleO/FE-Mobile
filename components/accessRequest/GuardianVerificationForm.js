@@ -4,8 +4,10 @@ import { useState } from 'react';
 import NormalInput from '../textinputs/NormalInput';
 import NormalAlert from '../alerts/NormalAlert';
 import { verifyPatientCode } from '../../apis/AccessRequestApi';
+import { useAuthStore } from '../../stores/authStore';
 
 const GuardianVerificationForm = ({ onVerifiedHandler }) => {
+  const { setLoading } = useAuthStore();
   const [patientCode, setPatientCode] = useState(''); // 환자 번호 관리
   const [isVerified, setIsVerified] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -15,6 +17,7 @@ const GuardianVerificationForm = ({ onVerifiedHandler }) => {
 
   // 환자 번호 검증 버튼 클릭 핸들러
   const handleVerifyPatient = async () => {
+    setLoading(true);
     try {
       await verifyPatientCode(patientCode);
 
@@ -29,6 +32,8 @@ const GuardianVerificationForm = ({ onVerifiedHandler }) => {
       setAlertMessage(`일치하는 환자 정보가\n존재하지 않습니다.\n확인 후 다시 입력해 주세요.`);
       setShowVerifiedAlert(true);
       setPatientCode('');
+    } finally {
+      setLoading(false);
     }
   };
 
