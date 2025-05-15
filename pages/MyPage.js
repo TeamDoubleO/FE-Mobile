@@ -8,9 +8,10 @@ import GrayButton from '../components/buttons/GrayButton';
 import { useNavigation } from '@react-navigation/native';
 import NormalAlert from '../components/alerts/NormalAlert';
 import { deleteUser, getMyInfo, logoutUser } from '../apis/MyPageApi';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuthStore } from '../stores/authStore';
 
-export default function MyPage({ setIsLoggedIn }) {
+export default function MyPage() {
+  const { accessToken, clearAccessToken } = useAuthStore();
   const [isVerified, setIsVerified] = useState(false); // 비밀번호 인증 여부
   const [isModalVisible, setIsModalVisible] = useState(true);
 
@@ -28,8 +29,6 @@ export default function MyPage({ setIsLoggedIn }) {
     email: '',
   });
 
-  const [accessToken, setAccessToken] = useState(null); // 사용자 토큰
-
   const navigation = useNavigation();
 
   // 인증 완료 시, 모달 창 닫음
@@ -39,14 +38,9 @@ export default function MyPage({ setIsLoggedIn }) {
 
     // 회원 정보 불러오기
     try {
-      // 토큰 불러오기
-      const token = await AsyncStorage.getItem('accessToken');
-      if (!token) {
+      if (!accessToken) {
         throw new Error('토큰이 존재하지 않습니다.');
       }
-
-      setAccessToken(token);
-
       const data = await getMyInfo();
       setUserInfo({
         name: data.name,
@@ -79,10 +73,8 @@ export default function MyPage({ setIsLoggedIn }) {
     // 로그아웃 처리
     try {
       await logoutUser();
-      // 토큰 삭제
-      await AsyncStorage.removeItem('accessToken');
-      // 시작 페이지로 이동되도록 로그인 상태 설정
-      setIsLoggedIn(false);
+      // 토큰 삭제, 시작 페이지로 이동되도록 로그인 상태 설정
+      clearAccessToken();
     } catch (error) {
       console.log('내 정보 조회 실패:', error);
     }
@@ -108,10 +100,8 @@ export default function MyPage({ setIsLoggedIn }) {
     // 회원 탈퇴 처리
     try {
       await deleteUser();
-      // 토큰 삭제
-      await AsyncStorage.removeItem('accessToken');
-      // 시작 페이지로 이동되도록 로그인 상태 설정
-      setIsLoggedIn(false);
+      // 토큰 삭제, 시작 페이지로 이동되도록 로그인 상태 설정
+      clearAccessToken();
     } catch (error) {
       console.log('회원 탈퇴 실패:', error);
     }

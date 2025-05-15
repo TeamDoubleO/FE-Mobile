@@ -8,7 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NormalAlert from '../components/alerts/NormalAlert';
 import { updatePassword } from '../apis/PasswordApi';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ChangePasswordPage = () => {
   const [originalPassword, setOriginalPassword] = useState(''); // 기존 비밀번호
@@ -49,8 +48,6 @@ const ChangePasswordPage = () => {
   const handleConfirmChange = async () => {
     setShowConfirmAlert(false);
     try {
-      // 토큰 불러오기
-      const token = await AsyncStorage.getItem('accessToken');
       await updatePassword({ originalPassword, newPassword });
 
       setTimeout(() => {

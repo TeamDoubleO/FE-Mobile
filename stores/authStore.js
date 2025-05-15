@@ -12,6 +12,11 @@ export const useAuthStore = create(
           accessToken: token,
           isLoggedIn: !!token,
         }),
+      //토큰 값만 설정할 때 사용
+      setOnlyAccessToken: (token) =>
+        set({
+          accessToken: token,
+        }),
       clearAccessToken: () =>
         set({
           accessToken: null,
@@ -25,13 +30,6 @@ export const useAuthStore = create(
       // 로딩 상태 관리
       loading: false,
       setLoading: (value) => set({ loading: value }),
-
-      // 로그아웃시 상태 설정
-      // logout: () =>
-      //   set({
-      //     isLoggedIn: false,
-      //     accessToken: null,
-      //   }),
     }),
     {
       name: 'auth-storage',
