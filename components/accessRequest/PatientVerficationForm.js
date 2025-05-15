@@ -5,8 +5,10 @@ import { useState, useEffect } from 'react';
 import NormalInput from '../textinputs/NormalInput';
 import NormalAlert from '../alerts/NormalAlert';
 import { getMyInfo } from '../../apis/MyPageApi';
+import { useAuthStore } from '../../stores/authStore';
 
 const PatientVerficationForm = ({ onVerifiedHandler }) => {
+  const { setLoading } = useAuthStore();
   const [userInfo, setUserInfo] = useState({ name: '', birth: '', contact: '' }); // 회원 정보 관리
   const [isVerified, setIsVerified] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -17,6 +19,7 @@ const PatientVerficationForm = ({ onVerifiedHandler }) => {
   // 사용자 정보 불러오기
   useEffect(() => {
     const loadInfo = async () => {
+      setLoading(true);
       try {
         const data = await getMyInfo();
         setUserInfo({
@@ -26,6 +29,8 @@ const PatientVerficationForm = ({ onVerifiedHandler }) => {
         });
       } catch (error) {
         console.log('내 정보 조회 실패:', error.response?.data || error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -33,6 +38,7 @@ const PatientVerficationForm = ({ onVerifiedHandler }) => {
   }, []);
 
   const handleVerifyPatient = async () => {
+    setLoading(true);
     // TODO: 환자 번호 검증 API 연결
     // 임시 검증 로직
     try {
@@ -53,6 +59,8 @@ const PatientVerficationForm = ({ onVerifiedHandler }) => {
     } catch (error) {
       setIsVerified(false);
       setShowVerifiedAlert(true);
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -3,7 +3,6 @@ import axios from './AxiosInstance';
 // 병원 목록 조회
 export const getHospitalList = async () => {
   const response = await axios.get('/hospitals');
-
   return response.data.data;
 };
 

@@ -4,14 +4,17 @@ import { styles } from './styles/AccessRequestPage.styles';
 import NormalInput from '../components/textinputs/NormalInput';
 import NormalList from '../components/lists/NormalList';
 import { getHospitalList } from '../apis/AccessRequestApi';
+import { useAuthStore } from '../stores/authStore';
 
 const AccessRequestPage = () => {
+  const { setLoading } = useAuthStore();
   const [searchText, setSearchText] = useState('');
   const [hospitalName, setHospitalName] = useState([]);
 
   // 병원 목록 불러오기
   useEffect(() => {
     const getHospitalsName = async () => {
+      setLoading(true);
       try {
         const data = await getHospitalList();
         console.log(data);
@@ -19,9 +22,10 @@ const AccessRequestPage = () => {
         setHospitalName(data);
       } catch (error) {
         console.error('병원 목록 불러오기 실패:', error);
+      } finally {
+        setLoading(false);
       }
     };
-
     getHospitalsName();
   }, []);
 

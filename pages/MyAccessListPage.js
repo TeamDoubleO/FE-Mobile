@@ -5,8 +5,10 @@ import { MyAccessList } from '../mocks/MyAccessListSample'; //예시 데이터
 import { styles } from './styles/MyAccessListPage.styles';
 import { getAccessList } from '../apis/MyAccessListApi';
 import MyAccessDetailModal from '../modals/MyAccessDetailModal';
+import { useAuthStore } from '../stores/authStore';
 
 const MyAccessListPage = () => {
+  const { setLoading } = useAuthStore();
   const [myAccessList, setMyAccessList] = useState([]);
 
   // Alert 관리 상태변수
@@ -16,15 +18,17 @@ const MyAccessListPage = () => {
   // 출입증 목록 불러오기
   useEffect(() => {
     const getMyAccessList = async () => {
+      setLoading(true);
       try {
         const data = await getAccessList();
         console.log(data.data.data);
         setMyAccessList(data.data.data);
       } catch (error) {
         console.error('출입증 목록 불러오기 실패: ', error);
+      } finally {
+        setLoading(false);
       }
     };
-
     getMyAccessList();
   }, []);
 

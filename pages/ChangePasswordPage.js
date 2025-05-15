@@ -8,8 +8,10 @@ import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NormalAlert from '../components/alerts/NormalAlert';
 import { updatePassword } from '../apis/PasswordApi';
+import { useAuthStore } from '../stores/authStore';
 
 const ChangePasswordPage = () => {
+  const { setLoading } = useAuthStore();
   const [originalPassword, setOriginalPassword] = useState(''); // 기존 비밀번호
   const [newPassword, setNewPassword] = useState(''); // 새 비밀번호
   const [confirmNewPassword, setConfirmNewPassword] = useState(''); // 새 비밀번호 확인
@@ -47,6 +49,7 @@ const ChangePasswordPage = () => {
   // 비밀번호 변경 확인 버튼 클릭 핸들러
   const handleConfirmChange = async () => {
     setShowConfirmAlert(false);
+    setLoading(true);
     try {
       await updatePassword({ originalPassword, newPassword });
 
@@ -65,6 +68,8 @@ const ChangePasswordPage = () => {
 
       setErrorAlertMessage(message);
       setShowErrorAlert(true);
+    } finally {
+      setLoading(false);
     }
   };
 

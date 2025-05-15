@@ -10,8 +10,10 @@ import PatientVerficationForm from '../components/accessRequest/PatientVerficati
 import GuardianVerificationForm from '../components/accessRequest/GuardianVerificationForm';
 import { useNavigation } from '@react-navigation/native';
 import { getAvailableDates } from '../apis/AccessRequestApi';
+import { useAuthStore } from '../stores/authStore';
 
 const AccessRequestRolePage = ({ route }) => {
+  const { setLoading } = useAuthStore();
   const { hospitalId, hospitalName } = route.params;
 
   const [role, setRole] = useState('patient');
@@ -23,11 +25,14 @@ const AccessRequestRolePage = ({ route }) => {
   // 방문 가능 날짜 불러오기
   useEffect(() => {
     const fetchAvailableDates = async () => {
+      setLoading(true);
       try {
         const dates = await getAvailableDates(hospitalId);
         setAvailableDates(dates);
       } catch (error) {
         console.error('방문 가능 날짜 불러오기 실패:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
