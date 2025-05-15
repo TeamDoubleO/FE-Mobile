@@ -1,7 +1,5 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { runLogoutCallback } from '../handler/logoutHandler';
 import { useAuthStore } from '../stores/authStore';
 
 const BASE_URL = Constants.expoConfig.extra.BASE_URL;
