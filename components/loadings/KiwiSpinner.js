@@ -27,7 +27,7 @@ const KiwiSpinner = () => {
   return (
     <View style={styles.contentContainer}>
       <Animated.Image //이미지를 애니메이션 처리
-        source={require('../../assets/images/logoIcon.png')}
+        source={require('../../assets/images/logoLoading.png')}
         style={[styles.animationImage, { transform: [{ rotate: spin }] }]}
         resizeMode="contain"
       />
