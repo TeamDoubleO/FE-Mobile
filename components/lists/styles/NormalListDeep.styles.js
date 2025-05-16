@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
   contentContainer: { paddingBottom: 60 },
   // 각 아이템 박스 스타일
   itemBox: {
-    marginBottom: 10,
     marginBottom: -40,
   },
   // 각 아이템 텍스트 스타일

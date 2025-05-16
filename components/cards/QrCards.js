@@ -63,6 +63,8 @@ const QrCards = ({ userVC, hasAccessAuthority }) => {
               did={item.did}
               userName={item.userName}
               hospitalName={item.hospitalName}
+              startDate={item.startDate}
+              expireDate={item.expireDate}
               hasAccessAuthority={true}
             />
           </View>

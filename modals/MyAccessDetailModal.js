@@ -14,15 +14,15 @@ const MyAccessDetailModal = ({ isVisible, onClose, onConfirm, data }) => {
         <Text style={styles.modalContentTitle}>{data.area}</Text>
         <View style={styles.textContainer}>
           <Text style={styles.modalText}>방문자: {data.visitorType}</Text>
-          <Text style={styles.modalText}>발급일: {data.startDate}</Text>
+          <Text style={styles.modalText}>시작일: {data.startDate}</Text>
           <Text style={styles.modalText}>만료일: {data.expireDate}</Text>
           <Text style={styles.modalText}>승인 여부: {data.approval}</Text>
           <Text style={styles.modalText}>환자 번호: {data.patientNumber}</Text>
         </View>
         <Text style={styles.modalContentTitle}>내 보호자</Text>
         <View style={styles.textContainer}>
-          <Text style={styles.modalText}>{`김OO\t|\t010-0000-0000`}</Text>
-          <Text style={styles.modalText}>{`김OO\t|\t010-0000-0000`}</Text>
+          <Text style={styles.modalText}>{`김지수\t|\t010-0000-0000`}</Text>
+          <Text style={styles.modalText}>{`손민지\t|\t010-1111-1111`}</Text>
         </View>
 
         <View style={styles.buttonRow}>

@@ -13,59 +13,56 @@ const mockAccessList = [
     passId: 4,
     memberId: 1,
     hospitalId: 1,
-    accessAreaNames: ['A동-1층-01호', 'A동-1층-02호', 'A동-1층-03호'],
+    accessAreaNames: [
+      '본관 5층 내과병동 501호',
+      '본관 5층 내과병동 502호',
+      '본관 5층 내과병동 503호',
+    ],
     visitCategory: 'PATIENT',
     patientId: 9,
-    startedAt: '2025-05-17T06:35:05',
-    expiredAt: '3000-05-15T06:33:09',
+    startedAt: '2025-05-16T06:35:05',
+    expiredAt: '2025-05-18T06:33:09',
   },
   {
     passId: 5,
     memberId: 1,
     hospitalId: 1,
-    accessAreaNames: ['B동-1층-01호', 'B동-2층-04호'],
+    accessAreaNames: ['신관 3층 외과병동 301호', '신관 4층 외과병동 402호'],
     visitCategory: 'PATIENT',
     patientId: 9,
     startedAt: '2025-05-15T08:06:27',
-    expiredAt: '2025-05-15T08:06:00',
+    expiredAt: '2025-05-17T08:06:00',
   },
   {
     passId: 6,
     memberId: 1,
     hospitalId: 2,
-    accessAreaNames: ['C동-5층-01호'],
+    accessAreaNames: ['암센터 7층 항암치료실 701호'],
     visitCategory: 'GUARDIAN',
     patientId: 10,
     startedAt: '2025-05-15T08:08:15',
-    expiredAt: '3000-05-15T08:06:54',
+    expiredAt: '2025-05-17T08:06:54',
   },
   {
     passId: 7,
     memberId: 1,
     hospitalId: 3,
-    accessAreaNames: [
-      '희망 병동 7층 소아청소년과 집중치료실 713호',
-      '사랑관 5층 암센터 항암치료실 502호',
-      '사랑관 5층 암센터 항암치료실 503호',
-      // '사랑관 5층 암센터 항암치료실 504호',
-      // '사랑관 5층 암센터 항암치료실 505호',
-      // '사랑관 5층 암센터 항암치료실 506호',
-    ],
+    accessAreaNames: ['본관 3층 내과병동 305호', '본관 4층 외과병동 410호'],
     visitCategory: 'GUARDIAN',
     patientId: 10,
-    startedAt: '2025-05-15T08:08:15',
-    expiredAt: '3000-05-15T08:06:54',
+    startedAt: '2025-05-17T08:08:15',
+    expiredAt: '2025-05-18T08:06:54',
   },
-  {
-    passId: 8,
-    memberId: 1,
-    hospitalId: 3,
-    accessAreaNames: ['소망관 3층 응급의학과 외상전용 수술실 320호'],
-    visitCategory: 'GUARDIAN',
-    patientId: 10,
-    startedAt: '2025-05-15T08:08:15',
-    expiredAt: '3000-05-15T08:06:54',
-  },
+  // {
+  //   passId: 8,
+  //   memberId: 1,
+  //   hospitalId: 3,
+  //   accessAreaNames: ['소망관 3층 응급의학과 외상전용 수술실 320호'],
+  //   visitCategory: 'GUARDIAN',
+  //   patientId: 10,
+  //   startedAt: '2025-05-15T08:08:15',
+  //   expiredAt: '2025-06-16T08:06:54',
+  // },
 ];
 
 const MyAccessListPage = () => {
@@ -116,14 +113,13 @@ const MyAccessListPage = () => {
   }, []);
 
   // 출입 권한 클릭 시 모달 띄우기
-  // TODO: Pass-Service 구현 완료 시, 실제 데이터로 변경 필요
   const handleItemPress = (section, item, index) => {
     const access = item.data;
 
     setSelectedAccess({
       hospitalName: section.contentTitle,
       // area: (access.accessAreaNames || []).join(',\n'),
-      area: (access.accessAreaNames || []).map((name) => `- ${name}`).join('\n'),
+      area: (access.accessAreaNames || []).map((name) => `${name}`).join('\n'),
       visitorType: getVisitCategoryLabel(access.visitCategory),
       startDate: formatDateTime(access.startedAt),
       expireDate: formatDateTime(access.expiredAt),
@@ -170,7 +166,7 @@ const MyAccessListPage = () => {
     } else if (end < now) {
       return '만료';
     } else {
-      return '유효';
+      return '출입 가능';
     }
   };
 
@@ -204,6 +200,10 @@ const MyAccessListPage = () => {
     <>
       {sections.length > 0 ? (
         <NormalListDeep
+          cardStyle={{
+            paddingHorizontal: 0,
+            borderBottomWidth: 0,
+          }}
           sections={sections.map((section) => ({
             ...section,
             accessList: section.accessList.map((item) => ({ data: item })),
@@ -213,21 +213,28 @@ const MyAccessListPage = () => {
             const item = itemObj.data;
             return (
               <View style={styles.container}>
-                <View>
-                  <Text style={styles.textTitle}>
-                    {getVisitCategoryLabel(item.visitCategory)} {'\n\n'}
-                    {(item.accessAreaNames || []).join('\n')}
-                  </Text>
-                  <Text style={styles.text}>
-                    {'\n'}발급일: {formatDateTime(item.startedAt)}
-                    {'\n'}만료일: {formatDateTime(item.expiredAt)}
-                  </Text>
+                <View style={styles.infoTextPadding}>
+                  <View style={styles.areaTextPadding}>
+                    <Text style={styles.textTitle}>
+                      {'[ ' + getVisitCategoryLabel(item.visitCategory) + ' ]'}
+                    </Text>
+                    {(item.accessAreaNames || []).map((area, idx) => (
+                      <Text key={idx} style={styles.areaText}>
+                        {area}
+                      </Text>
+                    ))}
+                  </View>
+                  <View style={styles.validateTextPadding}>
+                    <Text style={styles.validateText}>
+                      {getApprovalStatus(item.startedAt, item.expiredAt)}
+                    </Text>
+                  </View>
                 </View>
-                <View>
-                  <Text style={styles.validateText}>
-                    {'\n'} {getApprovalStatus(item.startedAt, item.expiredAt)}
-                  </Text>
-                </View>
+                <Text style={styles.text}>
+                  시작일: {formatDateTime(item.startedAt)}
+                  {'\n'}만료일: {formatDateTime(item.expiredAt)}
+                  {'\n'}
+                </Text>
               </View>
             );
           }}

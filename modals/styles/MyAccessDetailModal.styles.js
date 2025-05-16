@@ -13,14 +13,14 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   modalTitle: {
-    fontSize: 25,
+    fontSize: 22,
     fontWeight: '600',
     color: colors.black,
     marginTop: '7%',
     alignSelf: 'center',
   },
   modalContentTitle: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: '500',
     color: colors.black,
     marginTop: '5%',
@@ -31,10 +31,10 @@ export const styles = StyleSheet.create({
     marginBottom: '7%',
   },
   modalText: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: '500',
     color: colors.darkGray,
-    marginTop: 10,
+    marginTop: 2,
     lineHeight: 30,
   },
   buttonRow: {

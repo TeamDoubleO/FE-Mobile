@@ -9,7 +9,7 @@ import { colors } from '../../constants/colors';
 import { hospitalName } from '../../mocks/hospitalData';
 
 // hasAccessAuthority: 출입 권한 여부, userVC : VC에 담을 사용자 정보, qrData : QR에 담을 JSON 문자열
-const QrCard = ({ hasAccessAuthority, did, userName, hospitalName }) => {
+const QrCard = ({ hasAccessAuthority, did, userName, hospitalName, startDate, expireDate }) => {
   // 해당 QR의 상세 페이지로 이동 (아직 미구현)
   //const navigation = useNavigation();
   //   const navigateToAccessListDeatail = () => {
@@ -17,7 +17,7 @@ const QrCard = ({ hasAccessAuthority, did, userName, hospitalName }) => {
   //   };
 
   // 임시: QR에 담을 JSON 문자열
-  const qrData = JSON.stringify({ did, userName, hospitalName });
+  const qrData = JSON.stringify({ did, userName, hospitalName, startDate, expireDate });
   return (
     <View style={styles.shadowWrapper}>
       <View style={styles.cardContainer}>
@@ -32,6 +32,8 @@ const QrCard = ({ hasAccessAuthority, did, userName, hospitalName }) => {
             <QRCode value={qrData} size={140} color={colors.black} backgroundColor={colors.white} />
             <Text style={styles.userName}>{userName}</Text>
             <Text style={styles.hospital}>{hospitalName}</Text>
+            <Text style={styles.hospital}>시작일: {startDate}</Text>
+            <Text style={styles.hospital}>만료일: {expireDate}</Text>
           </>
         ) : (
           <>

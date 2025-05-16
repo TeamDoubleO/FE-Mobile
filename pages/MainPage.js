@@ -15,20 +15,26 @@ const MainPage = () => {
   const userVC = [
     {
       did: 'did:example:123456789abcdefghi',
-      userName: '김짱구',
-      hospitalName: '짱구병원',
+      userName: '김엘지',
+      hospitalName: '강북삼성병원',
+      startDate: '2025-05-17T06:35:05',
+      expireDate: '2025-05-18T06:33:09',
       issuedAt: Date.now(),
     },
     {
       did: 'did:example:123456789abcdefdhi',
-      userName: '김짱구',
-      hospitalName: '흰둥이병원',
+      userName: '김엘지',
+      hospitalName: '강북삼성병원',
+      startDate: '2025-05-15T08:06:27',
+      expireDate: '2025-05-17T08:06:00',
       issuedAt: Date.now(),
     },
     {
       did: 'did:example:123456789abcdeffhi',
-      userName: '김짱구',
-      hospitalName: '오수병원',
+      userName: '김엘지',
+      hospitalName: '건국대학교병원',
+      startDate: '2025-05-15T08:08:15',
+      expireDate: '2025-05-17T08:06:54',
       issuedAt: Date.now(),
     },
   ];
