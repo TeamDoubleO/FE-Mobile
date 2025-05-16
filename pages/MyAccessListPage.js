@@ -16,7 +16,7 @@ const mockAccessList = [
     accessAreaNames: ['A동-1층-01호', 'A동-1층-02호', 'A동-1층-03호'],
     visitCategory: 'PATIENT',
     patientId: 9,
-    startedAt: '2025-05-15T06:35:05',
+    startedAt: '2025-05-17T06:35:05',
     expiredAt: '3000-05-15T06:33:09',
   },
   {
@@ -27,13 +27,40 @@ const mockAccessList = [
     visitCategory: 'PATIENT',
     patientId: 9,
     startedAt: '2025-05-15T08:06:27',
-    expiredAt: '3000-05-15T08:06:00',
+    expiredAt: '2025-05-15T08:06:00',
   },
   {
     passId: 6,
     memberId: 1,
     hospitalId: 2,
     accessAreaNames: ['C동-5층-01호'],
+    visitCategory: 'GUARDIAN',
+    patientId: 10,
+    startedAt: '2025-05-15T08:08:15',
+    expiredAt: '3000-05-15T08:06:54',
+  },
+  {
+    passId: 7,
+    memberId: 1,
+    hospitalId: 3,
+    accessAreaNames: [
+      '희망 병동 7층 소아청소년과 집중치료실 713호',
+      '사랑관 5층 암센터 항암치료실 502호',
+      '사랑관 5층 암센터 항암치료실 503호',
+      // '사랑관 5층 암센터 항암치료실 504호',
+      // '사랑관 5층 암센터 항암치료실 505호',
+      // '사랑관 5층 암센터 항암치료실 506호',
+    ],
+    visitCategory: 'GUARDIAN',
+    patientId: 10,
+    startedAt: '2025-05-15T08:08:15',
+    expiredAt: '3000-05-15T08:06:54',
+  },
+  {
+    passId: 8,
+    memberId: 1,
+    hospitalId: 3,
+    accessAreaNames: ['소망관 3층 응급의학과 외상전용 수술실 320호'],
     visitCategory: 'GUARDIAN',
     patientId: 10,
     startedAt: '2025-05-15T08:08:15',
@@ -95,15 +122,56 @@ const MyAccessListPage = () => {
 
     setSelectedAccess({
       hospitalName: section.contentTitle,
-      area: (access.accessAreaNames || []).join(', '),
-      visitorType: access.visitCategory,
-      expireDate: access.expiredAt,
-      approval: new Date(access.expiredAt) > new Date() ? '유효' : '출입 대기',
+      // area: (access.accessAreaNames || []).join(',\n'),
+      area: (access.accessAreaNames || []).map((name) => `- ${name}`).join('\n'),
+      visitorType: getVisitCategoryLabel(access.visitCategory),
+      startDate: formatDateTime(access.startedAt),
+      expireDate: formatDateTime(access.expiredAt),
+      approval: getApprovalStatus(access.startedAt, access.expiredAt),
       patientNumber: access.patientId,
       issuer: access.memberId,
     });
 
     setShowModal(true);
+  };
+
+  // visitCategory 변환 함수
+  const getVisitCategoryLabel = (category) => {
+    switch (category) {
+      case 'PATIENT':
+        return '환자';
+      case 'GUARDIAN':
+        return '보호자';
+      default:
+        return category; // 혹시 모르는 값은 그대로 표기
+    }
+  };
+
+  // 날짜 포맷 함수 (YYYY-MM-DD HH:mm)
+  const formatDateTime = (date) => {
+    if (!date) return '';
+    const d = new Date(date);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const hh = String(d.getHours()).padStart(2, '0');
+    const min = String(d.getMinutes()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+  };
+
+  // 출입 가능 상태 함수
+  const getApprovalStatus = (startedAt, expiredAt) => {
+    const now = new Date();
+    const start = new Date(startedAt);
+    const end = new Date(expiredAt);
+
+    if (start > now) {
+      return '출입 대기';
+    } else if (end < now) {
+      return '만료';
+    } else {
+      return '유효';
+    }
   };
 
   //병원 Id로 병원 이름 찾기
@@ -147,16 +215,17 @@ const MyAccessListPage = () => {
               <View style={styles.container}>
                 <View>
                   <Text style={styles.textTitle}>
-                    {item.visitCategory} {'\n'}
+                    {getVisitCategoryLabel(item.visitCategory)} {'\n\n'}
                     {(item.accessAreaNames || []).join('\n')}
                   </Text>
                   <Text style={styles.text}>
-                    {'\n'}({item.expiredAt}까지)
+                    {'\n'}발급일: {formatDateTime(item.startedAt)}
+                    {'\n'}만료일: {formatDateTime(item.expiredAt)}
                   </Text>
                 </View>
                 <View>
                   <Text style={styles.validateText}>
-                    {'\n'} {new Date(item.expiredAt) > new Date() ? '유효' : '출입 대기'}
+                    {'\n'} {getApprovalStatus(item.startedAt, item.expiredAt)}
                   </Text>
                 </View>
               </View>

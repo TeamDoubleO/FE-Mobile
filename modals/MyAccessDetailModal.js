@@ -14,6 +14,7 @@ const MyAccessDetailModal = ({ isVisible, onClose, onConfirm, data }) => {
         <Text style={styles.modalContentTitle}>{data.area}</Text>
         <View style={styles.textContainer}>
           <Text style={styles.modalText}>방문자: {data.visitorType}</Text>
+          <Text style={styles.modalText}>발급일: {data.startDate}</Text>
           <Text style={styles.modalText}>만료일: {data.expireDate}</Text>
           <Text style={styles.modalText}>승인 여부: {data.approval}</Text>
           <Text style={styles.modalText}>환자 번호: {data.patientNumber}</Text>

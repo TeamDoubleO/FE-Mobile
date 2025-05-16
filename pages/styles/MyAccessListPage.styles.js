@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 600,
     color: colors.black,
+    // lineHeight: 30,
   },
   text: {
     fontSize: 19,
