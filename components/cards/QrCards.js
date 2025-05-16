@@ -2,12 +2,11 @@ import React, { useRef, useState } from 'react';
 import { FlatList, View, Dimensions, TouchableOpacity } from 'react-native';
 import QrCard from './QrCard';
 import styles from './styles/QrCards.styles';
-import Dot from './Dot';
+import DotPagination from './DotPagination';
 
 // 화면의 가로 길이 가져오기
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width;
-const SIDE_PADDING = (width - CARD_WIDTH) / 2; // 좌우 패딩 계산
 const OVERLAP = 80; // 카드가 겹치는 정도
 
 const QrCards = ({ userVC, hasAccessAuthority }) => {
@@ -32,7 +31,8 @@ const QrCards = ({ userVC, hasAccessAuthority }) => {
 
   // dot(인디케이터) 클릭 시 해당 카드로 이동
   const handleDotPress = (index) => {
-    flatListRef.current?.scrollToIndex({ index, animated: true });
+    const offset = index * (CARD_WIDTH - OVERLAP);
+    flatListRef.current?.scrollToOffset({ offset, animated: true });
   };
 
   // 카드 리스트
@@ -47,9 +47,11 @@ const QrCards = ({ userVC, hasAccessAuthority }) => {
         pagingEnabled={false} // snapToInterval을 사용하므로 false
         snapToInterval={CARD_WIDTH - OVERLAP} // 카드 단위로 스냅
         decelerationRate="fast" // 빠른 스냅 효과
-        contentContainerStyle={{
-          paddingHorizontal: SIDE_PADDING, // 양쪽에 패딩 추가로 옆 카드 살짝 보이게
-        }}
+        getItemLayout={(data, index) => ({
+          length: CARD_WIDTH - OVERLAP,
+          offset: (CARD_WIDTH - OVERLAP) * index,
+          index,
+        })}
         renderItem={({ item, index }) => (
           <View
             style={{
@@ -72,11 +74,7 @@ const QrCards = ({ userVC, hasAccessAuthority }) => {
         onMomentumScrollEnd={onMomentumScrollEnd}
       />
       <View style={styles.dotContainer}>
-        {userVC.map((_, i) => (
-          <TouchableOpacity key={`dot-${i}`} onPress={() => handleDotPress(i)}>
-            <Dot active={pageIndex === i} />
-          </TouchableOpacity>
-        ))}
+        <DotPagination total={userVC.length} currentIndex={pageIndex} onPress={handleDotPress} />
       </View>
     </View>
   );

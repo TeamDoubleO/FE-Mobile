@@ -15,7 +15,7 @@ const Dot = ({ active }) => {
   useEffect(() => {
     Animated.timing(animatedWidth, {
       toValue: active ? DOT_ACTIVE_WIDTH : DOT_WIDTH,
-      duration: 300,
+      duration: 200,
       useNativeDriver: false,
     }).start();
   }, [active, animatedWidth]);
