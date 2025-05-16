@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import QRCode from 'react-native-qrcode-svg';
 
@@ -26,21 +26,34 @@ const QrCard = ({ hasAccessAuthority, did, userName, hospitalName, startDate, ex
           source={require('../../assets/images/mainBackground.png')}
           resizeMode="contain" // 이미지 비율 유지
         />
-        {hasAccessAuthority ? (
-          <>
-            <Text style={styles.qrTitle}>임시 출입 QR</Text>
-            <QRCode value={qrData} size={140} color={colors.black} backgroundColor={colors.white} />
-            <Text style={styles.userName}>{userName}</Text>
-            <Text style={styles.hospital}>{hospitalName}</Text>
-            <Text style={styles.hospital}>시작일: {startDate}</Text>
-            <Text style={styles.hospital}>만료일: {expireDate}</Text>
-          </>
-        ) : (
-          <>
-            <Text style={styles.cardText}>등록된 출입 권한이 존재하지 않습니다.</Text>
-            <Text style={styles.cardSubText}>방문 신청 버튼을 눌러 출입 권한을 신청해주세요.</Text>
-          </>
-        )}
+        <ScrollView
+          contentContainerStyle={{ alignItems: 'center', flexGrow: 1 }}
+          style={{ width: '100%' }}
+          showsVerticalScrollIndicator={false}
+        >
+          {hasAccessAuthority ? (
+            <>
+              <Text style={styles.qrTitle}>임시 출입 QR</Text>
+              <QRCode
+                value={qrData}
+                size={140}
+                color={colors.black}
+                backgroundColor={colors.white}
+              />
+              <Text style={styles.userName}>{userName}</Text>
+              <Text style={styles.hospital}>{hospitalName}</Text>
+              <Text style={styles.hospital}>시작일: {startDate}</Text>
+              <Text style={styles.hospital}>만료일: {expireDate}</Text>
+            </>
+          ) : (
+            <>
+              <Text style={styles.cardText}>등록된 출입 권한이 존재하지 않습니다.</Text>
+              <Text style={styles.cardSubText}>
+                방문 신청 버튼을 눌러 출입 권한을 신청해주세요.
+              </Text>
+            </>
+          )}
+        </ScrollView>
       </View>
     </View>
   );

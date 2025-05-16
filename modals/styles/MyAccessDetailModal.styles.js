@@ -4,7 +4,7 @@ import { colors } from '../../constants/colors';
 export const styles = StyleSheet.create({
   modalContainer: {
     width: 300,
-    height: 'auto',
+    maxHeight: '80%',
     padding: '5%',
     borderRadius: 10,
     backgroundColor: colors.white,
@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignSelf: 'stretch',
-    marginVertical: '7%',
+    // marginVertical: '7%',
     gap: '5%',
   },
   button: {

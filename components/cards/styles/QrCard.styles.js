@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     elevation: 7, // Android용
     borderRadius: 15,
     width: '70%',
-    height: '85%', //TODO : 기존에는 80이었는데, 추후 카드 높이 변경 필요할듯함
+    height: '90%', //TODO : 기존에는 80이었는데, 추후 카드 높이 변경 필요할듯함
     marginVertical: '10%',
   },
   cardContainer: {
