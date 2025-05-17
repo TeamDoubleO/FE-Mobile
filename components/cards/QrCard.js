@@ -10,7 +10,6 @@ import { hospitalName } from '../../mocks/hospitalData';
 
 // hasAccessAuthority: 출입 권한 여부, userVC : VC에 담을 사용자 정보, qrData : QR에 담을 JSON 문자열
 const QrCard = ({ hasAccessAuthority, did, userName, hospitalName, startDate, expireDate }) => {
-const QrCard = ({ hasAccessAuthority, did, userName, hospitalName, startDate, expireDate }) => {
   // 해당 QR의 상세 페이지로 이동 (아직 미구현)
   //const navigation = useNavigation();
   //   const navigateToAccessListDeatail = () => {
@@ -18,7 +17,6 @@ const QrCard = ({ hasAccessAuthority, did, userName, hospitalName, startDate, ex
   //   };
 
   // 임시: QR에 담을 JSON 문자열
-  const qrData = JSON.stringify({ did, userName, hospitalName, startDate, expireDate });
   const qrData = JSON.stringify({ did, userName, hospitalName, startDate, expireDate });
   return (
     <View style={styles.shadowWrapper}>
