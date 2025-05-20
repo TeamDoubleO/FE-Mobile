@@ -6,64 +6,14 @@ import { getAccessList } from '../apis/MyAccessListApi';
 import { getHospitalList } from '../apis/AccessRequestApi';
 import MyAccessDetailModal from '../modals/MyAccessDetailModal';
 import { useAuthStore } from '../stores/authStore';
+// 목업 데이터
+import { mockAccessList } from '../mocks/mockAccessList';
 
-// 더미 데이터 (로컬 테스트 용)
-const mockAccessList = [
-  {
-    passId: 4,
-    memberId: 1,
-    hospitalId: 1,
-    accessAreaNames: [
-      '본관 5층 내과병동 501호',
-      '본관 5층 내과병동 502호',
-      '본관 5층 내과병동 503호',
-    ],
-    visitCategory: 'PATIENT',
-    patientId: 9,
-    startedAt: '2025-05-20T06:35:05',
-    expiredAt: '2025-05-22T06:33:09',
-  },
-  {
-    passId: 5,
-    memberId: 1,
-    hospitalId: 1,
-    accessAreaNames: ['신관 3층 외과병동 301호', '신관 4층 외과병동 402호'],
-    visitCategory: 'PATIENT',
-    patientId: 9,
-    startedAt: '2025-05-21T08:06:27',
-    expiredAt: '2025-05-22T08:06:00',
-  },
-  {
-    passId: 6,
-    memberId: 1,
-    hospitalId: 2,
-    accessAreaNames: ['암센터 7층 항암치료실 701호'],
-    visitCategory: 'GUARDIAN',
-    patientId: 10,
-    startedAt: '2025-05-15T08:08:15',
-    expiredAt: '2025-05-17T08:06:54',
-  },
-  {
-    passId: 7,
-    memberId: 1,
-    hospitalId: 3,
-    accessAreaNames: ['본관 3층 내과병동 305호', '본관 4층 외과병동 410호'],
-    visitCategory: 'GUARDIAN',
-    patientId: 10,
-    startedAt: '2025-05-17T08:08:15',
-    expiredAt: '2025-05-18T08:06:54',
-  },
-  // {
-  //   passId: 8,
-  //   memberId: 1,
-  //   hospitalId: 3,
-  //   accessAreaNames: ['소망관 3층 응급의학과 외상전용 수술실 320호'],
-  //   visitCategory: 'GUARDIAN',
-  //   patientId: 10,
-  //   startedAt: '2025-05-15T08:08:15',
-  //   expiredAt: '2025-06-16T08:06:54',
-  // },
-];
+//병원 Id로 병원 이름 찾기
+function getHospitalNameByList(hospitalId, hospitalNameList) {
+  const hospital = hospitalNameList.find((hospital) => hospital.hospitalId === hospitalId);
+  return hospital ? hospital.hospitalName : `병원명 로딩 중 . . .병원: #${hospitalId}`;
+}
 
 const MyAccessListPage = () => {
   const { setLoading } = useAuthStore();
@@ -80,7 +30,7 @@ const MyAccessListPage = () => {
       setLoading(true);
       try {
         const data = await getHospitalList();
-        setHospitalNameList(data); // [{ hospitalId, hospitalName }]
+        setHospitalNameList(data);
       } catch (error) {
         console.error('병원 목록 불러오기 실패:', error);
       } finally {
@@ -109,7 +59,7 @@ const MyAccessListPage = () => {
 
   // 임시 데이터 적용
   useEffect(() => {
-    setMyAccessList(mockAccessList); // 위에서 만든 mock 데이터로 대체
+    setMyAccessList(mockAccessList);
   }, []);
 
   // 출입 권한 클릭 시 모달 띄우기
@@ -171,14 +121,10 @@ const MyAccessListPage = () => {
   };
 
   //병원 Id로 병원 이름 찾기
-  const getHospitalName = (hospitalId) => {
-    const hospital = hospitalNameList.find((hospital) => hospital.hospitalId === hospitalId);
-    // 병원 목록에 없으면 병원 #id로 표시
-    return hospital ? hospital.hospitalName : `병원명 로딩 중 . . .병원: #${hospitalId}`;
-  };
+  const getHospitalName = (hospitalId) => getHospitalNameByList(hospitalId, hospitalNameList);
 
   // NormalListDeep에 넘길 데이터 가공
-  const sections = myAccessList.reduce((acc, cur) => {
+  const sections = (myAccessList || []).reduce((acc, cur) => {
     //acc - accumulator(누적값, 병원별로 묶안 배열), cur - current(현재 배열에서 처리중인 값)
     const hospitalId = cur.hospitalId;
     let hospitalName = getHospitalName(hospitalId); //id로 이름 찾아서 저장
