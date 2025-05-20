@@ -46,6 +46,13 @@ const AccessRequestRolePage = ({ route }) => {
 
   const navigation = useNavigation();
 
+  const navigateToHome = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'MainPage' }],
+    });
+  };
+
   const handlePatientButton = () => {
     setIsVerified(false);
     setVerifiedData(null);
@@ -92,7 +99,7 @@ const AccessRequestRolePage = ({ route }) => {
     setShowSuccessAlert(false);
 
     // 메인 페이지로 이동되도록 설정
-    navigation.navigate('MainPage');
+    navigateToHome();
   };
 
   return (
