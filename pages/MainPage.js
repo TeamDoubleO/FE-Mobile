@@ -9,6 +9,7 @@ import { getHospitalList } from '../apis/AccessRequestApi';
 import { getMyInfo } from '../apis/MyPageApi';
 // 목업 데이터
 import { mockAccessList } from '../mocks/mockAccessList';
+import { useAuthStore } from '../stores/authStore';
 
 // TODO: 리펙토링 할 때 같은 코드는 export해서 import해서 쓰기
 // 병원 Id로 병원 이름 찾기
@@ -51,6 +52,7 @@ function isAccessible(startedAt, expiredAt) {
 }
 
 const MainPage = () => {
+  const { setLoading } = useAuthStore();
   // 임시: 상태변수로 출입 권한 제어
   const [hasAccessAuthority, setHasAccessAuthority] = useState(true);
 
@@ -76,15 +78,25 @@ const MainPage = () => {
 
   // 병원, 출입증 데이터 불러오기
   useEffect(() => {
-    // 병원 목록 불러오기
-    getHospitalList().then(setHospitalNameList);
-    getMyInfo().then((data) => {
-      setUserName(data.name); // 이름 저장
-    });
-    // 출입증 목록 불러오기
-    //getAccessList().then(setMyAccessList);
-    // 목업 출입증 데이터 불러오기
-    setMyAccessList(mockAccessList);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // 병원, 유저 정보 병렬로 불러오기
+        const [hospitalList, myInfo] = await Promise.all([getHospitalList(), getMyInfo()]);
+        setHospitalNameList(hospitalList);
+        setUserName(myInfo.name);
+
+        // 출입증 목록 불러오기 TODO : 여기도 로딩이나 어싱크 처리 필요
+        // getAccessList().then(setMyAccessList);
+        // 목업 출입증 데이터 불러오기
+        setMyAccessList(mockAccessList);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
   // hospitalNameList, myAccessList 준비되면 userVC 생성

@@ -2,9 +2,11 @@ import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
 import { styles } from './styles/MyAccessDetailModal.styles';
+import { useAuthStore } from '../stores/authStore';
 
 // TODO: Pass-Service 구현 완료 시, 실제 데이터로 변경 필요
 const MyAccessDetailModal = ({ isVisible, onClose, onConfirm, data }) => {
+  const { setLoading } = useAuthStore();
   if (!data) return null;
 
   // visitorType에 따라 타이틀 결정
@@ -18,6 +20,13 @@ const MyAccessDetailModal = ({ isVisible, onClose, onConfirm, data }) => {
   // QR 버튼 노출 조건
   const isQrAvailable = data.approval === '출입 가능';
 
+  // QR 버튼 클릭 핸들러
+  const handleQrPress = async () => {
+    onClose();
+    setTimeout(() => {
+      onConfirm();
+    }, 250);
+  };
   return (
     <Modal isVisible={isVisible} onBackdropPress={onClose}>
       <View style={styles.modalContainer}>
@@ -46,7 +55,7 @@ const MyAccessDetailModal = ({ isVisible, onClose, onConfirm, data }) => {
             <Text style={styles.buttonText}>닫기</Text>
           </TouchableOpacity>
           {isQrAvailable && (
-            <TouchableOpacity style={[styles.button, styles.QRButton]} onPress={onConfirm}>
+            <TouchableOpacity style={[styles.button, styles.QRButton]} onPress={handleQrPress}>
               <Text style={styles.buttonText}>QR</Text>
             </TouchableOpacity>
           )}
