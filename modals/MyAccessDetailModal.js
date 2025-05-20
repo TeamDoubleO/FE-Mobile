@@ -15,6 +15,9 @@ const MyAccessDetailModal = ({ isVisible, onClose, onConfirm, data }) => {
         ? '내 환자'
         : '상대방';
 
+  // QR 버튼 노출 조건
+  const isQrAvailable = data.approval === '출입 가능';
+
   return (
     <Modal isVisible={isVisible} onBackdropPress={onClose}>
       <View style={styles.modalContainer}>
@@ -42,9 +45,11 @@ const MyAccessDetailModal = ({ isVisible, onClose, onConfirm, data }) => {
           <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={onClose}>
             <Text style={styles.buttonText}>닫기</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.QRButton]} onPress={onConfirm}>
-            <Text style={styles.buttonText}>QR</Text>
-          </TouchableOpacity>
+          {isQrAvailable && (
+            <TouchableOpacity style={[styles.button, styles.QRButton]} onPress={onConfirm}>
+              <Text style={styles.buttonText}>QR</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </Modal>

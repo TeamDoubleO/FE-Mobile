@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import NormalButton from '../components/buttons/NormalButton';
 import { styles } from './styles/MainPage.styles';
-import QRCode from 'react-native-qrcode-svg';
-import { colors } from '../constants/colors';
 import QrCards from '../components/cards/QrCards';
 
 const MainPage = () => {

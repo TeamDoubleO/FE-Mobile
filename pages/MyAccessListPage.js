@@ -20,8 +20,8 @@ const mockAccessList = [
     ],
     visitCategory: 'PATIENT',
     patientId: 9,
-    startedAt: '2025-05-16T06:35:05',
-    expiredAt: '2025-05-18T06:33:09',
+    startedAt: '2025-05-20T06:35:05',
+    expiredAt: '2025-05-22T06:33:09',
   },
   {
     passId: 5,
@@ -30,8 +30,8 @@ const mockAccessList = [
     accessAreaNames: ['신관 3층 외과병동 301호', '신관 4층 외과병동 402호'],
     visitCategory: 'PATIENT',
     patientId: 9,
-    startedAt: '2025-05-15T08:06:27',
-    expiredAt: '2025-05-17T08:06:00',
+    startedAt: '2025-05-21T08:06:27',
+    expiredAt: '2025-05-22T08:06:00',
   },
   {
     passId: 6,
