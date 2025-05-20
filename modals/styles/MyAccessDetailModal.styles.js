@@ -16,19 +16,20 @@ export const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '600',
     color: colors.black,
-    marginTop: '7%',
+    marginTop: '10%',
     alignSelf: 'center',
   },
   modalContentTitle: {
     fontSize: 17,
     fontWeight: '500',
     color: colors.black,
-    marginTop: '5%',
+    marginVertical: '5%',
     alignSelf: 'center',
   },
   textContainer: {
-    marginTop: '3%',
-    marginBottom: '7%',
+    marginTop: '7%',
+    marginBottom: '5%',
+    gap: '3%',
   },
   modalText: {
     fontSize: 17,
@@ -41,7 +42,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignSelf: 'stretch',
-    // marginVertical: '7%',
+    marginVertical: '7%',
     gap: '5%',
   },
   button: {

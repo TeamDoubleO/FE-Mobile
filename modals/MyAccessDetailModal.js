@@ -34,8 +34,8 @@ const MyAccessDetailModal = ({ isVisible, onClose, onConfirm, data }) => {
             <Text style={styles.modalText}>승인 여부: {data.approval}</Text>
             <Text style={styles.modalText}>환자 번호: {data.patientNumber}</Text>
           </View>
-          <Text style={styles.modalContentTitle}>{relationTitle}</Text>
           <View style={styles.textContainer}>
+            <Text style={styles.modalContentTitle}>{relationTitle}</Text>
             <Text style={styles.modalText}>{`김지수\t|\t010-0000-0000`}</Text>
             <Text style={styles.modalText}>{`손민지\t|\t010-1111-1111`}</Text>
           </View>
