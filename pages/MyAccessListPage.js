@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import NormalListDeep from '../components/lists/NormalListDeep';
 import { styles } from './styles/MyAccessListPage.styles';
 import { getAccessList } from '../apis/MyAccessListApi';
@@ -16,6 +17,7 @@ function getHospitalNameByList(hospitalId, hospitalNameList) {
 }
 
 const MyAccessListPage = () => {
+  const navigation = useNavigation();
   const { setLoading } = useAuthStore();
   const [myAccessList, setMyAccessList] = useState([]);
   const [hospitalNameList, setHospitalNameList] = useState([]);
@@ -76,6 +78,7 @@ const MyAccessListPage = () => {
       approval: getApprovalStatus(access.startedAt, access.expiredAt),
       patientNumber: access.patientId,
       issuer: access.memberId,
+      passId: access.passId,
     });
 
     setShowModal(true);
@@ -192,9 +195,12 @@ const MyAccessListPage = () => {
       <MyAccessDetailModal
         isVisible={showModal}
         onClose={() => setShowModal(false)}
-        onModify={() => {
+        onConfirm={() => {
           setShowModal(false);
-          // TODO: 수정 페이지 이동 시 navigation 사용
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'MainPage', params: { passId: selectedAccess?.passId } }],
+          });
         }}
         data={selectedAccess}
       />

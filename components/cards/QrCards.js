@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FlatList, View, Dimensions, TouchableOpacity } from 'react-native';
 import QrCard from './QrCard';
 import styles from './styles/QrCards.styles';
@@ -9,9 +9,18 @@ const { width } = Dimensions.get('window');
 const CARD_WIDTH = width;
 const OVERLAP = 80; // 카드가 겹치는 정도
 
-const QrCards = ({ userVC, hasAccessAuthority }) => {
-  const [pageIndex, setPageIndex] = useState(0);
+const QrCards = ({ userVC, hasAccessAuthority, initialIndex = 0 }) => {
+  const [pageIndex, setPageIndex] = useState(initialIndex);
   const flatListRef = useRef(null);
+
+  useEffect(() => {
+    // 초기 인덱스가 바뀌거나, userVC 길이 변화시
+    if (flatListRef.current && initialIndex >= 0 && initialIndex < userVC.length) {
+      const offset = initialIndex * (CARD_WIDTH - OVERLAP);
+      flatListRef.current.scrollToOffset({ offset, animated: true });
+      setPageIndex(initialIndex);
+    }
+  }, [initialIndex, userVC.length]);
 
   // 권한 없거나 카드 데이터 없으면 안내 메시지 카드만
   if (!hasAccessAuthority || !userVC || userVC.length === 0) {

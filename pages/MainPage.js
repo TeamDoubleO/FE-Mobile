@@ -1,6 +1,6 @@
 import { View, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import NormalButton from '../components/buttons/NormalButton';
 import { styles } from './styles/MainPage.styles';
 import QrCards from '../components/cards/QrCards';
@@ -22,6 +22,7 @@ function generateUserVCfromAccessList(mockAccessList, hospitalNameList, userName
   const randomNum = Math.floor(100000 + Math.random() * 900000);
   return mockAccessList.map((item, idx) => ({
     did: `did:example:${String(item.passId).padStart(16, '0')}-${randomNum}`,
+    passId: item.passId,
     userName,
     hospitalName: getHospitalNameByList(item.hospitalId, hospitalNameList),
     startDate: formatDateTime(item.startedAt),
@@ -62,6 +63,16 @@ const MainPage = () => {
   const [userName, setUserName] = useState('');
 
   const navigation = useNavigation();
+  const route = useRoute();
+
+  // initialPassId를 route에서 꺼냄
+  const initialPassId = route?.params?.passId;
+
+  // userVC가 바뀔 때마다 initialIndex 계산
+  const initialIndex =
+    userVC && initialPassId
+      ? userVC.findIndex((vc) => String(vc.passId) === String(initialPassId))
+      : 0;
 
   // 병원, 출입증 데이터 불러오기
   useEffect(() => {
@@ -103,7 +114,11 @@ const MainPage = () => {
         source={require('../assets/images/logoGreen.png')}
         resizeMode="contain" // 이미지 비율 유지
       />
-      <QrCards hasAccessAuthority={hasAccessAuthority} userVC={userVC} />
+      <QrCards
+        hasAccessAuthority={hasAccessAuthority}
+        userVC={userVC}
+        initialIndex={initialIndex >= 0 ? initialIndex : 0} // 처음 보여줄 카드 인덱스
+      />
       <View style={styles.buttonContainer}>
         <NormalButton title="방문 신청" length="short" onPressHandler={navigateToAccessList} />
         <NormalButton title="마이 페이지" length="short" onPressHandler={navigateToMyPage} />
