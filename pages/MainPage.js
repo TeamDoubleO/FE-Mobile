@@ -42,6 +42,13 @@ const formatDateTime = (date) => {
   return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
 };
 
+function isAccessible(startedAt, expiredAt) {
+  const now = new Date();
+  const start = new Date(startedAt);
+  const end = new Date(expiredAt);
+  return start <= now && now <= end;
+}
+
 const MainPage = () => {
   // 임시: 상태변수로 출입 권한 제어
   const [hasAccessAuthority, setHasAccessAuthority] = useState(true);
@@ -72,7 +79,12 @@ const MainPage = () => {
   // hospitalNameList, myAccessList 준비되면 userVC 생성
   useEffect(() => {
     if (hospitalNameList.length > 0 && myAccessList.length > 0 && userName) {
-      setUserVC(generateUserVCfromAccessList(myAccessList, hospitalNameList, userName));
+      // 출입 가능한 리스트
+      const accessibleList = myAccessList.filter((item) =>
+        isAccessible(item.startedAt, item.expiredAt),
+      );
+      setUserVC(generateUserVCfromAccessList(accessibleList, hospitalNameList, userName));
+      setHasAccessAuthority(accessibleList.length > 0);
     }
   }, [hospitalNameList, myAccessList, userName]);
 
