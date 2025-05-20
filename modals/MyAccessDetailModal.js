@@ -20,6 +20,7 @@ const MyAccessDetailModal = ({ isVisible, onClose, onConfirm, data }) => {
   // QR 버튼 노출 조건
   const isQrAvailable = data.approval === '출입 가능';
 
+
   // QR 버튼 클릭 핸들러
   const handleQrPress = async () => {
     onClose();
@@ -27,6 +28,7 @@ const MyAccessDetailModal = ({ isVisible, onClose, onConfirm, data }) => {
       onConfirm();
     }, 250);
   };
+
   return (
     <Modal isVisible={isVisible} onBackdropPress={onClose}>
       <View style={styles.modalContainer}>
