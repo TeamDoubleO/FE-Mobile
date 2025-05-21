@@ -8,10 +8,14 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "allowJs": true, // 기존 JS 파일도 타입 체크
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
-    "resolveJsonModule": true // 만약 .json import할 일 있으면
+    "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "babel.config.js"]
+  "exclude": [
+    "node_modules",
+    "babel.config.js"
+  ],
+  "extends": "expo/tsconfig.base"
 }

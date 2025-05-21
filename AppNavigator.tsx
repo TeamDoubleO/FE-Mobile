@@ -1,4 +1,4 @@
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, NavigationState } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useState, useEffect } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -24,7 +24,21 @@ import AccessRequestPage from './pages/AccessRequestPage';
 import AccessRequestRolePage from './pages/AccessRequestRolePage';
 import { colors } from './constants/colors';
 
-const Stack = createStackNavigator();
+type RootStackParamList = {
+  WelcomePage: undefined;
+  LoginPage: undefined;
+  SignUpPage: undefined;
+  SignUpVerificationPage: undefined;
+  MainPage: undefined;
+  MyPage: undefined;
+  ChangePasswordPage: undefined;
+  AccessListPage: undefined;
+  MyAccessListPage: undefined;
+  AccessRequestPage: undefined;
+  AccessRequestRolePage: undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function AppNavigator() {
   const {
@@ -36,7 +50,8 @@ export default function AppNavigator() {
     setAccessToken,
     clearAccessToken,
   } = useAuthStore();
-  const [navState, setNavState] = useState(null);
+
+  const [navState, setNavState] = useState<NavigationState | undefined>(undefined);
 
   // 앱 시작 시 토큰 유효성 확인
   useEffect(() => {
@@ -84,7 +99,6 @@ export default function AppNavigator() {
           headerTintColor: colors.white,
           headerTitleStyle: { fontWeight: '600', fontSize: 26 },
           headerTitleAlign: 'center',
-          animationEnabled: false,
           gestureEnabled: true,
           headerBackImage: () => <Ionicons name="chevron-back" size={24} color={colors.white} />,
           headerBackTitle: '',
