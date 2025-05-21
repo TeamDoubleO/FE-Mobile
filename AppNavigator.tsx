@@ -1,5 +1,5 @@
 import { NavigationContainer, DefaultTheme, NavigationState } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { useState, useEffect } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StatusBar } from 'react-native';
@@ -7,6 +7,8 @@ import HomeButtonController from './components/buttons/HomeButtonController';
 import LoadingOverlay from './components/loadings/LoadingOverlay';
 import { getMyInfo } from './apis/MyPageApi';
 import { useAuthStore } from './stores/authStore';
+import { colors } from './constants/colors';
+import { RootStackParamList } from './types/Navigation';
 
 // 로그인 전 페이지
 import WelcomePage from './pages/WelcomePage';
@@ -22,21 +24,6 @@ import AccessListPage from './pages/AccessListPage';
 import MyAccessListPage from './pages/MyAccessListPage';
 import AccessRequestPage from './pages/AccessRequestPage';
 import AccessRequestRolePage from './pages/AccessRequestRolePage';
-import { colors } from './constants/colors';
-
-type RootStackParamList = {
-  WelcomePage: undefined;
-  LoginPage: undefined;
-  SignUpPage: undefined;
-  SignUpVerificationPage: undefined;
-  MainPage: undefined;
-  MyPage: undefined;
-  ChangePasswordPage: undefined;
-  AccessListPage: undefined;
-  MyAccessListPage: undefined;
-  AccessRequestPage: undefined;
-  AccessRequestRolePage: undefined;
-};
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -88,22 +75,22 @@ export default function AppNavigator() {
     },
   };
 
+  const screenOptions: StackNavigationOptions = {
+    headerStyle: { backgroundColor: colors.secondary, height: 120 },
+    headerTintColor: colors.white,
+    headerTitleStyle: { fontWeight: '600', fontSize: 26 },
+    headerTitleAlign: 'center',
+    gestureEnabled: true,
+    headerBackImage: () => <Ionicons name="chevron-back" size={24} color={colors.white} />,
+    headerBackTitle: '',
+  };
+
   return (
     <NavigationContainer onStateChange={setNavState} theme={navTheme}>
       <LoadingOverlay visible={loading} /*로딩*/ />
       <StatusBar hidden />
       <HomeButtonController state={navState} />
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: { backgroundColor: colors.secondary, height: 120 },
-          headerTintColor: colors.white,
-          headerTitleStyle: { fontWeight: '600', fontSize: 26 },
-          headerTitleAlign: 'center',
-          gestureEnabled: true,
-          headerBackImage: () => <Ionicons name="chevron-back" size={24} color={colors.white} />,
-          headerBackTitle: '',
-        }}
-      >
+      <Stack.Navigator screenOptions={screenOptions}>
         {isLoggedIn ? (
           <>
             <Stack.Screen
