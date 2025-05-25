@@ -131,10 +131,10 @@ const MainPage = () => {
         userVC={userVC}
         initialIndex={initialIndex >= 0 ? initialIndex : 0} // 처음 보여줄 카드 인덱스
       />
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
         <NormalButton title="방문 신청" length="short" onPressHandler={navigateToAccessList} />
         <NormalButton title="마이 페이지" length="short" onPressHandler={navigateToMyPage} />
-      </View>
+      </View> */}
     </View>
   );
 };
