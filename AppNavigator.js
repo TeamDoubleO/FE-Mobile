@@ -8,6 +8,7 @@ import HomeButtonController from './components/buttons/HomeButtonController';
 import LoadingOverlay from './components/loadings/LoadingOverlay';
 import { getMyInfo } from './apis/MyPageApi';
 import { useAuthStore } from './stores/authStore';
+import PasswordConfirmModal from './modals/PasswordConfirmModal';
 
 // 로그인 전 페이지
 import WelcomePage from './pages/WelcomePage';
@@ -149,6 +150,7 @@ export default function AppNavigator() {
       <LoadingOverlay visible={loading} />
       <StatusBar hidden />
       <HomeButtonController state={navState} />
+      <PasswordConfirmModal />
       {isLoggedIn ? (
         <Tab.Navigator screenOptions={tabScreenOptions}>
           <Tab.Screen name="MainPage" component={MainPage} options={{ title: '홈' }} />

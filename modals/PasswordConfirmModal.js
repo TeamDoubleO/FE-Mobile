@@ -6,8 +6,10 @@ import NormalButton from '../components/buttons/NormalButton';
 import WaveHeader from '../components/headers/WaveHeader';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { verifyPassword } from '../apis/PasswordApi';
+import { useModalStore } from '../stores/modalStore';
 
-const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
+const PasswordConfirmModal = () => {
+  const { isPasswordModalVisible, setPasswordModalVisible } = useModalStore();
   const [password, setPassword] = useState('');
   const [errorText, setErrorText] = useState(''); // NormalText ErrorText
 
@@ -31,12 +33,11 @@ const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
       setErrorText('8자 이상, 영문/숫자/특수문자를 포함해야 합니다.');
       return;
     }
-
     try {
       await verifyPassword(password);
 
       // 모달창 닫기
-      onCloseHandler();
+      setPasswordModalVisible(false);
     } catch (error) {
       console.log(error);
       setErrorText('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
@@ -58,14 +59,14 @@ const PasswordConfirmModal = ({ visible = true, onCloseHandler }) => {
   // };
 
   return (
-    <Modal visible={visible}>
+    <Modal visible={isPasswordModalVisible}>
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollView}
         keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감
         extraScrollHeight={40} // 키보드와 입력창 사이 간격
         enableOnAndroid={true} // 안드로이드 자동 스크롤 설정
       >
-        <WaveHeader />
+        <WaveHeader onBackPress={''} />
         <View style={styles.container}>
           <Text style={styles.title}>비밀번호 확인</Text>
           <Text style={styles.text}>개인정보 보호를 위해 비밀번호를 확인합니다.</Text>

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { styles } from './styles/MyPage.styles';
-import PasswordConfirmModal from '../modals/PasswordConfirmModal';
+// import PasswordConfirmModal from '../modals/PasswordConfirmModal';
 import WaveHeader from '../components/headers/WaveHeader';
 import NormalInput from '../components/textinputs/NormalInput';
 import GrayButton from '../components/buttons/GrayButton';
@@ -12,8 +12,8 @@ import { useAuthStore } from '../stores/authStore';
 
 export default function MyPage() {
   const { accessToken, clearAccessToken } = useAuthStore();
-  const [isVerified, setIsVerified] = useState(false); // 비밀번호 인증 여부
-  const [isModalVisible, setIsModalVisible] = useState(true);
+  // const [isVerified, setIsVerified] = useState(false); // 비밀번호 인증 여부
+  // const [isModalVisible, setIsModalVisible] = useState(true);
 
   // Alert 관리 상태변수
   const [showUpdatePasswordConfirmAlert, setShowUpdatePasswordConfirmAlert] = useState(false);
@@ -31,27 +31,49 @@ export default function MyPage() {
 
   const navigation = useNavigation();
 
-  // 인증 완료 시, 모달 창 닫음
-  const handleCloseModal = async () => {
-    setIsModalVisible(false);
-    setIsVerified(true);
-
+  useEffect(() => {
     // 회원 정보 불러오기
-    try {
-      if (!accessToken) {
-        throw new Error('토큰이 존재하지 않습니다.');
+    const fetchUserInfo = async () => {
+      try {
+        if (!accessToken) {
+          throw new Error('토큰이 존재하지 않습니다.');
+        }
+        const data = await getMyInfo();
+        setUserInfo({
+          name: data.name,
+          birth: data.birthDate,
+          contact: data.contact,
+          email: data.email,
+        });
+      } catch (error) {
+        console.log('내 정보 조회 실패:', error.response.data);
       }
-      const data = await getMyInfo();
-      setUserInfo({
-        name: data.name,
-        birth: data.birthDate,
-        contact: data.contact,
-        email: data.email,
-      });
-    } catch (error) {
-      console.log('내 정보 조회 실패:', error.response.data);
-    }
-  };
+    };
+
+    fetchUserInfo();
+  }, [accessToken]);
+
+  // // 인증 완료 시, 모달 창 닫음
+  // const handleCloseModal = async () => {
+  //   setIsModalVisible(false);
+  //   setIsVerified(true);
+
+  //   // 회원 정보 불러오기
+  //   try {
+  //     if (!accessToken) {
+  //       throw new Error('토큰이 존재하지 않습니다.');
+  //     }
+  //     const data = await getMyInfo();
+  //     setUserInfo({
+  //       name: data.name,
+  //       birth: data.birthDate,
+  //       contact: data.contact,
+  //       email: data.email,
+  //     });
+  //   } catch (error) {
+  //     console.log('내 정보 조회 실패:', error.response.data);
+  //   }
+  // };
 
   // 로그아웃 버튼 클릭 핸들러
   const handleLogout = () => {
@@ -115,8 +137,8 @@ export default function MyPage() {
   return (
     <View>
       <WaveHeader />
-      {/* 비밀번호 인증 완료 시, 본문 보이도록 설정 */}
-      {isVerified && (
+      {/* {isVerified && ( */}
+      {
         <>
           <View style={styles.container}>
             <Text style={styles.title}>마이 페이지</Text>
@@ -177,9 +199,8 @@ export default function MyPage() {
             onConfirmHandler={handleDeleteUserSuccess}
           />
         </>
-      )}
-
-      <PasswordConfirmModal visible={isModalVisible} onCloseHandler={handleCloseModal} />
+      }
+      {/* <PasswordConfirmModal visible={isModalVisible} onCloseHandler={handleCloseModal} /> */}
     </View>
   );
 }
