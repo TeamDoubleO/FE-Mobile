@@ -1,5 +1,5 @@
 import { View, Text, Modal } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styles } from './styles/PasswordConfirmModal.styles';
 import NormalInput from '../components/textinputs/NormalInput';
 import NormalButton from '../components/buttons/NormalButton';
@@ -8,10 +8,17 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { verifyPassword } from '../apis/PasswordApi';
 import { useModalStore } from '../stores/modalStore';
 
-const PasswordConfirmModal = () => {
-  const { isPasswordModalVisible, setPasswordModalVisible } = useModalStore();
+const PasswordConfirmModal = ({ navigationRef }) => {
+  const { isPasswordModalVisible, pendingTab, prevTab, hidePasswordModal } = useModalStore();
   const [password, setPassword] = useState('');
   const [errorText, setErrorText] = useState(''); // NormalText ErrorText
+
+  useEffect(() => {
+    if (isPasswordModalVisible) {
+      setPassword('');
+      setErrorText('');
+    }
+  }, [isPasswordModalVisible]);
 
   // 비밀번호 규칙 검사 핸들러 (8자 이상, 영문/숫자/특수문자 포함)
   const isValidPassword = (pw) =>
@@ -35,13 +42,17 @@ const PasswordConfirmModal = () => {
     }
     try {
       await verifyPassword(password);
-
-      // 모달창 닫기
-      setPasswordModalVisible(false);
+      navigationRef.current?.navigate(pendingTab);
+      hidePasswordModal();
     } catch (error) {
       console.log(error);
       setErrorText('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
     }
+  };
+
+  const onClosePasswordModal = () => {
+    hidePasswordModal();
+    navigationRef.current?.navigate(prevTab);
   };
   // 모달 오류시 임시 코드
   // const handleConfirm = async () => {
@@ -59,14 +70,18 @@ const PasswordConfirmModal = () => {
   // };
 
   return (
-    <Modal visible={isPasswordModalVisible}>
+    <Modal
+      visible={isPasswordModalVisible}
+      animationType="slide"
+      onRequestClose={onClosePasswordModal}
+    >
       <KeyboardAwareScrollView
         contentContainerStyle={styles.scrollView}
         keyboardShouldPersistTaps="handled" //입력 도중 입력창 외 다른 부분을 터치 했을 때 내려감
         extraScrollHeight={40} // 키보드와 입력창 사이 간격
         enableOnAndroid={true} // 안드로이드 자동 스크롤 설정
       >
-        <WaveHeader onBackPress={''} />
+        <WaveHeader onBackPress={onClosePasswordModal} />
         <View style={styles.container}>
           <Text style={styles.title}>비밀번호 확인</Text>
           <Text style={styles.text}>개인정보 보호를 위해 비밀번호를 확인합니다.</Text>

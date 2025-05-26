@@ -1,13 +1,14 @@
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StatusBar } from 'react-native';
 import HomeButtonController from './components/buttons/HomeButtonController';
 import LoadingOverlay from './components/loadings/LoadingOverlay';
 import { getMyInfo } from './apis/MyPageApi';
 import { useAuthStore } from './stores/authStore';
+import { useModalStore } from './stores/modalStore';
 import PasswordConfirmModal from './modals/PasswordConfirmModal';
 
 // 로그인 전 페이지
@@ -108,6 +109,15 @@ export default function AppNavigator() {
     clearAccessToken,
   } = useAuthStore();
 
+  const showPasswordModal = useModalStore((state) => state.showPasswordModal);
+  // 네비게이션 객체에 직접 접근하기 위한 ref
+  const navigationRef = useRef();
+
+  const handleTabPress = (e, tabName) => {
+    e.preventDefault();
+    const currentRoute = navigationRef.current?.getCurrentRoute();
+    showPasswordModal(tabName, currentRoute?.name || 'MainPage');
+  };
   const [navState, setNavState] = useState(null);
 
   // 앱 시작 시 토큰 유효성 확인
@@ -146,11 +156,11 @@ export default function AppNavigator() {
   };
 
   return (
-    <NavigationContainer onStateChange={setNavState} theme={navTheme}>
+    <NavigationContainer ref={navigationRef} onStateChange={setNavState} theme={navTheme}>
       <LoadingOverlay visible={loading} />
       <StatusBar hidden />
       <HomeButtonController state={navState} />
-      <PasswordConfirmModal />
+      <PasswordConfirmModal navigationRef={navigationRef} />
       {isLoggedIn ? (
         <Tab.Navigator screenOptions={tabScreenOptions}>
           <Tab.Screen name="MainPage" component={MainPage} options={{ title: '홈' }} />
@@ -158,6 +168,9 @@ export default function AppNavigator() {
             name="MyPageStack"
             component={MyPageStack}
             options={{ title: '마이페이지' }}
+            listeners={{
+              tabPress: (e) => handleTabPress(e, 'MyPageStack'), // 비밀번호 인증 이후 이동
+            }}
           />
           <Tab.Screen name="AccessStack" component={AccessStack} options={{ title: '출입 권한' }} />
         </Tab.Navigator>
