@@ -10,6 +10,7 @@ import { getMyInfo } from './apis/MyPageApi';
 import { useAuthStore } from './stores/authStore';
 import { useModalStore } from './stores/modalStore';
 import PasswordConfirmModal from './modals/PasswordConfirmModal';
+import AnimatedTabBar from './components/AnimatedTabBar';
 
 // 로그인 전 페이지
 import WelcomePage from './pages/WelcomePage';
@@ -25,6 +26,7 @@ import AccessListPage from './pages/AccessListPage';
 import MyAccessListPage from './pages/MyAccessListPage';
 import AccessRequestPage from './pages/AccessRequestPage';
 import AccessRequestRolePage from './pages/AccessRequestRolePage';
+import AlertList from './pages/AlertList';
 import { colors } from './constants/colors';
 
 const Stack = createStackNavigator();
@@ -34,9 +36,10 @@ const Tab = createBottomTabNavigator();
 const tabScreenOptions = ({ route }) => ({
   tabBarIcon: ({ color, size }) => {
     let iconName;
-    if (route.name === 'MainPage') iconName = 'home-outline';
-    else if (route.name === 'MyPageStack') iconName = 'person-outline';
-    else if (route.name === 'AccessStack') iconName = 'list-outline';
+    if (route.name === 'MainPage') iconName = 'home';
+    else if (route.name === 'MyPageStack') iconName = 'person-sharp';
+    else if (route.name === 'AccessStack') iconName = 'list';
+    else if (route.name === 'AlertStack') iconName = 'notifications';
     else iconName = 'ellipse-outline';
     return <Ionicons name={iconName} size={size} color={color} />;
   },
@@ -94,6 +97,14 @@ function AccessStack() {
         component={AccessRequestRolePage}
         options={{ title: '출입 권한 신청' }}
       />
+    </Stack.Navigator>
+  );
+}
+
+function AlertStack() {
+  return (
+    <Stack.Navigator screenOptions={screenOptions}>
+      <Stack.Screen name="AlertList" component={AlertList} options={{ title: '알림' }} />
     </Stack.Navigator>
   );
 }
@@ -162,8 +173,17 @@ export default function AppNavigator() {
       <HomeButtonController state={navState} />
       <PasswordConfirmModal navigationRef={navigationRef} />
       {isLoggedIn ? (
-        <Tab.Navigator screenOptions={tabScreenOptions}>
+        <Tab.Navigator
+          screenOptions={tabScreenOptions}
+          tabBar={(props) => <AnimatedTabBar {...props} />}
+        >
           <Tab.Screen name="MainPage" component={MainPage} options={{ title: '홈' }} />
+          <Tab.Screen name="AccessStack" component={AccessStack} options={{ title: '출입 권한' }} />
+          <Tab.Screen
+            name="AlertStack"
+            component={AlertStack}
+            options={{ title: '알림', tabBarBadge: 2 }}
+          />
           <Tab.Screen
             name="MyPageStack"
             component={MyPageStack}
@@ -172,7 +192,6 @@ export default function AppNavigator() {
               tabPress: (e) => handleTabPress(e, 'MyPageStack'), // 비밀번호 인증 이후 이동
             }}
           />
-          <Tab.Screen name="AccessStack" component={AccessStack} options={{ title: '출입 권한' }} />
         </Tab.Navigator>
       ) : (
         <Stack.Navigator screenOptions={screenOptions}>

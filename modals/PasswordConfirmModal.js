@@ -63,7 +63,8 @@ const PasswordConfirmModal = ({ navigationRef }) => {
 
   //   // 임시: 비밀번호가 'Lgcns01!'이면 성공, 아니면 실패
   //   if (password === 'Lgcns01!') {
-  //     onCloseHandler(); // 성공 시 모달 닫기
+  //     navigationRef.current?.navigate(pendingTab);
+  //     hidePasswordModal();
   //   } else {
   //     setErrorText('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
   //   }
