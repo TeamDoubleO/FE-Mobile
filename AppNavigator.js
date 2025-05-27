@@ -10,7 +10,7 @@ import { getMyInfo } from './apis/MyPageApi';
 import { useAuthStore } from './stores/authStore';
 import { useModalStore } from './stores/modalStore';
 import PasswordConfirmModal from './modals/PasswordConfirmModal';
-import AnimatedTabBar from './components/AnimatedTabBar';
+import AnimatedTabBar from './AnimatedTabBar';
 
 // 로그인 전 페이지
 import WelcomePage from './pages/WelcomePage';
@@ -34,17 +34,17 @@ const Tab = createBottomTabNavigator();
 
 // Tab 네비게이터 옵션
 const tabScreenOptions = ({ route }) => ({
-  tabBarIcon: ({ color, size }) => {
-    let iconName;
-    if (route.name === 'MainPage') iconName = 'home';
-    else if (route.name === 'MyPageStack') iconName = 'person-sharp';
-    else if (route.name === 'AccessStack') iconName = 'list';
-    else if (route.name === 'AlertStack') iconName = 'notifications';
-    else iconName = 'ellipse-outline';
-    return <Ionicons name={iconName} size={size} color={color} />;
-  },
-  tabBarActiveTintColor: colors.secondary,
-  tabBarInactiveTintColor: 'gray',
+  // tabBarIcon: ({ color, size }) => {
+  //   let iconName;
+  //   if (route.name === 'MainPage') iconName = 'home';
+  //   else if (route.name === 'MyPageStack') iconName = 'person-sharp';
+  //   else if (route.name === 'AccessStack') iconName = 'list';
+  //   else if (route.name === 'AlertStack') iconName = 'notifications';
+  //   else iconName = 'ellipse-outline';
+  //   return <Ionicons name={iconName} size={size} color={color} />;
+  // },
+  // tabBarActiveTintColor: colors.secondary,
+  // tabBarInactiveTintColor: 'gray',
   headerShown: false,
 });
 
@@ -174,7 +174,7 @@ export default function AppNavigator() {
       <PasswordConfirmModal navigationRef={navigationRef} />
       {isLoggedIn ? (
         <Tab.Navigator
-          screenOptions={tabScreenOptions}
+          screenOptions={{ headerShown: false }}
           tabBar={(props) => <AnimatedTabBar {...props} />}
         >
           <Tab.Screen name="MainPage" component={MainPage} options={{ title: '홈' }} />

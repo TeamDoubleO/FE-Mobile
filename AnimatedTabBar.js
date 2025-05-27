@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
-import { View, TouchableOpacity, Animated, StyleSheet, Text } from 'react-native';
+import { View, TouchableOpacity, Animated, Text } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { colors } from '../constants/colors';
+import { colors } from './constants/colors';
+import { styles } from './AnimatedTabBar.styles';
 
 const TAB_ICONS = {
   MainPage: 'home',
@@ -27,15 +28,17 @@ export default function AnimatedTabBar({ state, descriptors, navigation }) {
       target: route.key,
       canPreventDefault: true,
     });
-    // 이미 포커스된 탭이 아니고, 이벤트가 취소되지 않았으면 해당 route로 이동
+    // 포커스된 탭이 아니고, 이벤트가 취소되지 않았으면 해당 route로 이동
     if (!isFocused && !event.defaultPrevented) {
       navigation.navigate(route.name);
     }
     Animated.parallel([
+      // 크기 변화
       Animated.sequence([
         Animated.timing(scales[index], { toValue: 1.2, duration: 120, useNativeDriver: true }),
         Animated.spring(scales[index], { toValue: 1, friction: 3, useNativeDriver: true }),
       ]),
+      // 기울기 변화
       Animated.sequence([
         Animated.timing(tilts[index], { toValue: 1, duration: 150, useNativeDriver: true }), // 느리게(150ms)
         Animated.timing(tilts[index], { toValue: -1, duration: 150, useNativeDriver: true }), // 느리게(150ms)
@@ -82,8 +85,7 @@ export default function AnimatedTabBar({ state, descriptors, navigation }) {
               <Ionicons
                 name={iconName}
                 size={25}
-                color={isFocused ? colors.primary : colors.lightGray}
-                style={isFocused ? styles.iconActive : undefined}
+                style={isFocused ? styles.iconActive : styles.icon}
               />
             </Animated.View>
             <Text style={[styles.label, isFocused && styles.labelActive]}>{label}</Text>
@@ -93,52 +95,3 @@ export default function AnimatedTabBar({ state, descriptors, navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  tabBar: {
-    flexDirection: 'row',
-    height: 80, // 높이 조절
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  tab: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  iconWrapper: {
-    backgroundColor: colors.white,
-    padding: 3,
-    borderRadius: 16,
-    marginBottom: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  iconWrapperActive: {
-    backgroundColor: colors.white,
-    padding: 3,
-    borderRadius: 8,
-    // shadowColor: colors.darkGray,
-    // shadowOpacity: 0.7,
-    // shadowRadius: 8,
-    // elevation: 8,
-  },
-  label: {
-    fontSize: 13,
-    color: colors.lightGray,
-    fontWeight: '500',
-    marginTop: 2,
-  },
-  labelActive: {
-    color: colors.darkGray,
-    fontWeight: 'bold',
-    // textShadowOffset: { width: 0, height: 1 },
-    // textShadowRadius: 4,
-  },
-});
