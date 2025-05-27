@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { styles } from './styles/MyPage.styles';
-import PasswordConfirmModal from '../modals/PasswordConfirmModal';
+// import PasswordConfirmModal from '../modals/PasswordConfirmModal';
 import WaveHeader from '../components/headers/WaveHeader';
 import NormalInput from '../components/textinputs/NormalInput';
 import GrayButton from '../components/buttons/GrayButton';
@@ -12,8 +12,6 @@ import { useAuthStore } from '../stores/authStore';
 
 export default function MyPage() {
   const { accessToken, clearAccessToken } = useAuthStore();
-  const [isVerified, setIsVerified] = useState(false); // 비밀번호 인증 여부
-  const [isModalVisible, setIsModalVisible] = useState(true);
 
   // Alert 관리 상태변수
   const [showUpdatePasswordConfirmAlert, setShowUpdatePasswordConfirmAlert] = useState(false);
@@ -31,27 +29,27 @@ export default function MyPage() {
 
   const navigation = useNavigation();
 
-  // 인증 완료 시, 모달 창 닫음
-  const handleCloseModal = async () => {
-    setIsModalVisible(false);
-    setIsVerified(true);
-
+  useEffect(() => {
     // 회원 정보 불러오기
-    try {
-      if (!accessToken) {
-        throw new Error('토큰이 존재하지 않습니다.');
+    const fetchUserInfo = async () => {
+      try {
+        if (!accessToken) {
+          throw new Error('토큰이 존재하지 않습니다.');
+        }
+        const data = await getMyInfo();
+        setUserInfo({
+          name: data.name,
+          birth: data.birthDate,
+          contact: data.contact,
+          email: data.email,
+        });
+      } catch (error) {
+        console.log('내 정보 조회 실패:', error.response.data);
       }
-      const data = await getMyInfo();
-      setUserInfo({
-        name: data.name,
-        birth: data.birthDate,
-        contact: data.contact,
-        email: data.email,
-      });
-    } catch (error) {
-      console.log('내 정보 조회 실패:', error.response.data);
-    }
-  };
+    };
+
+    fetchUserInfo();
+  }, [accessToken]);
 
   // 로그아웃 버튼 클릭 핸들러
   const handleLogout = () => {
@@ -115,71 +113,64 @@ export default function MyPage() {
   return (
     <View>
       <WaveHeader />
-      {/* 비밀번호 인증 완료 시, 본문 보이도록 설정 */}
-      {isVerified && (
-        <>
-          <View style={styles.container}>
-            <Text style={styles.title}>마이 페이지</Text>
-            <NormalInput
-              placeholder={`이름: ${userInfo.name}`}
-              isEditable={false}
-              inputWrpperWidth={{ width: '80%' }}
-            />
-            <NormalInput
-              placeholder={`생년월일: ${userInfo.birth}`}
-              isEditable={false}
-              inputWrpperWidth={{ width: '80%' }}
-            />
-            <NormalInput
-              placeholder={`전화번호: ${userInfo.contact}`}
-              isEditable={false}
-              inputWrpperWidth={{ width: '80%' }}
-            />
-            <NormalInput
-              placeholder={`이메일: ${userInfo.email}`}
-              isEditable={false}
-              inputWrpperWidth={{ width: '80%' }}
-            />
-            <View style={styles.buttonContainer}>
-              <GrayButton title="비밀번호 변경" onPressHandler={handlePassword} />
-              <Text style={styles.buttonDivider}>|</Text>
-              <GrayButton title="로그아웃" onPressHandler={handleLogout} />
-              <Text style={styles.buttonDivider}>|</Text>
-              <GrayButton title="회원 탈퇴" onPressHandler={handleDeleteUser} />
-            </View>
-          </View>
-          <NormalAlert
-            show={showUpdatePasswordConfirmAlert}
-            title="로그아웃"
-            message={`로그아웃 하시겠습니까?`}
-            showCancel={true}
-            onConfirmHandler={handleLogoutConfirm}
-            onCancelHandler={() => setShowUpdatePasswordConfirmAlert(false)}
-          />
-          <NormalAlert
-            show={showUpdatePasswordSuccessAlert}
-            title="로그아웃 성공"
-            message={`로그아웃이 완료되었습니다.\n시작 페이지로 이동합니다.`}
-            onConfirmHandler={handleLogoutSuccess}
-          />
-          <NormalAlert
-            show={showDeleteUserConfirmAlert}
-            title="회원 탈퇴"
-            message={`탈퇴 하시겠습니까?`}
-            showCancel={true}
-            onConfirmHandler={handleDeleteUserConfirm}
-            onCancelHandler={() => setShowDeleteUserConfirmAlert(false)}
-          />
-          <NormalAlert
-            show={showDeleteUserSuccessAlert}
-            title="회원 탈퇴 성공"
-            message={`회원 탈퇴가 완료되었습니다.\n언제든 다시 찾아주세요:)`}
-            onConfirmHandler={handleDeleteUserSuccess}
-          />
-        </>
-      )}
-
-      <PasswordConfirmModal visible={isModalVisible} onCloseHandler={handleCloseModal} />
+      <View style={styles.container}>
+        <Text style={styles.title}>마이 페이지</Text>
+        <NormalInput
+          placeholder={`이름: ${userInfo.name}`}
+          isEditable={false}
+          inputWrpperWidth={{ width: '80%' }}
+        />
+        <NormalInput
+          placeholder={`생년월일: ${userInfo.birth}`}
+          isEditable={false}
+          inputWrpperWidth={{ width: '80%' }}
+        />
+        <NormalInput
+          placeholder={`전화번호: ${userInfo.contact}`}
+          isEditable={false}
+          inputWrpperWidth={{ width: '80%' }}
+        />
+        <NormalInput
+          placeholder={`이메일: ${userInfo.email}`}
+          isEditable={false}
+          inputWrpperWidth={{ width: '80%' }}
+        />
+        <View style={styles.buttonContainer}>
+          <GrayButton title="비밀번호 변경" onPressHandler={handlePassword} />
+          <Text style={styles.buttonDivider}>|</Text>
+          <GrayButton title="로그아웃" onPressHandler={handleLogout} />
+          <Text style={styles.buttonDivider}>|</Text>
+          <GrayButton title="회원 탈퇴" onPressHandler={handleDeleteUser} />
+        </View>
+      </View>
+      <NormalAlert
+        show={showUpdatePasswordConfirmAlert}
+        title="로그아웃"
+        message={`로그아웃 하시겠습니까?`}
+        showCancel={true}
+        onConfirmHandler={handleLogoutConfirm}
+        onCancelHandler={() => setShowUpdatePasswordConfirmAlert(false)}
+      />
+      <NormalAlert
+        show={showUpdatePasswordSuccessAlert}
+        title="로그아웃 성공"
+        message={`로그아웃이 완료되었습니다.\n시작 페이지로 이동합니다.`}
+        onConfirmHandler={handleLogoutSuccess}
+      />
+      <NormalAlert
+        show={showDeleteUserConfirmAlert}
+        title="회원 탈퇴"
+        message={`탈퇴 하시겠습니까?`}
+        showCancel={true}
+        onConfirmHandler={handleDeleteUserConfirm}
+        onCancelHandler={() => setShowDeleteUserConfirmAlert(false)}
+      />
+      <NormalAlert
+        show={showDeleteUserSuccessAlert}
+        title="회원 탈퇴 성공"
+        message={`회원 탈퇴가 완료되었습니다.\n언제든 다시 찾아주세요:)`}
+        onConfirmHandler={handleDeleteUserSuccess}
+      />
     </View>
   );
 }
